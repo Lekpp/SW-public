@@ -856,10 +856,13 @@
   - type: Projectile
     damage:
       groups:
-        Brute: 35
-    ignoreResistances: true
+        Brute: 85
   - type: Sprite
     sprite: Imperial/Medieval/Gun/boltheavy.rsi
     rotation: -135
     layers:
     - state: proto
+  #- type: APDamageOnHit
+  #  damage:
+  #    types:
+  #      Piercing: 35
