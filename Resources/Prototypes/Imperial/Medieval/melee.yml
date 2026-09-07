@@ -581,7 +581,7 @@
 
 - type: entity
   name: iron hammer
-  parent: [ BaseItem, BaseTwoHandedCharged ]
+  parent: [ BaseItem, BaseHammerCharged ]
   id: MedievalIronHammer
   description: A medieval hammer.
   components:
@@ -622,7 +622,6 @@
     resourceWaste: 0.7
     safeToHitGroup: structure
   - type: Wieldable
-    useDelayOnWield: false
     #wieldTime: 3.5
   - type: IncreaseDamageOnWield
     damage:
@@ -3701,7 +3700,7 @@
 
 - type: entity
   name: iron hammer
-  parent: [ BaseItem, BaseTwoHandedCharged ]
+  parent: [ BaseItem, BaseHammerCharged ]
   id: MedievalIronHammerSteel
   description: A medieval hammer.
   components:
@@ -3742,7 +3741,6 @@
     resourceWaste: 0.7
     safeToHitGroup: structure
   - type: Wieldable
-    useDelayOnWield: false
     #wieldTime: 3.5
   - type: IncreaseDamageOnWield
     damage:
