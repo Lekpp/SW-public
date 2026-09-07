@@ -200,7 +200,9 @@ public sealed partial class TradingSystem
                 sale.Id,
                 sale.ItemName,
                 sale.BuyerName,
-                sale.Price))
+                sale.Price,
+                sale.ReceiptAmount,
+                sale.SellerRevenue))
             .ToList();
 
         _ui.ServerSendUiMessage(
@@ -358,6 +360,9 @@ public sealed partial class TradingSystem
             offer.ParticipantKind,
             offer.ParticipantName,
             offer.Price,
+            isOwner && offer.Pit == store && offer.Side == TradingOfferSide.Sell
+                ? GetPendingBidReceiptAmount(offer.Id)
+                : 0,
             isOwner && offer.Pit == store,
             displayName,
             preview);
@@ -1051,7 +1056,7 @@ public sealed partial class TradingSystem
 
         var sale = component.PendingSales[index];
         component.PendingSales.RemoveAt(index);
-        component.Balance += sale.Price;
+        component.Balance += sale.SellerRevenue;
         component.MarketArchive.Add(
             Loc.GetString(
                 "trading-ui-archive-sell-entry",

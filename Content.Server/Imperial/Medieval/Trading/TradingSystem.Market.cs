@@ -122,8 +122,13 @@ public sealed partial class TradingSystem
     private void DeleteMarket()
     {
         var query = EntityQueryEnumerator<TradingMarketComponent>();
-        while (query.MoveNext(out var uid, out _))
+        while (query.MoveNext(out var uid, out var market))
         {
+            foreach (var offer in market.Offers.Values)
+            {
+                FailBidReceipts(offer);
+            }
+
             if (!TerminatingOrDeleted(uid) && !EntityManager.IsQueuedForDeletion(uid))
                 QueueDel(uid);
         }
@@ -375,7 +380,15 @@ public sealed partial class TradingSystem
         }
 
         var executionPrice = ask.Sequence < bid.Sequence ? ask.Price : bid.Price;
-        var sellerPayoutDeferred = ArchiveTrade(commodity, ask, bid, executionPrice);
+        var receiptAmount = CompleteBidReceipts(ask);
+        var sellerRevenue = Math.Max(0, executionPrice - receiptAmount);
+        var sellerPayoutDeferred = ArchiveTrade(
+            commodity,
+            ask,
+            bid,
+            executionPrice,
+            receiptAmount,
+            sellerRevenue);
 
         if (!bid.UsesExternalFunds &&
             bid.Pit is { } buyerPit &&
@@ -388,7 +401,7 @@ public sealed partial class TradingSystem
             ask.Pit is { } sellerPit &&
             TryComp<TradingComponent>(sellerPit, out var seller))
         {
-            seller.Balance += executionPrice;
+            seller.Balance += sellerRevenue;
         }
 
         if (ask.Item is { } item)
@@ -441,7 +454,9 @@ public sealed partial class TradingSystem
         TradingCommodity commodity,
         TradingMarketOffer ask,
         TradingMarketOffer bid,
-        int executionPrice)
+        int executionPrice,
+        int receiptAmount,
+        int sellerRevenue)
     {
         var displayName = commodity.DisplayName;
         var sellerPayoutDeferred = false;
@@ -463,6 +478,8 @@ public sealed partial class TradingSystem
                 ItemName = displayName,
                 BuyerName = bid.ParticipantName,
                 Price = executionPrice,
+                ReceiptAmount = receiptAmount,
+                SellerRevenue = sellerRevenue,
             });
             sellerPayoutDeferred = true;
         }
@@ -491,6 +508,8 @@ public sealed partial class TradingSystem
     {
         if (!market.Comp.Offers.TryGetValue(id, out var offer))
             return;
+
+        FailBidReceipts(offer);
 
         if (offer.Side == TradingOfferSide.Buy && !offer.UsesExternalFunds)
         {
@@ -542,6 +561,7 @@ public sealed partial class TradingSystem
             TerminatingOrDeleted(item) ||
             EntityManager.IsQueuedForDeletion(item) ||
             HasComp<TradingLotBlockedComponent>(item) ||
+            HasComp<BidReceiptComponent>(item) ||
             MetaData(item).EntityPrototype is not { } prototype ||
             !prototype.HasComponent<ItemComponent>() ||
             !CanTradeProduct(prototype, config) ||
