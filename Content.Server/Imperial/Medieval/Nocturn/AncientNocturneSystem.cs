@@ -89,42 +89,72 @@ public sealed class AncientNocturneSystem : EntitySystem
             return;
         }
 
+        if (!_hands.TryGetEmptyHand(ent.Owner, out _))
+        {
+            _popup.PopupEntity(Loc.GetString("medieval-magic-free-hand-required"), ent.Owner, ent.Owner);
+            return;
+        }
+
+        var action = args.Action.Owner;
+        var beforeCast = new MedievalBeforeCastSpellEvent(ent.Owner, Transform(args.Target).Coordinates);
+        RaiseLocalEvent(action, ref beforeCast);
+        if (beforeCast.Cancelled)
+            return;
+
         var doAfterArgs = new DoAfterArgs(
             EntityManager,
             ent.Owner,
             ent.Comp.ConversionDuration,
-            new AncientNocturneConversionDoAfterEvent(),
+            new AncientNocturneConversionDoAfterEvent(GetNetEntity(action)),
             ent.Owner,
             target: args.Target)
         {
             BreakOnMove = true,
             BreakOnDamage = true,
+            DamageThreshold = 0,
             NeedHand = false,
             DuplicateCondition = DuplicateConditions.SameEvent,
             CancelDuplicate = true,
             BlockDuplicate = false
         };
 
-        if (_doAfter.TryStartDoAfter(doAfterArgs))
-            args.Handled = true;
+        if (!_doAfter.TryStartDoAfter(doAfterArgs))
+        {
+            _bloodSpells.ClearReservation(ent.Owner, action);
+            return;
+        }
+
+        args.Handled = true;
     }
 
     private void OnConversionDoAfter(
         Entity<AncientNocturneComponent> ent,
         ref AncientNocturneConversionDoAfterEvent args)
     {
-        if (args.Cancelled || args.Handled || args.Target is not { } target)
+        if (args.Handled ||
+            !EntityManager.TryGetEntity(args.Action, out var action) ||
+            action is not { } actionUid)
             return;
+
+        if (args.Cancelled || args.Target is not { } target)
+        {
+            _bloodSpells.ClearReservation(ent.Owner, actionUid);
+            return;
+        }
 
         args.Handled = true;
         if (!IsValidConversionTarget(target, ent.Comp))
         {
+            _bloodSpells.ClearReservation(ent.Owner, actionUid);
             ShowInvalidConversionTarget(ent.Owner);
             return;
         }
 
         if (!_conversion.TryConvertHumanToNocturne(target, ent.Comp))
+        {
+            _bloodSpells.ClearReservation(ent.Owner, actionUid);
             return;
+        }
 
         var connection = EnsureComp<AncientNocturneMindConnectionComponent>(ent.Owner);
         var trall = EnsureComp<AncientNocturneTrallMindConnectionComponent>(target);
@@ -149,6 +179,12 @@ public sealed class AncientNocturneSystem : EntitySystem
             target,
             target,
             PopupType.Large);
+
+        RaiseLocalEvent(actionUid, new MedievalAfterCastSpellEvent
+        {
+            Action = actionUid,
+            Performer = ent.Owner
+        });
     }
 
     private void SendConversionNotification(

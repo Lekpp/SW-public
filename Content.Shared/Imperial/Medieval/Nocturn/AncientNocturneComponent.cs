@@ -12,7 +12,17 @@ public sealed partial class AncientNocturneBatActionEvent : InstantActionEvent;
 public sealed partial class AncientNocturneConversionActionEvent : EntityTargetActionEvent;
 
 [Serializable, NetSerializable]
-public sealed partial class AncientNocturneConversionDoAfterEvent : SimpleDoAfterEvent;
+public sealed partial class AncientNocturneConversionDoAfterEvent : DoAfterEvent
+{
+    public readonly NetEntity Action;
+
+    public AncientNocturneConversionDoAfterEvent(NetEntity action)
+    {
+        Action = action;
+    }
+
+    public override DoAfterEvent Clone() => new AncientNocturneConversionDoAfterEvent(Action);
+}
 
 [RegisterComponent]
 public sealed partial class AncientNocturneComponent : Component
@@ -32,7 +42,7 @@ public sealed partial class AncientNocturneComponent : Component
     public ProtoId<SpeciesPrototype> ConversionSpecies = "Drou";
 
     [DataField]
-    public TimeSpan ConversionDuration = TimeSpan.FromSeconds(6);
+    public TimeSpan ConversionDuration = TimeSpan.FromSeconds(13);
 
     [DataField]
     public ProtoId<SpeciesPrototype> ConversionTargetSpecies = "Human";
