@@ -204,7 +204,7 @@
   id: MdvLegionMedievalWeaponCrossbowHeavy
   productEntity: MedievalWeaponCrossbowHeavy
   cost:
-    MedalLegion: 20
+    MedalLegion: 13
   categories:
   - MedievalLegionWeapon
 

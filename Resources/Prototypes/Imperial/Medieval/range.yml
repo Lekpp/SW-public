@@ -826,8 +826,8 @@
     safe: true
   - type: Item
     size: Huge
- # - type: MedievalWeaponSkillCategory
- #   skill: CrossbowHeavy
+  - type: MedievalWeaponSkillCategory
+    skill: CrossbowHeavy
 
 - type: entity
   parent: BaseCartridge
@@ -862,7 +862,7 @@
   - type: Projectile
     damage:
       groups:
-        Brute: 90
+        Brute: 130
   - type: Sprite
     sprite: Imperial/Medieval/Gun/boltheavy.rsi
     rotation: -135
