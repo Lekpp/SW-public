@@ -622,11 +622,12 @@
     resourceWaste: 0.7
     safeToHitGroup: structure
   - type: Wieldable
+    useDelayOnWield: false
     #wieldTime: 3.5
   - type: IncreaseDamageOnWield
     damage:
       types:
-        Blunt: 30
+        Blunt: 17
         Structural: 50
   - type: Item
     size: Huge
@@ -3741,11 +3742,12 @@
     resourceWaste: 0.7
     safeToHitGroup: structure
   - type: Wieldable
+    useDelayOnWield: false
     #wieldTime: 3.5
   - type: IncreaseDamageOnWield
     damage:
       types:
-        Blunt: 35
+        Blunt: 20
         Structural: 114
   - type: Item
     size: Huge
