@@ -98,7 +98,7 @@ public sealed class CalendarBoardSystem : EntitySystem
 
     public void UpdateUIState(EntityUid uid)
     {
-        var deck = _calendar.CalendarDeck;
+        var deck = _calendar.DayDeck;
         var currentCycle = _calendar.CurrentCycle;
 
         var stringDeck = new List<string>(deck.Count);

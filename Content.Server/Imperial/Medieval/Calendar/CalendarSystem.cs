@@ -14,67 +14,153 @@ public sealed class CalendarSystem : EntitySystem
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
 
-    int _curCycle = 0;
+    public const int DayStageNumber = 5;
+    public const int NightStageNumber = 10;
 
-    private readonly List<ProtoId<CalendarEventPrototype>> _calendarDeck = new();
+    public const string DayTag = "Day";
+    public const string NightTag = "Night";
 
-    public const int TargetDaysCount = 30;
+    public const int TargetDaysCount = 12;
 
-    public IReadOnlyList<ProtoId<CalendarEventPrototype>> CalendarDeck => _calendarDeck;
+    private int _curCycle;
+    private readonly List<ProtoId<CalendarEventPrototype>> _dayDeck = new();
+    private readonly List<ProtoId<CalendarEventPrototype>> _nightDeck = new();
+
+    public IReadOnlyList<ProtoId<CalendarEventPrototype>> DayDeck => _dayDeck;
+    public IReadOnlyList<ProtoId<CalendarEventPrototype>> NightDeck => _nightDeck;
     public int CurrentCycle => _curCycle;
 
     public override void Initialize()
     {
         base.Initialize();
 
-        SubscribeLocalEvent<DayCycleFinishedEvent>(OnDayCycleFinished);
+        SubscribeLocalEvent<DayCycleStageChangedEvent>(OnDayCycleChanged);
         SubscribeLocalEvent<RoundStartedEvent>(OnRoundStart);
     }
 
     private void OnRoundStart(RoundStartedEvent args)
     {
         _curCycle = 0;
-
-        InitializeCalendarDeck();
+        InitializeCalendarDecks();
     }
 
-    private void InitializeCalendarDeck()
+    private void InitializeCalendarDecks()
     {
-        _calendarDeck.Clear();
+        GenerateDeck(_dayDeck, DayTag, "DefaultCalendarEvent");
+        GenerateDeck(_nightDeck, NightTag, "DefaultCalendarNightEvent");
+    }
 
-        var pool = new List<ProtoId<CalendarEventPrototype>>();
+    private void GenerateDeck(List<ProtoId<CalendarEventPrototype>> deck, string filterTag, string fallbackEventId)
+    {
+        deck.Clear();
+
+        var pool = new List<CalendarEventPrototype>();
         foreach (var proto in _prototype.EnumeratePrototypes<CalendarEventPrototype>())
         {
-            if (proto.Tags.Contains("RandomDay"))
-                pool.Add(proto.ID);
+            if (proto.Tags.Contains(filterTag) && proto.Weight > 0f)
+                pool.Add(proto);
         }
 
         if (pool.Count == 0)
             return;
 
-        _random.Shuffle(pool);
+        var counts = new Dictionary<string, int>(pool.Count);
+        // Отслеживаем на каком дне последний раз выпадал каждый ивент
+        var lastOccurrence = new Dictionary<string, int>(pool.Count);
 
-        _calendarDeck.EnsureCapacity(TargetDaysCount);
-
-        for (var i = 0; i < TargetDaysCount; i++)
+        for (var day = 1; day <= TargetDaysCount; day++)
         {
-            _calendarDeck.Add(pool[i % pool.Count]);
+            // Фильтруем: мин. день наступил + лимит не исчерпан + кулдаун прошел
+            var candidates = pool.FindAll(p =>
+                p.MinDay <= day &&
+                counts.GetValueOrDefault(p.ID) < p.MaxOccurrences &&
+                (day - lastOccurrence.GetValueOrDefault(p.ID, -999)) >= p.MinOffset
+            );
+
+            // Если из-за лимитов и кулдаунов кандидатов нет, ищем только "бесконечные" ивенты
+            if (candidates.Count == 0)
+            {
+                candidates = pool.FindAll(p =>
+                    p.MaxOccurrences >= TargetDaysCount &&
+                    (day - lastOccurrence.GetValueOrDefault(p.ID, -999)) >= p.MinOffset
+                );
+            }
+
+            // Если даже бесконечные ивенты на кулдауне, ставим жесткую заглушку
+            if (candidates.Count == 0)
+            {
+                deck.Add(fallbackEventId);
+                continue;
+            }
+
+            // Бросок рулетки по весам
+            var totalWeight = 0f;
+            for (var i = 0; i < candidates.Count; i++)
+            {
+                totalWeight += candidates[i].Weight;
+            }
+
+            var roll = _random.NextFloat() * totalWeight;
+            var acc = 0f;
+            var selected = candidates[0];
+
+            for (var i = 0; i < candidates.Count; i++)
+            {
+                acc += candidates[i].Weight;
+                if (roll <= acc)
+                {
+                    selected = candidates[i];
+                    break;
+                }
+            }
+
+            deck.Add(selected.ID);
+            counts[selected.ID] = counts.GetValueOrDefault(selected.ID) + 1;
+            lastOccurrence[selected.ID] = day; // Запоминаем день выпадения
         }
     }
 
-    private void OnDayCycleFinished(ref DayCycleFinishedEvent args)
+    private void OnDayCycleChanged(ref DayCycleStageChangedEvent args)
     {
-        TriggerNextDayNotification();
+        TriggerNextDayStageNotification(args.NextStage);
     }
 
-    public void TriggerNextDayNotification()
+    public void TriggerNextDayStageNotification(int stageNumber)
     {
-        _curCycle++;
-        var index = _curCycle % _calendarDeck.Count;
-        TriggerDayNotification(_calendarDeck[index]);
+        switch (stageNumber)
+        {
+            case DayStageNumber:
+                {
+                    _curCycle++;
+
+                    if (_dayDeck.Count == 0)
+                    {
+                        TriggerDayStageNotification("DefaultCalendarEvent");
+                        return;
+                    }
+
+                    var index = (_curCycle - 1) % _dayDeck.Count;
+                    TriggerDayStageNotification(_dayDeck[index]);
+                    break;
+                }
+
+            case NightStageNumber:
+                {
+                    if (_nightDeck.Count == 0)
+                    {
+                        TriggerDayStageNotification("DefaultCalendarNightEvent");
+                        return;
+                    }
+
+                    var cycleIndex = Math.Max(0, _curCycle - 1);
+                    var index = cycleIndex % _nightDeck.Count;
+                    TriggerDayStageNotification(_nightDeck[index]);
+                    break;
+                }
+        }
     }
 
-    public void TriggerDayNotification(ProtoId<CalendarEventPrototype>? protoId = null)
+    public void TriggerDayStageNotification(ProtoId<CalendarEventPrototype>? protoId = null)
     {
         var id = protoId ?? "DefaultCalendarEvent";
 
@@ -82,32 +168,7 @@ public sealed class CalendarSystem : EntitySystem
             return;
 
         RaiseNetworkEvent(new CalendarBroadcastNotificationEvent(id), Filter.Broadcast());
-    }
-}
-
-
-[AdminCommand(AdminFlags.VarEdit)]
-public sealed class TriggerDayNotificationCommand : IConsoleCommand
-{
-    public string Command => "triggerdaynotification";
-    public string Description => "Triggers the calendar day notification event for testing.";
-    public string Help => "Usage: triggerdaynotification <texturePath>";
-
-    public void Execute(IConsoleShell shell, string argStr, string[] args)
-    {
-        var entSys = IoCManager.Resolve<IEntitySystemManager>();
-        var daySystem = entSys.GetEntitySystem<CalendarSystem>();
-
-        if (args.Length == 0)
-        {
-            daySystem.TriggerDayNotification();
-            shell.WriteLine("Triggered default calendar notification.");
-            return;
-        }
-
-        var path = args[0];
-        daySystem.TriggerDayNotification(path);
-        shell.WriteLine($"Triggered calendar notification with path: {path}");
+        RaiseLocalEvent(new CalendarDayStartedEvent(_curCycle, id, proto));
     }
 }
 
@@ -116,15 +177,28 @@ public sealed class TriggerDayNotificationCommand : IConsoleCommand
 public sealed class TriggerNextDayCycleCommand : IConsoleCommand
 {
     public string Command => "triggernextdaycycle";
-    public string Description => "Advances the calendar to the next day notification.";
-    public string Help => "Usage: triggernextdaycycle";
+    public string Description => Loc.GetString("cmd-trigger-next-day-cycle-desc");
+    public string Help => Loc.GetString("cmd-trigger-next-day-cycle-help", ("command", Command));
 
     public void Execute(IConsoleShell shell, string argStr, string[] args)
     {
+        if (args.Length != 1)
+        {
+            shell.WriteError(Loc.GetString("shell-need-exactly-one-argument"));
+            shell.WriteLine(Help);
+            return;
+        }
+
+        if (!int.TryParse(args[0], out var dayCount))
+        {
+            shell.WriteError(Loc.GetString("shell-argument-must-be-number"));
+            return;
+        }
+
         var entSys = IoCManager.Resolve<IEntitySystemManager>();
         var daySystem = entSys.GetEntitySystem<CalendarSystem>();
 
-        daySystem.TriggerNextDayNotification();
-        shell.WriteLine("Triggered next day notification.");
+        daySystem.TriggerNextDayStageNotification(dayCount);
+        shell.WriteLine(Loc.GetString("cmd-trigger-next-day-cycle-success", ("days", dayCount)));
     }
 }
