@@ -94,7 +94,7 @@ medieval-store-spells-earth-spikes-senior-desc = Release a line of 15 stone spik
 
 # Tree
 
-medieval-spell-speach-seedlings = B̸l̵e̶s̷s̵i̴n̴g̶ ̴o̴f̶ ̷t̴h̴e̴ ̴F̵o̷r̵e̵s̸t̴
+medieval-spell-speach-seedlings = B̸e̵n̶e̷d̵i̴c̴t̶i̴o̶ S̷i̴l̴v̵a̷e̸
 
 medieval-store-spells-earth-seedlings-beginner-name = Summon Tree
 medieval-store-spells-earth-seedlings-beginner-desc = Summon a tree at the selected location.
