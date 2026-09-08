@@ -112,13 +112,9 @@ public sealed partial class AutoRoundExtendSystem : EntitySystem
             _leadEventTriggered = true;
 
             if (_targetDuration < _maxDuration)
-            {
                 StartExtensionVote();
-            }
             else
-            {
                 ArmyAttack();
-            }
         }
     }
 
@@ -182,6 +178,22 @@ public sealed partial class AutoRoundExtendSystem : EntitySystem
         {
             Spawn("MedievalSpawnNecroFighterPreset", Transform(_random.Pick(cursespawners).Owner).Coordinates);
         }
+    }
+
+    public void ForceExtendRound(TimeSpan extension, bool resetLeadEvent = false)
+    {
+        if (!_enabled || _isEnded)
+            return;
+
+        CancelActiveVote();
+
+        _targetDuration += extension;
+
+        if (_targetDuration > _maxDuration)
+            _maxDuration = _targetDuration;
+
+        if (resetLeadEvent)
+            _leadEventTriggered = false;
     }
 }
 
