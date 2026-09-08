@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Server.Chat.Managers;
 using Content.Server.Destructible;
 using Content.Server.Polymorph.Components;
 using Content.Server.Polymorph.Systems;
@@ -7,6 +8,7 @@ using Content.Shared.Damage;
 using Content.Shared.DoAfter;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Humanoid;
+using Content.Shared.IdentityManagement;
 using Content.Shared.Imperial.Medieval.Magic;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
@@ -19,6 +21,7 @@ namespace Content.Server.Nocturn;
 
 public sealed class AncientNocturneSystem : EntitySystem
 {
+    [Dependency] private readonly IChatManager _chat = default!;
     [Dependency] private readonly DamageableSystem _damageable = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
@@ -123,6 +126,24 @@ public sealed class AncientNocturneSystem : EntitySystem
             _bloodSpells.ClearReservation(ent.Owner, action);
             return;
         }
+
+        _popup.PopupEntity(
+            Loc.GetString(
+                "medieval-ancient-nocturne-conversion-start-user",
+                ("target", Identity.Name(args.Target, EntityManager, ent.Owner))),
+            args.Target,
+            ent.Owner,
+            PopupType.Medium);
+
+        var targetMessage = Loc.GetString("medieval-ancient-nocturne-conversion-start-target");
+        _popup.PopupEntity(
+            targetMessage,
+            args.Target,
+            args.Target,
+            PopupType.LargeCaution);
+
+        if (TryComp<ActorComponent>(args.Target, out var actor))
+            _chat.DispatchServerMessage(actor.PlayerSession, targetMessage);
 
         args.Handled = true;
     }
