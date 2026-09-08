@@ -473,6 +473,8 @@
   name: arrow
   description: You can feel the power of the steppe within you.
   components:
+  - type: RDWeight
+    value: 0.05
   - type: Sprite
     layers:
     - state: tail
@@ -503,6 +505,8 @@
   name: arrow
   description: You can feel the power of the steppe within you.
   components:
+  - type: RDWeight
+    value: 0.05
   - type: Sprite
     layers:
     - state: tail
@@ -703,7 +707,7 @@
     damage:
       types:
         Piercing: 28
-        Caustic: 6.5
+        Caustic: 5
   - type: Sprite
     sprite: Imperial/Medieval/Gun/arrow_necro.rsi
     rotation: -135

@@ -467,6 +467,9 @@
     MedievalClothingOuterArmorUpIron2: [MedievalClothingOuterArmorUpIron2Zablik]
     MedievalClothingOuterArmorUpIron3: [MedievalClothingOuterArmorUpIron3Zablik]
     MedievalClothingOuterArmorUpIron: [MedievalClothingOuterArmorUpIronZablik]
+    MedievalClothingOuterArmorEbonit: [MedievalClothingOuterArmorEbonitZablik]
+    MedievalClothingOuterArmorEbonit2: [MedievalClothingOuterArmorEbonit2Zablik]
+    MedievalClothingOuterArmorForstone: [MedievalClothingOuterArmorForstoneZablik]
     ClothingOuterArmorPodWars: [ClothingOuterArmorPodWarsZablik]
     MedievalClothingHeadHelmetCrusader: [MedievalClothingHeadHelmetZablik]
     MedievalClothingHeadHelmetSalad: [MedievalClothingHeadHelmetZablik]
@@ -477,7 +480,13 @@
     MedievalClothingHeadHelmetBacinet: [MedievalClothingHeadHelmetZablik]
     MedievalClothingHeadHelmetHoodHelmet: [MedievalClothingHeadHelmetZablik]
     MedievalClothingHeadHelmetShapel: [MedievalClothingHeadHelmetZablik]
+    MedievalClothingHeadHelmetEbonit: [MedievalClothingHeadHelmetEbonitZablik]
+    MedievalClothingHeadHelmetEbonit2: [MedievalClothingHeadHelmetEbonit2Zablik]
+    MedievalClothingHeadHelmetForstone: [MedievalClothingHeadHelmetForstoneZablik]
     MedievalIronGloves: [MedievalIronGlovesZablik]
+    MedievalEbonitGloves: [MedievalEbonitGlovesZablik]
+    MedievalEbonitGloves2: [MedievalEbonitGlovesZablik]
+    MedievalForstoneGloves: [MedievalEbonitGlovesZablik]
     Log: [MedievalClothingNeckCloakZablik, MedievalClothingUniformJumpsuitShitCloth82, MedievalGussarFlagZablik]
 
 - type: customization
