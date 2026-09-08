@@ -80,7 +80,9 @@ public sealed partial class TwoHandedSkillComponent : Component
 [RegisterComponent, NetworkedComponent]
 public sealed partial class CrossbowSkillComponent : Component
 {
-    [DataField("staminaOnHit")] public float StaminaOnHit = 35f;
+    [DataField("staminaOnHit")] public float StaminaOnHit = 15f;
+    [DataField("bypassType")] public string BypassType = "Piercing";
+    [DataField("bypassAmount")] public FixedPoint2 BypassAmount = 4f;
 }
     
 [RegisterComponent, NetworkedComponent]

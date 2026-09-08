@@ -783,6 +783,7 @@
     whitelist:
       tags:
       - BoltHeavy
+    cartridgeFillDelay: 13
     capacity: 1
     proto: MedievalBoltHeavy
     autoCycle: true
@@ -794,12 +795,13 @@
     unwieldOnUse: false
     useDelayOnWield: true
   - type: UseDelay
-    delay: 19
+    delay: 3
+  #- type: NoShootOnUseDelay
   - type: GunRequiresWield
   - type: Gun
     defaultSpread: 10
     resetOnHandSelected: false
-    fireRate: 0.05
+    fireRate: 1
     selectedMode: FullAuto
     availableModes:
     - FullAuto
@@ -845,7 +847,7 @@
   - type: Item
     size: Normal
   - type: RDWeight
-    value: 0.4
+    value: 0.3
 
 - type: entity
   id: MedievalBoltHeavyBullet
@@ -856,13 +858,13 @@
   - type: Projectile
     damage:
       groups:
-        Brute: 85
+        Brute: 90
   - type: Sprite
     sprite: Imperial/Medieval/Gun/boltheavy.rsi
     rotation: -135
     layers:
     - state: proto
-  #- type: APDamageOnHit
-  #  damage:
-  #    types:
-  #      Piercing: 35
+  - type: APDamageOnHit
+    damage:
+      types:
+        Piercing: 20
