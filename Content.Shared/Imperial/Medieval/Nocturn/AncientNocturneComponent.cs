@@ -48,6 +48,12 @@ public sealed partial class AncientNocturneComponent : Component
     public ProtoId<SpeciesPrototype> ConversionTargetSpecies = "Human";
 
     [DataField]
+    public float ConversionNightVisionRadius = 6f;
+
+    [DataField]
+    public float ConversionNightVisionEnergy = 0.4f;
+
+    [DataField]
     public float ConversionMaxHealthModifier = 0.95f;
 
     [DataField]
