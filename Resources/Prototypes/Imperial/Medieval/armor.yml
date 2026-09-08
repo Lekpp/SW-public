@@ -2494,6 +2494,19 @@
     sprite: Imperial/Medieval/Clothing/Armor/charmerbaron.rsi
 
 - type: entity
+  parent: MedievalClothingOuterArmorCharmerWeak
+  id: MedievalClothingOuterArmorCharmerWeakBaronSaturday
+  name: MedievalClothingOuterArmorCharmerWeakBaronSaturday
+  description: An upgraded armor with iron plates to protect against melee weapons.
+  components:
+  - type: Sprite
+    sprite: Imperial/Medieval/Clothing/Armor/charmerbaron.rsi
+  - type: Clothing
+    equipDelay: 4
+    unequipDelay: 4
+    sprite: Imperial/Medieval/Clothing/Armor/charmerbaron.rsi
+
+- type: entity
   parent: MedievalClothingOuterArmorCharmerLight
   id: MedievalClothingOuterArmorCharmerLightPurpleScar
   name: MedievalClothingOuterArmorCharmerLightPurpleScar
@@ -3098,8 +3111,8 @@
   - type: StaminaResistance
     damageCoefficient: 0.5
   - type: ClothingSpeedModifier
-    walkModifier: 0.93
-    sprintModifier: 0.93
+    walkModifier: 0.98
+    sprintModifier: 0.98
   - type: Item
     size: Normal
   - type: ExplosionResistance
@@ -3288,6 +3301,42 @@
   - type: MedievalIronHitSound
 
 - type: entity
+  parent: MedievalClothingOuterArmorEbonit
+  id: MedievalClothingOuterArmorEbonitZablik
+  name: upgrade iron armor
+  description: An upgraded armor with iron plates to protect against melee weapons.
+  components:
+  - type: Sprite
+    sprite: Imperial/Medieval/Clothing/Armor/zablik_armor.rsi
+  - type: Clothing
+    sprite: Imperial/Medieval/Clothing/Armor/zablik_armor.rsi
+  - type: MedievalIronHitSound
+
+- type: entity
+  parent: MedievalClothingOuterArmorEbonit2
+  id: MedievalClothingOuterArmorEbonit2Zablik
+  name: upgrade iron armor
+  description: An upgraded armor with iron plates to protect against melee weapons.
+  components:
+  - type: Sprite
+    sprite: Imperial/Medieval/Clothing/Armor/zablik_armor.rsi
+  - type: Clothing
+    sprite: Imperial/Medieval/Clothing/Armor/zablik_armor.rsi
+  - type: MedievalIronHitSound
+
+- type: entity
+  parent: MedievalClothingOuterArmorForstone
+  id: MedievalClothingOuterArmorForstoneZablik
+  name: upgrade iron armor
+  description: An upgraded armor with iron plates to protect against melee weapons.
+  components:
+  - type: Sprite
+    sprite: Imperial/Medieval/Clothing/Armor/zablik_armor.rsi
+  - type: Clothing
+    sprite: Imperial/Medieval/Clothing/Armor/zablik_armor.rsi
+  - type: MedievalIronHitSound
+
+- type: entity
   parent: MedievalClothingFeetSteel
   id: MedievalClothingFeetSteelGreenKnight
   components:
@@ -3306,6 +3355,17 @@
     sprite: Imperial/Medieval/Clothing/Gloves/greenknight.rsi
   - type: Clothing
     sprite: Imperial/Medieval/Clothing/Gloves/greenknight.rsi
+
+- type: entity
+  parent: MedievalEbonitGloves
+  id: MedievalEbonitGlovesZablik
+  name: MedievalIronGlovesZablik
+  description: MedievalIronGlovesZablik
+  components:
+  - type: Sprite
+    sprite: Imperial/Medieval/Clothing/Gloves/zablik_gloves.rsi
+  - type: Clothing
+    sprite: Imperial/Medieval/Clothing/Gloves/zablik_gloves.rsi
 
 - type: entity
   parent: MedievalIronGloves
@@ -3536,6 +3596,17 @@
 - type: entity
   parent: MedievalClothingOuterArmorChainMail
   id: MedievalClothingOuterArmorChainMailZablik
+  name: iron armor cuirass
+  description: An armored iron plate to protect against melee weapons.
+  components:
+  - type: Sprite
+    sprite: Imperial/Medieval/Clothing/Armor/zablik_armor.rsi
+  - type: Clothing
+    sprite: Imperial/Medieval/Clothing/Armor/zablik_armor.rsi
+
+- type: entity
+  parent: MedievalClothingOuterArmorChainMailLight
+  id: MedievalClothingOuterArmorChainMailLightZablik
   name: iron armor cuirass
   description: An armored iron plate to protect against melee weapons.
   components:

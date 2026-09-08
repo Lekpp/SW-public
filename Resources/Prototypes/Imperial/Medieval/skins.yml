@@ -260,7 +260,7 @@
     MedievalClothingHeadHelmetCharmerWeak: [MedievalClothingHeadHelmetCharmerWeakFichty]
     MedievalClothingUniformJumpsuitShitCloth23: [MedievalClothingUniformJumpsuitShitCloth72]
     MedievalIronGloves: [MedievalIronGlovesFichty]
-    Log: [MedievalFichtyGlasses, MedievalClothingNeckCloakFitchy]
+    Log: [MedievalFichtyGlasses, MedievalClothingNeckCloakFitchy, MedievalClothingUniformJumpsuitShitCloth72]
     MedievalFalshionT3Legion: [MedievalFalshionT3LegionChainMaceFitchy]
     MedievalFalshionT3LegionGold: [MedievalFalshionT3LegionChainMaceFitchy]
     MedievalFalshionT3: [MedievalFalshionT3Fitchy]
@@ -374,12 +374,21 @@
   map:
     BaseBallBat: [BaseBallBatAlaraniel]
 
-# - type: customization
-#   id: aniot
-#   holder: cd7a98b4-6895-4eeb-b8f1-cb42d87301f3
-#   map:
-#     MedievalClothingOuterArmorCharmerLight: [MedievalClothingOuterArmorCharmerLightBaronSaturday]
-#     MedievalClothingHeadHelmetCollegiumPurpleHat: [MedievalClothingHeadHelmetCollegiumHatBaronSaturday]
+- type: customization
+  id: aniot
+  holder: cd7a98b4-6895-4eeb-b8f1-cb42d87301f3
+  map:
+    MedievalClothingOuterArmorCharmerLight: [MedievalClothingOuterArmorCharmerLightBaronSaturday]
+    MedievalClothingOuterArmorCharmerNeutral: [MedievalClothingOuterArmorCharmerLightBaronSaturday]
+    MedievalClothingOuterArmorCharmerLightLegion: [MedievalClothingOuterArmorCharmerLightBaronSaturday]
+    MedievalClothingOuterArmorCharmerLightIns: [MedievalClothingOuterArmorCharmerLightBaronSaturday]
+    MedievalClothingHeadHelmetCollegiumPurpleHat: [MedievalClothingHeadHelmetCollegiumHatBaronSaturday]
+    MedievalClothingHeadHelmetCharmerLight: [MedievalClothingHeadHelmetCollegiumHatBaronSaturday]
+    MedievalClothingHeadHelmetCharmerNeutral: [MedievalClothingHeadHelmetCollegiumHatBaronSaturday]
+    MedievalClothingHeadHelmetCharmerLegion: [MedievalClothingHeadHelmetCollegiumHatBaronSaturday]
+    MedievalClothingHeadHelmetCharmerIns: [MedievalClothingHeadHelmetCollegiumHatBaronSaturday]
+    MedievalClothingOuterArmorCharmerWeak: [MedievalClothingOuterArmorCharmerWeakBaronSaturday]
+    MedievalClothingHeadHelmetCharmerWeak: [MedievalClothingHeadHelmetCharmerWeakBaronSaturday]
 
 - type: customization
   id: artur
@@ -453,10 +462,14 @@
     MedievalClothingOuterArmorBrigantin: [MedievalClothingOuterArmorBrigantinZablik]
     MedievalClothingOuterArmorIronCuirass: [MedievalClothingOuterArmorIronCuirassZablik]
     MedievalClothingOuterArmorChainMail: [MedievalClothingOuterArmorChainMailZablik]
+    MedievalClothingOuterArmorChainMailLight: [MedievalClothingOuterArmorChainMailLightZablik]
     MedievalClothingOuterArmorIron: [MedievalClothingOuterArmorIronZablik]
     MedievalClothingOuterArmorUpIron2: [MedievalClothingOuterArmorUpIron2Zablik]
     MedievalClothingOuterArmorUpIron3: [MedievalClothingOuterArmorUpIron3Zablik]
     MedievalClothingOuterArmorUpIron: [MedievalClothingOuterArmorUpIronZablik]
+    MedievalClothingOuterArmorEbonit: [MedievalClothingOuterArmorEbonitZablik]
+    MedievalClothingOuterArmorEbonit2: [MedievalClothingOuterArmorEbonit2Zablik]
+    MedievalClothingOuterArmorForstone: [MedievalClothingOuterArmorForstoneZablik]
     ClothingOuterArmorPodWars: [ClothingOuterArmorPodWarsZablik]
     MedievalClothingHeadHelmetCrusader: [MedievalClothingHeadHelmetZablik]
     MedievalClothingHeadHelmetSalad: [MedievalClothingHeadHelmetZablik]
@@ -467,7 +480,13 @@
     MedievalClothingHeadHelmetBacinet: [MedievalClothingHeadHelmetZablik]
     MedievalClothingHeadHelmetHoodHelmet: [MedievalClothingHeadHelmetZablik]
     MedievalClothingHeadHelmetShapel: [MedievalClothingHeadHelmetZablik]
+    MedievalClothingHeadHelmetEbonit: [MedievalClothingHeadHelmetEbonitZablik]
+    MedievalClothingHeadHelmetEbonit2: [MedievalClothingHeadHelmetEbonit2Zablik]
+    MedievalClothingHeadHelmetForstone: [MedievalClothingHeadHelmetForstoneZablik]
     MedievalIronGloves: [MedievalIronGlovesZablik]
+    MedievalEbonitGloves: [MedievalEbonitGlovesZablik]
+    MedievalEbonitGloves2: [MedievalEbonitGlovesZablik]
+    MedievalForstoneGloves: [MedievalEbonitGlovesZablik]
     Log: [MedievalClothingNeckCloakZablik, MedievalClothingUniformJumpsuitShitCloth82, MedievalGussarFlagZablik]
 
 - type: customization
@@ -502,7 +521,7 @@
 
 - type: customization
   id: zakvielian
-  holder: b257bdf8-7a7f-4a40-85e8-3e3c9e304995
+  holder: 7bef4086-1fc4-4c9b-b2ba-1859e8d3d6c5
   map:
     MedievalClothingOuterArmorIronCuirassLight: [MedievalClothingOuterArmorIronCuirassLightCopperKnight]
     MedievalClothingOuterArmorBrigantin: [MedievalClothingOuterArmorBrigantinCopperKnight]
@@ -515,7 +534,7 @@
     MedievalClothingOuterArmorEbonit: [MedievalClothingOuterArmorEbonitCopperKnight]
     MedievalClothingOuterArmorEbonit2: [MedievalClothingOuterArmorEbonit2CopperKnight]
     MedievalClothingOuterArmorForstone: [MedievalClothingOuterArmorForstoneCopperKnight]
-    Log: [MedievalClothingHeadHelmetCopperKnight, MedievalClothingUniformJumpsuitBaron, MedievalClothingNeckCloakBaron]
+    Log: [MedievalClothingHeadHelmetCopperKnight, MedievalClothingUniformJumpsuitBaron, MedievalClothingNeckCloakBaron, MedievalClothingHeadHelmetBaron]
     MedievalClothingHeadHelmetCrusader: [MedievalClothingHeadHelmetCopperKnight]
     MedievalIronGloves: [MedievalIronGlovesCopperKnight]
     MedievalClothingFeetSteel: [MedievalClothingFeetSteelCopperKnight, MedievalClothingFeetSteelBaron]

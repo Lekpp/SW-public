@@ -2653,9 +2653,11 @@
     - FootstepSound
     - MedievalMob
   - type: PointLight
-    color: red
-    energy: 0.6
-    radius: 1.5
+    netsync: false
+    enabled: false
+  - type: LocalLight
+    energy: 0.25
+    radius: 6
   - type: NpcFactionMember
     factions:
     - Syndicate
@@ -2897,10 +2899,10 @@
   - type: MeleeWeapon
     damage:
       groups:
-        Brute: 8.5
+        Brute: 11
       types:
         ParryAble: 1
-        Radiation: 1.5
+        Radiation: 2.5
   - type: MobThresholds
     thresholds:
       0: Alive
@@ -2942,10 +2944,10 @@
   - type: MeleeWeapon
     damage:
       groups:
-        Brute: 8.5
+        Brute: 11
       types:
         ParryAble: 1
-        Radiation: 1.5
+        Radiation: 2.5
   - type: MobThresholds
     thresholds:
       0: Alive
@@ -2991,7 +2993,7 @@
   - type: MeleeWeapon
     damage:
       groups:
-        Brute: 13
+        Brute: 17
       types:
         ParryAble: 1
         Radiation: 3
@@ -3214,10 +3216,10 @@
   - type: MeleeWeapon
     damage:
       types:
-        Blunt: 7
-        Piercing: 5
+        Blunt: 9
+        Piercing: 6.5
         ParryAble: 1
-        Radiation: 2
+        Radiation: 3.5
   - type: MobThresholds
     thresholds:
       0: Alive
@@ -3275,7 +3277,7 @@
     range: 2.1
     damage:
       types:
-        Piercing: 9
+        Piercing: 12
         ParryAble: 1
   - type: MobThresholds
     thresholds:
@@ -3332,8 +3334,8 @@
     attackRate: 0.4
     damage:
       types:
-        Piercing: 9
-        Slash: 9
+        Piercing: 12
+        Slash: 12
         Structural: 2
         ParryAble: 1
     soundHit:
@@ -3394,7 +3396,7 @@
     range: 1
     damage:
       types:
-        Slash: 9.5
+        Slash: 12.5
         ParryAble: 1
     soundHit:
       path: /Audio/Imperial/Medieval/ES_Knife_Stab_2_-_SFX_Producer.ogg
@@ -3466,7 +3468,7 @@
   - type: MeleeWeapon
     animation: WeaponArcBite
     range: 1.4
-    attackRate: 0.55
+    attackRate: 0.50
     hidden: true
     angle: 0
     soundHit:
@@ -3490,7 +3492,7 @@
       95: Dead
   - type: MovementSpeedModifier
     baseWalkSpeed: 2
-    baseSprintSpeed: 3.2
+    baseSprintSpeed: 3
   - type: PointLight
     color: red
     energy: 0.1
@@ -3525,7 +3527,7 @@
       prob: 0.1
   - type: IgnoreSpiderWeb
   - type: StaminaDamageOnHit
-    damage: 17
+    damage: 10
   - type: Stealth
     minVisibility: -0.2
   - type: StealthOnMove
@@ -3628,10 +3630,6 @@
   - type: MovementSpeedModifier
     baseWalkSpeed: 4
     baseSprintSpeed: 7
-  - type: PointLight
-    color: red
-    energy: 0.03
-    radius: 1.5
   - type: NpcFactionMember
     factions:
     - Xeno
@@ -3673,6 +3671,14 @@
       #Growling: Speak
       Hissing: Speak
       #Elf: Speak
+  - type: PointLight
+    netsync: false
+    enabled: false
+  - type: LocalLight
+    energy: 0.25
+    radius: 6
+  - type: MedievalDash
+    force: 150
 
 
 - type: entity
@@ -4326,6 +4332,7 @@
   id: MedievalMobAngler
   description: They're a golem.
   components:
+  - type: ForcedSleepImmune
   - type: MedievalTimedDespawn
     lifetime: 240
   - type: Sprite
@@ -4342,7 +4349,8 @@
           radius: 0.8
         density: 50
         mask:
-        - MobMask
+        - Impassable
+        - HighImpassable
         layer:
         - MobLayer
   - type: Appearance
@@ -4359,7 +4367,7 @@
       groups:
         Brute: 56
       types:
-        ParryAble: 1
+        ParryAble: 1.5
         Caustic: 1
         Bloodloss: 3
   - type: Puller
@@ -4434,6 +4442,11 @@
     excess: 150
   - type: StaminaDamageOnHit
     damage: 28
+  - type: DamageOnContact
+    damage:
+      types:
+        Structural: 250
+
 
 - type: entity
   id: MedievalElementalAir
