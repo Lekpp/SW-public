@@ -98,6 +98,8 @@ trading-ui-bid-receipt-confirm-button = Создать выписку
 trading-bid-receipt-examine-lot = Лот: [color=yellow]{$lot}[/color]
 trading-bid-receipt-examine-share = Доля с продажи: [color=yellow]{$amount}[/color] ревентов
 trading-bid-receipt-examine-failed = Лот [color=yellow]{$lot}[/color] был снят с торгов
+trading-bid-receipt-succeeded-popup = Лот «{$lot}» продан. Выписка готова к погашению
+trading-bid-receipt-failed-popup = Лот «{$lot}» снят с торгов. Выписка утратила силу
 trading-ui-sale-revenue-collected = Ревенты получены
 trading-ui-buy-order-created = Заказ успешно создан
 trading-ui-insufficient-order-funds = Недостаточно средств для заказа

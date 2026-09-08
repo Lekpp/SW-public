@@ -36,6 +36,9 @@ public sealed partial class TradingComponent : Component
     public SoundSpecifier BuySuccessSound = new SoundPathSpecifier("/Audio/Effects/kaching.ogg");
 
     [DataField]
+    public SoundSpecifier BidReceiptFailureSound = new SoundPathSpecifier("/Audio/Effects/Cargo/buzz_two.ogg");
+
+    [DataField]
     public EntProtoId BidReceiptPrototype = "MedievalBidReceipt";
 }
 

@@ -6,9 +6,9 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
-    sprite: Objects/Misc/bureaucracy.rsi
+    sprite: Imperial/Medieval/Interface/Trading/bid_receipt.rsi
     layers:
-    - state: paper
+    - state: gray
       map: [ "bidReceipt" ]
   - type: Item
     size: Tiny
@@ -18,12 +18,12 @@
       enum.BidReceiptVisuals.Status:
         bidReceipt:
           Pending:
-            state: paper
+            state: gray
           Succeeded:
-            state: paper
+            state: green
           Failed:
-            state: paper
+            state: red
           Redeemed:
-            state: paper
+            state: gray
   - type: BidReceipt
   - type: Undrowable

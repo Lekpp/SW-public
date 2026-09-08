@@ -3,8 +3,10 @@ using Content.Shared.Examine;
 using Content.Shared.FixedPoint;
 using Content.Shared.Imperial.Medieval.Trading;
 using Content.Shared.Interaction.Events;
+using Content.Shared.Popups;
 using Content.Shared.Stacks;
 using Content.Shared.Store;
+using Robust.Shared.Player;
 
 namespace Content.Server.Imperial.Medieval.Trading;
 
@@ -152,17 +154,12 @@ public sealed partial class TradingSystem
 
             if (receipt.Amount <= 0 || receipt.Amount > offer.Price - total)
             {
-                receipt.Status = BidReceiptStatus.Failed;
-                SetBidReceiptAppearance(uid, receipt.Status);
+                ChangeBidReceiptStatus(uid, receipt, BidReceiptStatus.Failed);
                 continue;
             }
 
-            receipt.Status = BidReceiptStatus.Succeeded;
-            SetBidReceiptAppearance(uid, receipt.Status);
+            ChangeBidReceiptStatus(uid, receipt, BidReceiptStatus.Succeeded);
             total += receipt.Amount;
-
-            if (offer.Pit is { } pit && TryComp<TradingComponent>(pit, out var trading))
-                _audio.PlayPvs(trading.BuySuccessSound, uid);
         }
 
         return (int) total;
@@ -184,8 +181,7 @@ public sealed partial class TradingSystem
                 continue;
             }
 
-            receipt.Status = BidReceiptStatus.Failed;
-            SetBidReceiptAppearance(uid, receipt.Status);
+            ChangeBidReceiptStatus(uid, receipt, BidReceiptStatus.Failed);
         }
     }
 
@@ -222,6 +218,61 @@ public sealed partial class TradingSystem
     private void SetBidReceiptAppearance(EntityUid uid, BidReceiptStatus status)
     {
         _appearance.SetData(uid, BidReceiptVisuals.Status, status);
+    }
+
+    private void ChangeBidReceiptStatus(
+        EntityUid uid,
+        BidReceiptComponent receipt,
+        BidReceiptStatus status)
+    {
+        if (receipt.Status == status)
+            return;
+
+        receipt.Status = status;
+        SetBidReceiptAppearance(uid, status);
+
+        if (status is not (BidReceiptStatus.Succeeded or BidReceiptStatus.Failed))
+            return;
+
+        if (TryComp<TradingComponent>(receipt.Pit, out var trading))
+        {
+            var sound = status == BidReceiptStatus.Succeeded
+                ? trading.BuySuccessSound
+                : trading.BidReceiptFailureSound;
+            _audio.PlayPvs(sound, uid);
+        }
+
+        if (!TryGetBidReceiptHolder(uid, out var holder))
+            return;
+
+        var popup = status == BidReceiptStatus.Succeeded
+            ? "trading-bid-receipt-succeeded-popup"
+            : "trading-bid-receipt-failed-popup";
+        var popupType = status == BidReceiptStatus.Succeeded
+            ? PopupType.Medium
+            : PopupType.MediumCaution;
+        _popup.PopupEntity(
+            Loc.GetString(popup, ("lot", receipt.LotName)),
+            holder,
+            holder,
+            popupType);
+    }
+
+    private bool TryGetBidReceiptHolder(EntityUid uid, out EntityUid holder)
+    {
+        var current = uid;
+        while (_containers.TryGetContainingContainer(current, out var container))
+        {
+            current = container.Owner;
+            if (!HasComp<ActorComponent>(current))
+                continue;
+
+            holder = current;
+            return true;
+        }
+
+        holder = default;
+        return false;
     }
 
     private void UpdatePitInterfaces(EntityUid pitUid, TradingComponent pit)
