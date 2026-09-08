@@ -800,7 +800,7 @@
     useDelayOnWield: true
   - type: UseDelay
     delay: 3
-  #- type: NoShootOnUseDelay
+  - type: NoShootOnUseDelay
   - type: GunRequiresWield
   - type: Gun
     defaultSpread: 10
