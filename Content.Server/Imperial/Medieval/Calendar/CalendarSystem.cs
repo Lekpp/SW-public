@@ -89,19 +89,16 @@ public sealed class CalendarSystem : EntitySystem
             return;
 
         var counts = new Dictionary<string, int>(pool.Count);
-        // Отслеживаем на каком дне последний раз выпадал каждый ивент
         var lastOccurrence = new Dictionary<string, int>(pool.Count);
 
         for (var day = 1; day <= TargetDaysCount; day++)
         {
-            // Фильтруем: мин. день наступил + лимит не исчерпан + кулдаун прошел
             var candidates = pool.FindAll(p =>
                 p.MinDay <= day &&
                 counts.GetValueOrDefault(p.ID) < p.MaxOccurrences &&
                 (day - lastOccurrence.GetValueOrDefault(p.ID, -999)) >= p.MinOffset
             );
 
-            // Если из-за лимитов и кулдаунов кандидатов нет, ищем только "бесконечные" ивенты
             if (candidates.Count == 0)
             {
                 candidates = pool.FindAll(p =>
@@ -110,14 +107,12 @@ public sealed class CalendarSystem : EntitySystem
                 );
             }
 
-            // Если даже бесконечные ивенты на кулдауне, ставим жесткую заглушку
             if (candidates.Count == 0)
             {
                 deck.Add(fallbackEventId);
                 continue;
             }
 
-            // Бросок рулетки по весам
             var totalWeight = 0f;
             for (var i = 0; i < candidates.Count; i++)
             {
