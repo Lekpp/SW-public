@@ -13,4 +13,10 @@ calendar-board-announcement-desc = Описание
 calendar-board-announcement-author = От кого
 calendar-board-announcement-submit = Разместить
 
+calendar-board-tab-days = Дни
+calendar-board-tab-nights = Ночи
+
+calendar-board-day = День {$day}
+calendar-board-night = Ночь {$day}
+
 calendar-board-day = День {$day}

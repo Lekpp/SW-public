@@ -24,7 +24,6 @@ public sealed partial class CalendarBoardWindow : DefaultWindow
     public Action<string, string, string>? OnCreateAnnouncement;
     public Action<Guid>? OnDeleteAnnouncement;
 
-    // Ссылка на дочернее окно
     private AnnouncementCreateWindow? _createWindow;
 
     public CalendarBoardWindow()
@@ -36,9 +35,12 @@ public sealed partial class CalendarBoardWindow : DefaultWindow
         TabContainer.SetTabTitle(CalendarTab, Loc.GetString("calendar-board-tab-calendar"));
         TabContainer.SetTabTitle(AnnouncementsTab, Loc.GetString("calendar-board-tab-announcements"));
 
+        // Устанавливаем названия для новых вложенных вкладок
+        TabContainer.SetTabTitle(DayDeckTab, Loc.GetString("calendar-board-tab-days"));
+        TabContainer.SetTabTitle(NightDeckTab, Loc.GetString("calendar-board-tab-nights"));
+
         CreateAnnouncementButton.OnPressed += _ =>
         {
-            // Не открываем новое окно, если оно уже существует
             if (_createWindow != null && _createWindow.IsOpen)
             {
                 _createWindow.MoveToFront();
@@ -63,15 +65,31 @@ public sealed partial class CalendarBoardWindow : DefaultWindow
             WantedGrid.AddChild(entry);
         }
 
-        CalendarGrid.RemoveAllChildren();
-        if (state.CalendarDeck != null)
+        // Заполняем сетку дней
+        DayCalendarGrid.RemoveAllChildren();
+        if (state.DayDeck != null) // Убедись, что переменная в State называется DayDeck
         {
-            var daysCount = state.CalendarDeck.Count;
+            var daysCount = state.DayDeck.Count;
             for (var i = 0; i < daysCount; i++)
             {
                 var isCurrent = i == (state.CurrentCycle % daysCount);
-                var entry = new CalendarDayEntry(i + 1, state.CalendarDeck[i], isCurrent);
-                CalendarGrid.AddChild(entry);
+                // Передаем ключ локализации для дня
+                var entry = new CalendarDayEntry(i + 1, state.DayDeck[i], isCurrent, "calendar-board-day");
+                DayCalendarGrid.AddChild(entry);
+            }
+        }
+
+        // Заполняем сетку ночей
+        NightCalendarGrid.RemoveAllChildren();
+        if (state.NightDeck != null) // Убедись, что ты добавил NightDeck в State
+        {
+            var nightsCount = state.NightDeck.Count;
+            for (var i = 0; i < nightsCount; i++)
+            {
+                var isCurrent = i == (state.CurrentCycle % nightsCount);
+                // Передаем ключ локализации для ночи
+                var entry = new CalendarDayEntry(i + 1, state.NightDeck[i], isCurrent, "calendar-board-night");
+                NightCalendarGrid.AddChild(entry);
             }
         }
 
@@ -92,7 +110,6 @@ public sealed partial class CalendarBoardWindow : DefaultWindow
         CreateAnnouncementButton.Disabled = !canCreate;
     }
 
-    // Закрываем дочернее окно при закрытии родительского
     public override void Close()
     {
         base.Close();

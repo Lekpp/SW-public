@@ -11,7 +11,8 @@ namespace Content.Client.Imperial.Medieval.Calendar.Board.Elements;
 
 public sealed class CalendarDayEntry : PanelContainer
 {
-    public CalendarDayEntry(int dayNumber, string eventId, bool isCurrentDay)
+    // Добавлен аргумент locKey с дефолтным значением
+    public CalendarDayEntry(int dayNumber, string eventId, bool isCurrentDay, string locKey = "calendar-board-day")
     {
         var prototypeManager = IoCManager.Resolve<IPrototypeManager>();
 
@@ -26,9 +27,10 @@ public sealed class CalendarDayEntry : PanelContainer
             Margin = new Thickness(5)
         };
 
+        // Используем переданный ключ локализации
         var dayLabel = new Label
         {
-            Text = Loc.GetString("calendar-board-day", ("day", dayNumber)),
+            Text = Loc.GetString(locKey, ("day", dayNumber)),
             HorizontalAlignment = HAlignment.Center,
             FontColorOverride = Color.DarkGray
         };

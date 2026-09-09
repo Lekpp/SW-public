@@ -98,19 +98,26 @@ public sealed class CalendarBoardSystem : EntitySystem
 
     public void UpdateUIState(EntityUid uid)
     {
-        var deck = _calendar.DayDeck;
+        var dayDeck = _calendar.DayDeck;
+        var nightDeck = _calendar.NightDeck; // Предполагается, что свойство NightDeck уже реализовано в CalendarSystem
         var currentCycle = _calendar.CurrentCycle;
 
-        var stringDeck = new List<string>(deck.Count);
-        foreach (var protoId in deck)
+        var stringDayDeck = new List<string>(dayDeck.Count);
+        foreach (var protoId in dayDeck)
         {
-            stringDeck.Add((string) protoId);
+            stringDayDeck.Add((string) protoId);
         }
 
-        // Поверхностная копия словаря для корректного обновления BUI состояния
+        var stringNightDeck = new List<string>(nightDeck.Count);
+        foreach (var protoId in nightDeck)
+        {
+            stringNightDeck.Add((string) protoId);
+        }
+
         var wantedData = new Dictionary<int, WantedData>(_factions.WantedList);
 
-        var state = new CalendarBoardBoundUserInterfaceState(wantedData, stringDeck, currentCycle, Announcements);
+        // Обновленная инициализация состояния - потребуется добавить параметр stringNightDeck в конструктор стейта
+        var state = new CalendarBoardBoundUserInterfaceState(wantedData, stringDayDeck, stringNightDeck, currentCycle, Announcements);
         _ui.SetUiState(uid, CalendarBoardUiKey.Key, state);
 
         _appearance.SetData(uid, WantedDeskVisuals.Appearance, wantedData.Count switch

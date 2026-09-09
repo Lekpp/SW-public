@@ -15,3 +15,11 @@ public sealed class CalendarDayStartedEvent : EntityEventArgs
         Prototype = prototype;
     }
 }
+
+/// <summary>
+/// Вызывается сразу после того, как CalendarSystem сгенерировал базовые колоды дней и ночей на раунд.
+/// Идеальное место для игровых режимов, чтобы перезаписать нужные дни.
+/// </summary>
+public sealed class CalendarDecksGeneratedEvent : EntityEventArgs
+{
+}

@@ -11,9 +11,21 @@
         </BoxContainer>
 
         <BoxContainer Name="CalendarTab" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="5">
-            <ScrollContainer HorizontalExpand="True" VerticalExpand="True">
-                <GridContainer Name="CalendarGrid" Columns="4" HorizontalExpand="True" VerticalExpand="True" />
-            </ScrollContainer>
+            <TabContainer Name="CalendarSubTabs" HorizontalExpand="True" VerticalExpand="True">
+
+                <BoxContainer Name="DayDeckTab" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="5">
+                    <ScrollContainer HorizontalExpand="True" VerticalExpand="True">
+                        <GridContainer Name="DayCalendarGrid" Columns="4" HorizontalExpand="True" VerticalExpand="True" />
+                    </ScrollContainer>
+                </BoxContainer>
+
+                <BoxContainer Name="NightDeckTab" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="5">
+                    <ScrollContainer HorizontalExpand="True" VerticalExpand="True">
+                        <GridContainer Name="NightCalendarGrid" Columns="4" HorizontalExpand="True" VerticalExpand="True" />
+                    </ScrollContainer>
+                </BoxContainer>
+
+            </TabContainer>
         </BoxContainer>
 
         <BoxContainer Name="AnnouncementsTab" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="5">

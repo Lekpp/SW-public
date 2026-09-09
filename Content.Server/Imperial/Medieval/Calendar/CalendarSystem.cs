@@ -48,8 +48,32 @@ public sealed class CalendarSystem : EntitySystem
     {
         GenerateDeck(_dayDeck, DayTag, "DefaultCalendarEvent");
         GenerateDeck(_nightDeck, NightTag, "DefaultCalendarNightEvent");
+
+        // Оповещаем другие системы, что колоды готовы к модификации
+        RaiseLocalEvent(new CalendarDecksGeneratedEvent());
     }
 
+    /// <summary>
+    /// Позволяет внешним системам (например, игровым режимам) перезаписать конкретный день в колоде.
+    /// </summary>
+    /// <param name="dayNumber">Номер дня (начиная с 1)</param>
+    /// <param name="eventId">ID прототипа события</param>
+    /// <param name="isNight">Заменить событие в колоде ночей (true) или дней (false)</param>
+    public void SetOverrideEvent(int dayNumber, ProtoId<CalendarEventPrototype> eventId, bool isNight = false)
+    {
+        var index = dayNumber - 1;
+
+        if (isNight)
+        {
+            if (index >= 0 && index < _nightDeck.Count)
+                _nightDeck[index] = eventId;
+        }
+        else
+        {
+            if (index >= 0 && index < _dayDeck.Count)
+                _dayDeck[index] = eventId;
+        }
+    }
     private void GenerateDeck(List<ProtoId<CalendarEventPrototype>> deck, string filterTag, string fallbackEventId)
     {
         deck.Clear();
