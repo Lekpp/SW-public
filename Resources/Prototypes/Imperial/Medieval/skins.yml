@@ -328,6 +328,7 @@
   holder: 4fedc1a9-e31c-4fcd-b770-dc30f78ead2d
   map:
     MedievalWeaponCrossbow: [MedievalWeaponCrossbowWhois]
+    MedievalWeaponCrossbowHeavy: [MedievalWeaponCrossbowHeavyWhois]
     MedievalWeaponBow: [MedievalWeaponBowWhois]
     BowImprovised: [BowImprovisedWhois]
     MedievalQuiver: [MedievalQuiverWhois]
