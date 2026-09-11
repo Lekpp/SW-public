@@ -827,8 +827,8 @@
     sprintModifier: 0.75
     mirrorClothingModifier: false
   - type: SpeedModifiedOnWield
-    walkModifier: 0.2 
-    sprintModifier: 0.2 
+    walkModifier: 0.2
+    sprintModifier: 0.2
   - type: CursorOffsetRequiresWield
   - type: EyeCursorOffset
     maxOffset: 1
@@ -838,7 +838,7 @@
   - type: Item
     size: Huge
   - type: MedievalWeaponSkillCategory
-    skill: CrossbowHeavy
+    skill: Crossbow
 
 - type: entity
   parent: BaseCartridge
