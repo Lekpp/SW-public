@@ -1,26 +1,20 @@
-calendar-event-default-name = A New Day
-calendar-event-default-desc = The dawn arrives over the realm.
+calendar-event-default-name = Новый день
+calendar-event-default-desc = Солнце вновь улыбается с неба.
 
-calendar-event-default-night-name = Nightfall
-calendar-event-default-night-desc = Darkness envelops the land.
+calendar-event-default-night-name = Закат
+calendar-event-default-night-desc = Тьма окутывает остров.
 
-calendar-event-sunny-name = Clear Dawn
-calendar-event-sunny-desc = Bright sunlight warms the fields and cobblestones.
+calendar-event-sunny-name = Ясный рассвет
+calendar-event-sunny-desc = Яркий солнечный свет согревает местные просторы.
 
-calendar-event-rain-name = Torrential Downpour
-calendar-event-rain-desc = Rain beats relentlessly against the roofs.
+calendar-event-fair-name = Торговая ярмарка
+calendar-event-fair-desc = Дивные торговцы прибывают издалека.
 
-calendar-event-fair-name = Merchant Arrival
-calendar-event-fair-desc = Foreign traders unpack their goods at the market square.
+calendar-event-eclipse-name = Солнечное затмение
+calendar-event-eclipse-desc = Темный силует закрывает само солнце... света не видать.
 
-calendar-event-eclipse-name = Solar Eclipse
-calendar-event-eclipse-desc = The black disc covers the sun; dread hangs heavy in the air.
-
-calendar-event-clear-night-name = Starlit Night
-calendar-event-clear-night-desc = A peaceful silence settles upon the settlement.
-
-calendar-event-fog-night-name = Thick Mist
-calendar-event-fog-night-desc = Cold fog creeps through the alleys, concealing shadows.
+calendar-event-clear-night-name = Звездная ночь
+calendar-event-clear-night-desc = Умиротворяющая тишина чистого ночного неба
 
 calendar-event-blood-moon-name = Blood Moon
 calendar-event-blood-moon-desc = The crimson glow drives the wild beasts into a frenzy.
