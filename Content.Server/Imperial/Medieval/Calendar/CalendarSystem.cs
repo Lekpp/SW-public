@@ -36,6 +36,15 @@ public sealed class CalendarSystem : EntitySystem
 
         SubscribeLocalEvent<DayCycleStageChangedEvent>(OnDayCycleChanged);
         SubscribeLocalEvent<RoundStartedEvent>(OnRoundStart);
+        SubscribeLocalEvent<CalendarDayStartedEvent>(OnNewDay);
+    }
+
+    private void OnNewDay(CalendarDayStartedEvent args)
+    {
+        if (args.EventId == "CalendarEventFairDay")
+        {
+            var i = 1 + 1; // Таким образом ловится ивент
+        }
     }
 
     private void OnRoundStart(RoundStartedEvent args)
@@ -49,7 +58,7 @@ public sealed class CalendarSystem : EntitySystem
         GenerateDeck(_dayDeck, DayTag, "DefaultCalendarEvent");
         GenerateDeck(_nightDeck, NightTag, "DefaultCalendarNightEvent");
 
-        // Оповещаем другие системы, что колоды готовы к модификации
+        // Модифицировать колоду календаря можно после этого ивента
         RaiseLocalEvent(new CalendarDecksGeneratedEvent());
     }
 
@@ -135,7 +144,7 @@ public sealed class CalendarSystem : EntitySystem
 
             deck.Add(selected.ID);
             counts[selected.ID] = counts.GetValueOrDefault(selected.ID) + 1;
-            lastOccurrence[selected.ID] = day; // Запоминаем день выпадения
+            lastOccurrence[selected.ID] = day;
         }
     }
 

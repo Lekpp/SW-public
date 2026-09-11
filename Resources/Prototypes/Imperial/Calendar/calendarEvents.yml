@@ -56,10 +56,10 @@
   text: calendar-event-fair-desc
   sound:
     path: "/Audio/Effects/church_bell1.ogg"
-  weight: 1.5
+  weight: 100.5
   minDay: 3
   maxOccurrences: 2
-  minOffset: 5
+  minOffset: 2
   tags:
     - Day
     - TradeEvent
@@ -112,7 +112,7 @@
   tags:
     - Night
 
-# 7. Кровавая луна
+# 7. Кровавая луна   Она должна задаваться кодом системы ликантропии. Сначала система календаря заполняет календарь, а потом система ликантроии при запуске раунда должна заменить седьмую ночь на эту
 - type: calendarEvent
   id: CalendarEventBloodMoonNight
   texture: "/Textures/Imperial/Medieval/Calendar/indicators/moon.png"
@@ -124,5 +124,4 @@
   minDay: 5
   maxOccurrences: 1
   tags:
-    - Night
     - BloodMoon
