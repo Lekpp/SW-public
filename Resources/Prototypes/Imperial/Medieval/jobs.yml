@@ -2366,10 +2366,10 @@
   description: job-description-legionJailed-medieval
   playTimeTracker: JobMedievalLegionJailed
   requirements:
-  - !type:SpeciesRequirement
-    species:
-    - Skeleton
-    inverted: true
+  #- !type:SpeciesRequirement
+  #  species:
+  #  - Skeleton
+  #  inverted: true
   - !type:OverallPlaytimeRequirement
     time: 6000 #Imperial role timers
   startingGear: MedievalLegionJailedGear
@@ -2405,6 +2405,7 @@
   - !type:SpeciesRequirement
     species:
     - Skeleton
+    - Drou
     inverted: true
   - !type:DepartmentTimeRequirement
     department: Legion
@@ -2476,6 +2477,7 @@
   - !type:SpeciesRequirement
     species:
     - Skeleton
+    - Drou
     inverted: true
   #- !type:OverallPlaytimeRequirement
   #  time: 6000 #Imperial role timers
@@ -2589,6 +2591,7 @@
   - !type:SpeciesRequirement
     species:
     - Skeleton
+    - Drou
     inverted: true
   - !type:DepartmentTimeRequirement
     department: Legion
@@ -2649,6 +2652,7 @@
   - !type:SpeciesRequirement
     species:
     - Skeleton
+    - Drou
     inverted: true
   - !type:DepartmentTimeRequirement
     department: Legion
@@ -2725,6 +2729,7 @@
   - !type:SpeciesRequirement
     species:
     - Skeleton
+    - Drou
     inverted: true
   - !type:DepartmentTimeRequirement
     department: Legion
@@ -2799,6 +2804,7 @@
   - !type:SpeciesRequirement
     species:
     - Skeleton
+    - Drou
     inverted: true
   - !type:DepartmentTimeRequirement
     department: Legion
@@ -2877,6 +2883,7 @@
   - !type:SpeciesRequirement
     species:
     - Skeleton
+    - Drou
     inverted: true
   - !type:DepartmentTimeRequirement
     department: Legion
@@ -2999,6 +3006,7 @@
   - !type:SpeciesRequirement
     species:
     - Skeleton
+    - Drou
     inverted: true
   - !type:DepartmentTimeRequirement
     department: Traders
@@ -3074,6 +3082,7 @@
   - !type:SpeciesRequirement
     species:
     - Skeleton
+    - Drou
     inverted: true
   startingGear: MedievalLegionTreasurerAssistantGear
   icon: "JobIconMedievalLegionTreasurerAssistant"
@@ -3144,6 +3153,7 @@
     species:
     - Skeleton
     - Orc
+    - Drou
     inverted: true
   - !type:DepartmentTimeRequirement
     department: Legion
