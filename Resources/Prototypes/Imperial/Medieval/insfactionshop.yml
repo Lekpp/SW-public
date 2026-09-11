@@ -197,7 +197,7 @@
   - MedievalInsWeapon
 
 - type: listing
-  id: MdvLegionMedievalWeaponCrossbowHeavy
+  id: MdvInsMedievalWeaponCrossbowHeavy
   productEntity: MedievalWeaponCrossbowHeavy
   cost:
     MedalLegion: 13
