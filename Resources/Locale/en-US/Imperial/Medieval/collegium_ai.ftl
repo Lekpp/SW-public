@@ -42,10 +42,16 @@ collegium-ai-at-barrier = You drift down beside the barrier.
 collegium-ai-not-a-mage = That one is no mage of the Collegium.
 collegium-ai-no-spells = That mage knows no spells to take.
 collegium-ai-target-gone = You cannot reach them.
-collegium-ai-stripped-self = You strip { $count } spell(s) from { $target }.
+collegium-ai-stripped-self = You strip { $count } { $count ->
+    [one] spell
+   *[other] spells
+} from { $target }.
 collegium-ai-stripped-target = The Collegium takes your magic from you!
 collegium-ai-nothing-to-restore = The Collegium has taken nothing from that mage.
-collegium-ai-restored-self = You return { $count } spell(s) to { $target }.
+collegium-ai-restored-self = You return { $count } { $count ->
+    [one] spell
+   *[other] spells
+} to { $target }.
 collegium-ai-restored-target = The Collegium returns your magic to you.
 
 # Whisper
