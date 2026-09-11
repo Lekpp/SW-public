@@ -7,6 +7,7 @@ using Content.Server.GameTicking.Rules;
 using Content.Server.Humanoid;
 using Content.Server.Imperial.Medieval.IdentityManagement;
 using Content.Server.Imperial.Medieval.TTS;
+using Content.Server.Mind;
 using Content.Server.Nocturn;
 using Content.Server.Preferences.Managers;
 using Content.Server.Roles;
@@ -14,8 +15,10 @@ using Content.Shared.GameTicking.Components;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Markings;
 using Content.Shared.Mind;
+using Content.Shared.Mobs.Systems;
 using Content.Shared.Nocturn.Components;
 using Content.Shared.Preferences;
+using Robust.Shared.Map;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Player;
@@ -31,6 +34,8 @@ public sealed class AncientNocturneSpawnRuleSystem : GameRuleSystem<AncientNoctu
     [Dependency] private readonly MarkingManager _markingManager = default!;
     [Dependency] private readonly MetaDataSystem _metaData = default!;
     [Dependency] private readonly MedievalTtsSystem _tts = default!;
+    [Dependency] private readonly MindSystem _mind = default!;
+    [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly IServerPreferencesManager _preferences = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
@@ -100,6 +105,12 @@ public sealed class AncientNocturneSpawnRuleSystem : GameRuleSystem<AncientNoctu
         var profile = GetProfile(args.Player.UserId, out var randomProfile);
         var appearance = HumanoidCharacterAppearance.EnsureValid(profile.Appearance, humanoid.Species, profile.Sex);
         _metaData.SetEntityName(uid, profile.Name);
+        if (_mind.TryGetMind(args.Player, out var mindUid, out var mind))
+        {
+            mind.CharacterName = profile.Name;
+            Dirty(mindUid, mind);
+        }
+
         _humanoidAppearance.SetSex(uid, profile.Sex, false, humanoid);
         _humanoidAppearance.SetGender((uid, humanoid), profile.Gender);
         humanoid.MarkingSet.RemoveCategory(MarkingCategories.Hair);
@@ -157,13 +168,23 @@ public sealed class AncientNocturneSpawnRuleSystem : GameRuleSystem<AncientNoctu
             var name = mind.Comp.CharacterName;
             if (string.IsNullOrWhiteSpace(name))
             {
-                name = owner is { } ownerUid
-                    ? Name(ownerUid)
+                name = owner is { } ownerUid && TryName(ownerUid, out var ownerName)
+                    ? ownerName
                     : Loc.GetString("medieval-ancient-nocturne-round-end-unknown-name");
             }
 
-            if (owner is not { } bloodRubyOwner ||
-                !TryComp<BloodRubyOwnerComponent>(bloodRubyOwner, out var ownerComponent) ||
+            if (owner is not { } nocturneUid ||
+                TerminatingOrDeleted(nocturneUid) ||
+                Transform(nocturneUid).MapID == MapId.Nullspace ||
+                _mobState.IsDead(nocturneUid))
+            {
+                args.AddLine(Loc.GetString(
+                    "medieval-ancient-nocturne-round-end-did-not-survive",
+                    ("name", name)));
+                continue;
+            }
+
+            if (!TryComp<BloodRubyOwnerComponent>(nocturneUid, out var ownerComponent) ||
                 ownerComponent.BloodRuby is not { } ruby ||
                 TerminatingOrDeleted(ruby) ||
                 !TryComp<BloodRubyComponent>(ruby, out var rubyComponent))
