@@ -46,6 +46,9 @@ public sealed partial class AncientNocturneComponent : Component
     public TimeSpan ConversionDuration = TimeSpan.FromSeconds(13);
 
     [DataField]
+    public TimeSpan ConversionBlockedCooldown = TimeSpan.FromSeconds(5);
+
+    [DataField]
     public SoundSpecifier ConversionStartSound = new SoundPathSpecifier("/Audio/Magic/Eldritch/voidblink.ogg");
 
     [DataField]

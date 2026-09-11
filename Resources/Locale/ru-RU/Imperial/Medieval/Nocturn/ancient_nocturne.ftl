@@ -36,6 +36,7 @@ medieval-nocturn-not-enough-blood = Недостаточно крови.
 ent-MedievalAncientNocturneConversionAction = Обращение в ноктюрна
     .desc = Обратите человека в ноктюрна.
 medieval-ancient-nocturne-conversion-invalid-target = Обратить можно только человека.
+medieval-ancient-nocturne-conversion-blocked = Библия, чеснок или крест поблизости мешают обращению!
 medieval-ancient-nocturne-conversion-start-user = Вы начали обращение {$target} в ноктюрна.
 medieval-ancient-nocturne-conversion-start-target = Вас пытаются обратить в ноктюрна!
 medieval-ancient-nocturne-conversion-success-user = Человек обращён в ноктюрна.

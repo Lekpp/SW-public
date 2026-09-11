@@ -33,6 +33,7 @@ public sealed class AncientNocturneSystem : EntitySystem
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly NocturnBloodSpellSystem _bloodSpells = default!;
     [Dependency] private readonly NocturneConversionSystem _conversion = default!;
+    [Dependency] private readonly RaceSystem _race = default!;
 
     public override void Initialize()
     {
@@ -41,6 +42,7 @@ public sealed class AncientNocturneSystem : EntitySystem
         SubscribeLocalEvent<AncientNocturneComponent, AncientNocturneBatActionEvent>(OnBatAction);
         SubscribeLocalEvent<AncientNocturneComponent, AncientNocturneConversionActionEvent>(OnConversionAction);
         SubscribeLocalEvent<AncientNocturneComponent, AncientNocturneConversionDoAfterEvent>(OnConversionDoAfter);
+        SubscribeLocalEvent<AncientNocturneComponent, DoAfterAttemptEvent<AncientNocturneConversionDoAfterEvent>>(OnConversionAttempt);
         SubscribeLocalEvent<PolymorphedEntityComponent, PolymorphedEvent>(OnPolymorphed);
     }
 
@@ -94,6 +96,9 @@ public sealed class AncientNocturneSystem : EntitySystem
             return;
         }
 
+        if (TryBlockConversion(ent, args.Action.Owner))
+            return;
+
         if (!_hands.TryGetEmptyHand(ent.Owner, out _))
         {
             _popup.PopupEntity(Loc.GetString("medieval-magic-free-hand-required"), ent.Owner, ent.Owner);
@@ -120,7 +125,8 @@ public sealed class AncientNocturneSystem : EntitySystem
             NeedHand = false,
             DuplicateCondition = DuplicateConditions.SameEvent,
             CancelDuplicate = true,
-            BlockDuplicate = false
+            BlockDuplicate = false,
+            AttemptFrequency = AttemptFrequency.StartAndEnd
         };
 
         if (!_doAfter.TryStartDoAfter(doAfterArgs))
@@ -150,6 +156,37 @@ public sealed class AncientNocturneSystem : EntitySystem
             _chat.DispatchServerMessage(actor.PlayerSession, targetMessage);
 
         args.Handled = true;
+    }
+
+    private void OnConversionAttempt(
+        Entity<AncientNocturneComponent> ent,
+        ref DoAfterAttemptEvent<AncientNocturneConversionDoAfterEvent> args)
+    {
+        if (args.Cancelled)
+            return;
+
+        if (!EntityManager.TryGetEntity(args.Event.Action, out var action) || action is not { } actionUid)
+        {
+            args.Cancel();
+            return;
+        }
+
+        if (TryBlockConversion(ent, actionUid))
+            args.Cancel();
+    }
+
+    private bool TryBlockConversion(Entity<AncientNocturneComponent> ent, EntityUid action)
+    {
+        if (_race.CanBite(ent.Owner))
+            return false;
+
+        _popup.PopupEntity(
+            Loc.GetString("medieval-ancient-nocturne-conversion-blocked"),
+            ent.Owner,
+            ent.Owner,
+            PopupType.LargeCaution);
+        _actions.SetCooldown(action, ent.Comp.ConversionBlockedCooldown);
+        return true;
     }
 
     private void OnConversionDoAfter(
