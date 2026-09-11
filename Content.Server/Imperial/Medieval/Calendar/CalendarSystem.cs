@@ -14,8 +14,8 @@ public sealed class CalendarSystem : EntitySystem
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
 
-    public const int DayStageNumber = 5;
-    public const int NightStageNumber = 10;
+    public const int DayStageNumber = 1;
+    public const int NightStageNumber = 6;
 
     public const string DayTag = "Day";
     public const string NightTag = "Night";
