@@ -627,7 +627,7 @@
   - type: IncreaseDamageOnWield
     damage:
       types:
-        Blunt: 61 # this number seems big but it's the exact % difference when comparing attackrate with a halberd
+        Blunt: 17
         Structural: 50
   - type: Item
     size: Huge
@@ -3747,7 +3747,7 @@
   - type: IncreaseDamageOnWield
     damage:
       types:
-        Blunt: 79 # holy shit. this number seems big but it's the exact % difference when comparing attackrate with a halberd... i hope.
+        Blunt: 20
         Structural: 114
   - type: Item
     size: Huge
