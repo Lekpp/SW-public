@@ -272,29 +272,37 @@ public sealed partial class TradingSystem
         Entity<TradingMarketComponent> market,
         TradingMarketConfigPrototype config)
     {
+        var offersByCommodity = market.Comp.Offers.Values.ToLookup(offer => offer.CommodityId);
         foreach (var commodity in market.Comp.Commodities.Values.ToList())
         {
-            MatchCommodity(market, commodity, config);
+            MatchCommodity(market, commodity, config, offersByCommodity[commodity.Id]);
         }
     }
 
     internal void MatchCommodity(
         Entity<TradingMarketComponent> market,
         TradingCommodity commodity,
-        TradingMarketConfigPrototype config)
+        TradingMarketConfigPrototype config,
+        IEnumerable<TradingMarketOffer>? offers = null)
     {
+        var commodityOffers = offers ?? market.Comp.Offers.Values
+            .Where(offer => offer.CommodityId == commodity.Id)
+            .ToList();
+        var asks = commodityOffers
+            .Where(offer => offer.Side == TradingOfferSide.Sell)
+            .OrderBy(offer => offer.Price)
+            .ThenBy(offer => offer.Sequence)
+            .ToList();
+        var bids = commodityOffers
+            .Where(offer => offer.Side == TradingOfferSide.Buy)
+            .OrderByDescending(offer => offer.Price)
+            .ThenBy(offer => offer.Sequence)
+            .ToList();
+
         while (true)
         {
-            var asks = market.Comp.Offers.Values
-                .Where(offer => offer.CommodityId == commodity.Id && offer.Side == TradingOfferSide.Sell)
-                .OrderBy(offer => offer.Price)
-                .ThenBy(offer => offer.Sequence)
-                .ToList();
-            var bids = market.Comp.Offers.Values
-                .Where(offer => offer.CommodityId == commodity.Id && offer.Side == TradingOfferSide.Buy)
-                .OrderByDescending(offer => offer.Price)
-                .ThenBy(offer => offer.Sequence)
-                .ToList();
+            asks.RemoveAll(offer => !market.Comp.Offers.ContainsKey(offer.Id));
+            bids.RemoveAll(offer => !market.Comp.Offers.ContainsKey(offer.Id));
 
             TradingMarketOffer? ask = null;
             TradingMarketOffer? bid = null;
