@@ -38,7 +38,7 @@ public sealed class CalendarNotificationView : LayoutContainer
     {
         _animation = new Animation
         {
-            Length = TimeSpan.FromSeconds(14.5f),
+            Length = TimeSpan.FromSeconds(24.5f),
             AnimationTracks =
             {
                 new AnimationTrackControlProperty
@@ -49,7 +49,7 @@ public sealed class CalendarNotificationView : LayoutContainer
                     {
                         new AnimationTrackProperty.KeyFrame(_invisibleColor, 0f),
                         new AnimationTrackProperty.KeyFrame(_visibleColor, 3.0f),
-                        new AnimationTrackProperty.KeyFrame(_visibleColor, 1.5f),
+                        new AnimationTrackProperty.KeyFrame(_visibleColor, 17.5f),
                         new AnimationTrackProperty.KeyFrame(_invisibleColor, 3.5f),
                     },
                 },
