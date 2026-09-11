@@ -2,6 +2,7 @@ using Content.Shared.Actions;
 using Content.Shared.DoAfter;
 using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.Polymorph;
+using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 
@@ -43,6 +44,9 @@ public sealed partial class AncientNocturneComponent : Component
 
     [DataField]
     public TimeSpan ConversionDuration = TimeSpan.FromSeconds(13);
+
+    [DataField]
+    public SoundSpecifier ConversionStartSound = new SoundPathSpecifier("/Audio/Magic/Eldritch/voidblink.ogg");
 
     [DataField]
     public ProtoId<SpeciesPrototype> ConversionTargetSpecies = "Human";

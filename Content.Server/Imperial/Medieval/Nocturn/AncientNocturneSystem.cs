@@ -15,6 +15,7 @@ using Content.Shared.Mobs.Systems;
 using Content.Shared.Nocturn.Components;
 using Content.Shared.Polymorph;
 using Content.Shared.Popups;
+using Robust.Shared.Audio.Systems;
 using Robust.Shared.Player;
 
 namespace Content.Server.Nocturn;
@@ -22,6 +23,7 @@ namespace Content.Server.Nocturn;
 public sealed class AncientNocturneSystem : EntitySystem
 {
     [Dependency] private readonly IChatManager _chat = default!;
+    [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly DamageableSystem _damageable = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
@@ -126,6 +128,8 @@ public sealed class AncientNocturneSystem : EntitySystem
             _bloodSpells.ClearReservation(ent.Owner, action);
             return;
         }
+
+        _audio.PlayPvs(ent.Comp.ConversionStartSound, ent.Owner);
 
         _popup.PopupEntity(
             Loc.GetString(
