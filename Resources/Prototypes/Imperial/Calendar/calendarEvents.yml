@@ -42,7 +42,7 @@
   text: calendar-event-rain-desc
   sound:
     path: "/Audio/Effects/church_bell1.ogg"
-  weight: 8.0
+  weight: 0.0
   minDay: 1
   minOffset: 2
   tags:
@@ -58,7 +58,7 @@
     path: "/Audio/Effects/church_bell1.ogg"
   weight: 100.5
   minDay: 3
-  maxOccurrences: 2
+  maxOccurrences: 1
   minOffset: 2
   tags:
     - Day
@@ -72,7 +72,7 @@
   text: calendar-event-eclipse-desc
   sound:
     path: "/Audio/Effects/church_bell1.ogg"
-  weight: 0.5
+  weight: 0.1
   minDay: 7
   maxOccurrences: 1
   tags:
@@ -105,7 +105,7 @@
   text: calendar-event-fog-night-desc
   sound:
     path: "/Audio/Effects/church_bell1.ogg"
-  weight: 8.0
+  weight: 0.0
   minDay: 2
   maxOccurrences: 4
   minOffset: 4
