@@ -25,17 +25,12 @@ public sealed partial class MyrmexAltarSystem : EntitySystem
 
     private void OnPowerChanged(Entity<MyrmexAltarComponent> ent, ref PowerChangedEvent args)
     {
-        var wasPowered = ent.Comp.Powered;
+        // imperial medieval - drive contribution straight from the real power state instead of
+        // tracking wasPowered transitions. ApplyBuffs is already idempotent via the Contributing
+        // flag, so a repeated/out-of-order power event (e.g. rebuilding an altar in place) can't
+        // leave a powered altar uncounted anymore.
         ent.Comp.Powered = args.Powered;
-
-        if (args.Powered && !wasPowered)
-        {
-            ApplyBuffs(ent, true);
-        }
-        else if (!args.Powered && wasPowered)
-        {
-            ApplyBuffs(ent, false);
-        }
+        ApplyBuffs(ent, args.Powered);
     }
 
     private void OnShutdown(Entity<MyrmexAltarComponent> ent, ref ComponentShutdown args)

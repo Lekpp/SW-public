@@ -25,17 +25,11 @@ public sealed partial class MyrmexLifeSourceSystem : EntitySystem
 
     private void OnPowerChanged(Entity<MyrmexLifeSourceComponent> ent, ref PowerChangedEvent args)
     {
-        var wasPowered = ent.Comp.Powered;
+        // imperial medieval - drive contribution straight from the real power state (ApplyBuffs is
+        // idempotent via the Contributing flag), so rebuilding a life source in place can't leave
+        // a powered one uncounted. Same fix as the altar system.
         ent.Comp.Powered = args.Powered;
-
-        if (args.Powered && !wasPowered)
-        {
-            ApplyBuffs(ent, true);
-        }
-        else if (!args.Powered && wasPowered)
-        {
-            ApplyBuffs(ent, false);
-        }
+        ApplyBuffs(ent, args.Powered);
     }
 
     private void OnShutdown(Entity<MyrmexLifeSourceComponent> ent, ref ComponentShutdown args)
