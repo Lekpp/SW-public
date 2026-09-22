@@ -15,6 +15,15 @@ namespace Content.Shared.Imperial.Medieval.Myrmex
         [DataField, AutoNetworkedField]
         public float SecondsToHungry = 1000;
 
+        // imperial medieval - tracks whether the myrmex was hungry last check, so speed is only
+        // recalculated when the state actually flips (avoids per-tick refresh that desyncs movement)
+        [DataField]
+        public bool WasHungry;
+
+        // imperial medieval - server time of the next hunger check (throttled, not every tick)
+        [DataField]
+        public TimeSpan NextHungerCheck;
+
         [DataField, AutoNetworkedField]
         public float HungrySpeedModifier = 0.5f;
 
