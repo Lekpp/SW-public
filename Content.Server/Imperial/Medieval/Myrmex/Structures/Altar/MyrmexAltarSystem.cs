@@ -25,10 +25,7 @@ public sealed partial class MyrmexAltarSystem : EntitySystem
 
     private void OnPowerChanged(Entity<MyrmexAltarComponent> ent, ref PowerChangedEvent args)
     {
-        // imperial medieval - drive contribution straight from the real power state instead of
-        // tracking wasPowered transitions. ApplyBuffs is already idempotent via the Contributing
-        // flag, so a repeated/out-of-order power event (e.g. rebuilding an altar in place) can't
-        // leave a powered altar uncounted anymore.
+        // imperial medieval - ApplyBuffs is idempotent, so just follow the actual power state
         ent.Comp.Powered = args.Powered;
         ApplyBuffs(ent, args.Powered);
     }
@@ -70,7 +67,5 @@ public sealed partial class MyrmexAltarSystem : EntitySystem
             hive.Value.Comp.ActiveAltars--;
             _hive.ModifyAltarBuffBonus(hive.Value, -ent.Comp.BuffsIncrease);
         }
-
-        _hive.RecalculateHealthMultiplier(hive.Value);
     }
 }

@@ -12,8 +12,8 @@ using Content.Shared.Damage;
 using Content.Shared.Examine;
 using Content.Shared.Imperial.Zlevels;
 using Content.Shared.Imperial.Medieval.Myrmex; // imperial medieval - MyrmexHungerComponent
-using Content.Server.Imperial.Medieval.Language; // imperial medieval - default spoken language
-using Content.Shared.Imperial.Medieval.Language; // imperial medieval - LanguageSpeakerComponent
+using Content.Server.Imperial.Medieval.Language;
+using Content.Shared.Imperial.Medieval.Language;
 using Content.Shared.Inventory;
 using Content.Shared.Jittering;
 using Content.Shared.Maps;
@@ -87,9 +87,7 @@ namespace Content.Server.Myrmex
             }
         }
 
-        // imperial medieval - myrmex default to Hissing (audible) instead of the telepathic Myrmex
-        // language. Runs on MapInit, after the humanoid's SelectDefaultLanguage has already picked
-        // Myrmex by priority, so this overrides it. Both languages stay available to switch to.
+        // imperial medieval - spawn speaking Hissing; language priority would pick telepathic Myrmex
         private void OnMyrmexMapInit(Entity<MyrmexComponent> myrmex, ref MapInitEvent args)
         {
             if (!TryComp<LanguageSpeakerComponent>(myrmex, out var speaker))

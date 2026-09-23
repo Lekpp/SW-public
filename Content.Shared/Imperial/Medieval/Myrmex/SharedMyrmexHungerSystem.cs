@@ -113,8 +113,7 @@ namespace Content.Shared.Imperial.Medieval.Myrmex
 
             var buff = MyrmexBuff.MultiplyBuffs(comp.Buffs);
             args.Value *= buff.Stamina;
-            // imperial medieval - caste-specific incoming stamina damage resist (1 = no effect).
-            // Was previously declared but never applied.
+            // imperial medieval - per-caste stamina resist, 1 = none
             args.Value *= comp.CasteStaminaDamageResist;
         }
 
@@ -221,9 +220,7 @@ namespace Content.Shared.Imperial.Medieval.Myrmex
             var query = EntityQueryEnumerator<MyrmexHungerComponent>();
             while (query.MoveNext(out var uid, out var hunger))
             {
-                // imperial medieval - only check hunger once a second, and only refresh movement
-                // speed when the hungry state actually flips. Refreshing every tick desynced client
-                // movement prediction on live servers (teleporting back), especially with bursts.
+                // imperial medieval - refresh speed only when hunger flips; per-tick refreshes desync movement prediction
                 if (now < hunger.NextHungerCheck)
                     continue;
 
