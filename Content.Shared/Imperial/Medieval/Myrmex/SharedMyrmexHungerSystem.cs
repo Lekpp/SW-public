@@ -185,14 +185,14 @@ namespace Content.Shared.Imperial.Medieval.Myrmex
                 _alertsSystem.ClearAlert(uid, "MyrmexHungry");
             }
 
-            // imperial medieval - hive members drag each other at the normal pull speed
+            // imperial medieval - hive members drag each other easily
             if (TryComp<PullerComponent>(uid, out var puller)
                 && puller.Pulling is { } pulled
                 && HasComp<MyrmexHungerComponent>(pulled)
                 && TryComp<HeldSpeedModifierComponent>(pulled, out var heavy))
             {
-                args.ModifySpeed(puller.WalkSpeedModifier / heavy.WalkModifier,
-                    puller.SprintSpeedModifier / heavy.SprintModifier);
+                args.ModifySpeed(comp.HiveDragSpeedModifier / heavy.WalkModifier,
+                    comp.HiveDragSpeedModifier / heavy.SprintModifier);
             }
         }
         // imperial medieval - applies mushroom stew's temporary speed burst while the marker

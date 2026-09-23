@@ -523,10 +523,10 @@
     bloodReagent: CopperBlood
     bloodMaxVolume: 200
     # imperial medieval - myrmex tolerate blood loss better than humanoids
-    bloodlossThreshold: 0.6
-    bloodRefreshAmount: 3.5
-    bleedReductionAmount: 1.0
-    maxBleedAmount: 6.0
+    bloodlossThreshold: 0.65
+    bloodRefreshAmount: 2.0
+    bleedReductionAmount: 0.6
+    maxBleedAmount: 8.0
   - type: Puller
   - type: Appearance
   - type: Speech
