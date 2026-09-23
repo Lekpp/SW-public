@@ -17,7 +17,7 @@
     proto: MedievalMyrmexBulletAcid
     capacity: 500
   - type: Gun
-    fireRate: 1
+    fireRate: 1.5
     selectedMode: FullAuto
     soundGunshot: /Audio/Imperial/Medieval/ant_acidshot.ogg
   - type: HTN
