@@ -6,7 +6,9 @@ using Content.Shared.Examine;
 using Content.Shared.Imperial.Dash;
 using Content.Shared.Imperial.Medieval.Sprint;
 using Content.Shared.Interaction.Events;
+using Content.Shared.Item;
 using Content.Shared.Mobs.Components;
+using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Projectiles;
 using Content.Shared.Weapons.Melee.Events;
@@ -181,6 +183,16 @@ namespace Content.Shared.Imperial.Medieval.Myrmex
             else
             {
                 _alertsSystem.ClearAlert(uid, "MyrmexHungry");
+            }
+
+            // imperial medieval - hive members drag each other at the normal pull speed
+            if (TryComp<PullerComponent>(uid, out var puller)
+                && puller.Pulling is { } pulled
+                && HasComp<MyrmexHungerComponent>(pulled)
+                && TryComp<HeldSpeedModifierComponent>(pulled, out var heavy))
+            {
+                args.ModifySpeed(puller.WalkSpeedModifier / heavy.WalkModifier,
+                    puller.SprintSpeedModifier / heavy.SprintModifier);
             }
         }
         // imperial medieval - applies mushroom stew's temporary speed burst while the marker
