@@ -12,6 +12,7 @@ using Content.Server.RoundEnd;
 using Content.Shared.CCVar;
 using Content.Shared.Chat;
 using Content.Shared.Database;
+using Content.Shared.Imperial.ICCVar; // imperial medieval
 using Content.Shared.Players;
 using Content.Shared.Players.PlayTimeTracking;
 using Content.Shared.Voting;
@@ -607,7 +608,7 @@ namespace Content.Server.Voting.Managers
 
             // imperial medieval - same mode can't win two rounds in a row, unless it's the only option left
             var last = _entityManager.System<GameTicker>().LastRoundPreset?.ID;
-            if (last != null && presets.Count > 1)
+            if (_cfg.GetCVar(ICCVars.VotePresetBlockRepeat) && last != null && presets.Count > 1)
                 presets.Remove(last);
 
             return presets;

@@ -9,6 +9,12 @@ public sealed partial class ICCVars : CVars
 {
     public static readonly CVarDef<bool>
         VoteAutoStartInLobby = CVarDef.Create("vote.autostartinlobby", true, CVar.SERVERONLY);
+
+    /// <summary>
+    ///     Keeps the previous round's game mode out of the next preset vote.
+    /// </summary>
+    public static readonly CVarDef<bool>
+        VotePresetBlockRepeat = CVarDef.Create("vote.preset_block_repeat", true, CVar.SERVERONLY);
     public static readonly CVarDef<int>
         GameEndRoundDuration = CVarDef.Create("game.endroundduration", 40, CVar.SERVERONLY);
     #region Sponsors
