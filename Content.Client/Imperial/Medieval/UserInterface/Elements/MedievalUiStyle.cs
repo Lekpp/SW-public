@@ -7,36 +7,40 @@ using Robust.Client.UserInterface.Controls;
 namespace Content.Client.Imperial.Medieval.UserInterface.Elements;
 
 /// <summary>
-///     imperial medieval - shared look for the reworked medieval windows (campfire and the ones after it):
-///     lettering and colours in one place, so every window of the series looks the same.
+///     imperial medieval - palette and lettering shared by the reworked medieval windows.
+///     Colours are fields rather than constants so XAML can reach them through <c>x:Static</c>.
 /// </summary>
 public static class MedievalUiStyle
 {
-    /// <summary>Medieval lettering for headings and buttons. Small print stays in the regular UI font to stay readable.</summary>
-    public const string FontPath = "/Fonts/Imperial/Vinque/Vinque.otf";
+    public static readonly Color Background = Color.FromHex("#2a1f18");
+    public static readonly Color BackgroundHover = Color.FromHex("#3d2e24");
+    public static readonly Color BackgroundPressed = Color.FromHex("#5a3b1c");
+    public static readonly Color BackgroundDisabled = Color.FromHex("#1a1410");
 
-    public const int TitleFontSize = 18;
-    public const int TextFontSize = 14;
+    /// <summary>Recessed areas inside a window, e.g. the campfire pot.</summary>
+    public static readonly Color Inset = Color.FromHex("#150f0c");
+
+    public static readonly Color Border = Color.FromHex("#5c4a3d");
+    public static readonly Color BorderDisabled = Color.FromHex("#3d3530");
 
     public static readonly Color Gold = Color.FromHex("#d4af37");
-    public static readonly Color TextMuted = Color.FromHex("#a89f91");
+    public static readonly Color GoldBright = Color.FromHex("#ffdf7a");
+
+    public static readonly Color Text = Color.FromHex("#a89f91");
     public static readonly Color TextFaded = Color.FromHex("#7a6a58");
+    public static readonly Color TextDisabled = Color.FromHex("#4a4540");
+
+    /// <summary>Medieval lettering for titles and buttons. Small print stays in the regular font to stay readable.</summary>
+    private const string FontPath = "/Fonts/Imperial/Vinque/Vinque.otf";
+
+    private const int TitleFontSize = 18;
+    private const int TextFontSize = 14;
 
     public static Font TitleFont(IResourceCache cache) => cache.GetFont(FontPath, TitleFontSize);
 
     public static Font TextFont(IResourceCache cache) => cache.GetFont(FontPath, TextFontSize);
 
-    /// <summary>
-    ///     Puts the medieval lettering on a window title. The title label belongs to the shared MedievalWindow,
-    ///     so it's looked up instead of changing that window for everyone.
-    /// </summary>
-    public static void ApplyTitleFont(Control window, IResourceCache cache)
-    {
-        if (FindLabel(window, "TitleLabel") is { } title)
-            title.FontOverride = TitleFont(cache);
-    }
-
-    /// <summary>Medieval lettering on buttons and labels.</summary>
+    /// <summary>Puts the medieval lettering on labels and on the text of buttons.</summary>
     public static void ApplyTextFont(IResourceCache cache, params Control[] controls)
     {
         var font = TextFont(cache);
@@ -53,19 +57,5 @@ public static class MedievalUiStyle
                     break;
             }
         }
-    }
-
-    private static Label? FindLabel(Control parent, string name)
-    {
-        foreach (var child in parent.Children)
-        {
-            if (child is Label label && child.Name == name)
-                return label;
-
-            if (FindLabel(child, name) is { } found)
-                return found;
-        }
-
-        return null;
     }
 }

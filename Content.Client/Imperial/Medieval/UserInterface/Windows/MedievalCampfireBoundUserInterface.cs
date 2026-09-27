@@ -26,6 +26,7 @@ public sealed class MedievalCampfireBoundUserInterface : BoundUserInterface
 
         _menu = this.CreateWindow<MedievalCampfireMenu>();
         _menu.SetFire(Owner);
+
         _menu.StartButton.OnPressed += _ => SendPredictedMessage(new MicrowaveStartCookMessage());
         _menu.EjectButton.OnPressed += _ => SendPredictedMessage(new MicrowaveEjectMessage());
         _menu.OnIngredientPressed += uid =>
@@ -33,9 +34,9 @@ public sealed class MedievalCampfireBoundUserInterface : BoundUserInterface
 
         _menu.OnCookTimeSelected += seconds =>
         {
-            // button index is what the microwave expects: 0 = warm up, 1..6 = 5..30 s
-            SendPredictedMessage(new MicrowaveSelectCookTimeMessage(
-                (int) (seconds / MedievalCampfireMenu.SecondsPerLog), seconds));
+            // the microwave expects the button index too: 0 = warm up, 1..6 = 5..30 s
+            var index = (int) (seconds / MedievalCampfireMenu.SecondsPerLog);
+            SendPredictedMessage(new MicrowaveSelectCookTimeMessage(index, seconds));
             _menu.SetCookTime(seconds);
         };
     }
@@ -44,23 +45,22 @@ public sealed class MedievalCampfireBoundUserInterface : BoundUserInterface
     {
         base.UpdateState(state);
 
-        if (state is not MicrowaveUpdateUserInterfaceState cState || _menu == null)
+        if (_menu == null || state is not MicrowaveUpdateUserInterfaceState cState)
             return;
 
-        var empty = cState.ContainedSolids.Length == 0;
         var cookSeconds = cState.ActiveButtonIndex == 0 ? 0u : cState.CurrentCookTime;
 
         // the server sends its "done" state before it clears the busy flag; a zeroed end time means it's finished
         var busy = cState.IsMicrowaveBusy && cState.CurrentCookTimeEnd != TimeSpan.Zero;
 
-        _menu.SetBusy(busy, empty, cState.CurrentCookTimeEnd, cookSeconds);
         _menu.SetContents(BuildContents(EntMan.GetEntityArray(cState.ContainedSolids)));
         _menu.SetCookTime(cookSeconds);
+        _menu.SetBusy(busy, cState.ContainedSolids.Length == 0, cState.CurrentCookTimeEnd, cookSeconds);
     }
 
-    private List<(EntityUid, string, Texture?)> BuildContents(EntityUid[] solids)
+    private List<(EntityUid Uid, string Name, Texture? Icon)> BuildContents(EntityUid[] solids)
     {
-        var contents = new List<(EntityUid, string, Texture?)>();
+        var contents = new List<(EntityUid, string, Texture?)>(solids.Length);
         var sprites = EntMan.System<SpriteSystem>();
 
         foreach (var entity in solids)

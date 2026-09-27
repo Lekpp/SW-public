@@ -10,15 +10,15 @@ namespace Content.Client.Imperial.Medieval.UserInterface.Elements;
 [Virtual]
 public class MedievalToggleButton : Button
 {
-    private static readonly StyleBoxFlat NormalBox = Box("#2a1f18", "#5c4a3d");
-    private static readonly StyleBoxFlat HoverBox = Box("#3d2e24", "#d4af37");
-    private static readonly StyleBoxFlat PressedBox = Box("#5a3b1c", "#d4af37");
-    private static readonly StyleBoxFlat DisabledBox = Box("#1a1410", "#3d3530");
+    private static readonly StyleBoxFlat NormalBox = Box(MedievalUiStyle.Background, MedievalUiStyle.Border);
+    private static readonly StyleBoxFlat HoverBox = Box(MedievalUiStyle.BackgroundHover, MedievalUiStyle.Gold);
+    private static readonly StyleBoxFlat PressedBox = Box(MedievalUiStyle.BackgroundPressed, MedievalUiStyle.Gold);
+    private static readonly StyleBoxFlat DisabledBox = Box(MedievalUiStyle.BackgroundDisabled, MedievalUiStyle.BorderDisabled);
 
     public MedievalToggleButton()
     {
         StyleBoxOverride = NormalBox;
-        Label.FontColorOverride = Color.FromHex("#a89f91");
+        Label.FontColorOverride = MedievalUiStyle.Text;
     }
 
     protected override void DrawModeChanged()
@@ -31,19 +31,19 @@ public class MedievalToggleButton : Button
 
         (StyleBoxOverride, Label.FontColorOverride) = DrawMode switch
         {
-            DrawModeEnum.Pressed => (PressedBox, Color.FromHex("#ffdf7a")),
+            DrawModeEnum.Pressed => (PressedBox, MedievalUiStyle.GoldBright),
             DrawModeEnum.Hover => (HoverBox, Color.White),
-            DrawModeEnum.Disabled => (DisabledBox, Color.FromHex("#4a4540")),
-            _ => (NormalBox, Color.FromHex("#a89f91")),
+            DrawModeEnum.Disabled => (DisabledBox, MedievalUiStyle.TextDisabled),
+            _ => (NormalBox, MedievalUiStyle.Text),
         };
     }
 
-    private static StyleBoxFlat Box(string background, string border)
+    private static StyleBoxFlat Box(Color background, Color border)
     {
         return new StyleBoxFlat
         {
-            BackgroundColor = Color.FromHex(background),
-            BorderColor = Color.FromHex(border),
+            BackgroundColor = background,
+            BorderColor = border,
             BorderThickness = new Thickness(1),
         };
     }
