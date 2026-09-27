@@ -9,11 +9,12 @@
   - type: SpellCastEffect
     effectProto: SleepSpellCastEffectBeginner
   - type: MedievalTargetSpell
+  - type: PlayAudioAfterSpellCast
+    sound: !type:SoundPathSpecifier
+      path: /Audio/Imperial/Medieval/sedation_cast.ogg
   - type: Action
     useDelay: 130
     itemIconStyle: BigAction
-    sound: !type:SoundPathSpecifier
-      path: /Audio/Imperial/Medieval/sedation_cast.ogg
     icon:
       sprite: Imperial/Medieval/Nocturn/Hypnosis/action.rsi
       state: hipnosis
