@@ -20,7 +20,6 @@ public sealed class BloodRubySystem : EntitySystem
     [Dependency] private readonly SharedPointLightSystem _pointLight = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly NocturnBlockedActionSystem _blockedActions = default!;
     [Dependency] private readonly NocturnBloodSpellSystem _bloodSpells = default!;
 
     public override void Initialize()
@@ -206,16 +205,11 @@ public sealed class BloodRubySystem : EntitySystem
 
         args.Handled = true;
 
-        var blocked = _blockedActions.TryBlock(ent.Owner, actionUid);
         RaiseLocalEvent(actionUid, new MedievalAfterCastSpellEvent
         {
             Action = actionUid,
-            Performer = ent.Owner,
-            ShowManaPopup = !blocked
+            Performer = ent.Owner
         });
-
-        if (blocked)
-            return;
 
         if (ent.Comp.BloodRuby is not { } ruby || TerminatingOrDeleted(ruby))
             return;

@@ -268,7 +268,7 @@ namespace Content.Server.Nocturn
             var target = args.Target;
             if (!CanBite(uid))
             {
-                _popupSystem.PopupEntity("Рядом чеснок, библия или крест", uid, uid, PopupType.Large);
+                _popupSystem.PopupEntity(Loc.GetString("medieval-ancient-nocturne-action-blocked"), uid, uid, PopupType.Large);
                 return;
             }
 

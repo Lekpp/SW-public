@@ -32,7 +32,7 @@ public sealed class NocturnBlockedActionSystem : EntitySystem
             return false;
 
         _actions.SetCooldown(action, component.BlockedCooldown);
-        _popup.PopupEntity(Loc.GetString(component.BlockedMessage), user, user, PopupType.LargeCaution);
+        _popup.PopupEntity(Loc.GetString(component.BlockedMessage), user, user, PopupType.Large);
         return true;
     }
 }

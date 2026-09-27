@@ -29,15 +29,13 @@ medieval-blood-ruby-examine = Хранит в себе { $amount } унций к
 
 ent-MedievalAncientNocturneEmergencyTeleportAction = Экстренный телепорт
     .desc = После короткой задержки, телепортирует вас к вашему кровавому рубину. Библия, крест и чеснок мешают телепортации!
-medieval-ancient-nocturne-emergency-teleport-blocked = Что-то помешало вашему телепорту!
 medieval-nocturn-cant-use-blood-spells = Вы не должны это видеть, обратитесь в ahelp.
 medieval-nocturn-not-enough-blood = Недостаточно крови.
-medieval-ancient-nocturne-action-blocked = Библия, чеснок или крест поблизости мешают использовать способность!
+medieval-ancient-nocturne-action-blocked = Рядом чеснок, библия или крест
 
 ent-MedievalAncientNocturneConversionAction = Обращение в ноктюрна
     .desc = Обратите человека в ноктюрна.
 medieval-ancient-nocturne-conversion-invalid-target = Обратить можно только человека.
-medieval-ancient-nocturne-conversion-blocked = Библия, чеснок или крест поблизости мешают обращению!
 medieval-ancient-nocturne-conversion-start-user = Вы начали обращение {$target} в ноктюрна.
 medieval-ancient-nocturne-conversion-start-target = Вас пытаются обратить в ноктюрна!
 medieval-ancient-nocturne-conversion-success-user = Человек обращён в ноктюрна.
