@@ -15,6 +15,7 @@ using Robust.Server.Audio;
 using Robust.Shared.Random;
 using Content.Shared.Item;
 using Content.Shared.IdentityManagement;
+using Content.Shared.Interaction.Components;
 using Robust.Server.GameObjects;
 using Content.Server.Imperial.Medieval.RandomSteal;
 using Content.Shared.Imperial.Medieval.Additions;
@@ -59,9 +60,15 @@ public sealed partial class RandomStealSystem : EntitySystem
         {
             if (_inventorySystem.TryGetSlotEntity(ev.Target, item, out var targetEntity, inventoryComponent))
             {
+                // Предмет с UnremoveableComponent вынуть нельзя: обычным путём мешает
+                // ContainerGettingRemovedAttemptEvent, но вор тянет предмет принудительным
+                // перемещением в обход проверки. Такие предметы воровать нельзя.
+                if (HasComp<UnremoveableComponent>(targetEntity.Value))
+                    continue;
+
                 if (TryComp<StorageComponent>(targetEntity, out var storage) && storage.Container.ContainedEntities.Any())
                 {
-                    var potentialTargets = storage.Container.ContainedEntities.Where(x => comp.Sizes.Contains(CompOrNull<ItemComponent>(x)?.Size ?? "")).ToList();
+                    var potentialTargets = storage.Container.ContainedEntities.Where(x => comp.Sizes.Contains(CompOrNull<ItemComponent>(x)?.Size ?? "") && !HasComp<UnremoveableComponent>(x)).ToList();
 
                     if (potentialTargets.Any())
                         targetEntities.Add(_random.Pick(potentialTargets));
