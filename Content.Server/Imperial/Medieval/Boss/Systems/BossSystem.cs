@@ -187,7 +187,7 @@ public sealed partial class BossSystem : EntitySystem
         _audio.Stop(component.SongEntity);
         component.Active = false;
 
-        component.ReturnPlayersTime = _timing.CurTime + component.VictoryDelay;
+        component.ReturnPlayersTime = _timing.CurTime + component.SendBackDelay;
 
         EntityManager.AddComponents(boss, component.ComponentsOnDefeat);
 
@@ -210,7 +210,7 @@ public sealed partial class BossSystem : EntitySystem
         var ev = new BossWonEvent(boss);
         RaiseLocalEvent(ref ev);
 
-        SendPlayersBack(component);
+        component.ReturnPlayersTime = _timing.CurTime + component.SendBackDelay;
         component.Active = false;
 
         if (TryComp<BossHealthBarComponent>(boss, out var bar))

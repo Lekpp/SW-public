@@ -57,7 +57,7 @@ public sealed partial class BossComponent : Component
     public TimeSpan NextSongPlay = TimeSpan.Zero;
 
     [DataField]
-    public TimeSpan VictoryDelay = TimeSpan.FromSeconds(15); // Время до телепортации игроков обратно
+    public TimeSpan SendBackDelay = TimeSpan.FromSeconds(15); // Время до телепортации игроков обратно после поражения/победы над боссом
 
     public TimeSpan? ReturnPlayersTime;
 
