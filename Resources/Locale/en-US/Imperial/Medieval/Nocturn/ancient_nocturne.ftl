@@ -29,14 +29,13 @@ medieval-blood-ruby-examine = It holds { $amount } ounces of blood
 
 ent-MedievalAncientNocturneEmergencyTeleportAction = Emergency teleport
     .desc = After a short delay, teleports you to your blood ruby. Bibles, crosses, and garlic interfere with teleportation!
-medieval-ancient-nocturne-emergency-teleport-blocked = Something interfered with your teleport!
 medieval-nocturn-cant-use-blood-spells = You should not be seeing this; contact an administrator via ahelp.
 medieval-nocturn-not-enough-blood = Not enough blood.
+medieval-ancient-nocturne-action-blocked = Garlic, a bible, or a cross is nearby
 
 ent-MedievalAncientNocturneConversionAction = Turn into a nocturne
     .desc = Turn a human into a nocturne.
 medieval-ancient-nocturne-conversion-invalid-target = Only a human can be turned.
-medieval-ancient-nocturne-conversion-blocked = A nearby bible, garlic, or cross prevents the conversion!
 medieval-ancient-nocturne-conversion-start-user = You begin turning {$target} into a nocturne.
 medieval-ancient-nocturne-conversion-start-target = Someone is trying to turn you into a nocturne!
 medieval-ancient-nocturne-conversion-success-user = The human has been turned into a nocturne.

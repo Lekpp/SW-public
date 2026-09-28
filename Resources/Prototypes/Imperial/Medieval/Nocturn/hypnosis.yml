@@ -3,16 +3,18 @@
   name: Hypnosis
   description: Attempt to bend the victim to your will and put them to sleep.
   components:
+  - type: NocturnBlockedAction
   - type: NocturnBloodDrainSpell
     bloodDrain: 40
   - type: SpellCastEffect
     effectProto: SleepSpellCastEffectBeginner
   - type: MedievalTargetSpell
+  - type: PlayAudioAfterSpellCast
+    sound: !type:SoundPathSpecifier
+      path: /Audio/Imperial/Medieval/sedation_cast.ogg
   - type: Action
     useDelay: 130
     itemIconStyle: BigAction
-    sound: !type:SoundPathSpecifier
-      path: /Audio/Imperial/Medieval/sedation_cast.ogg
     icon:
       sprite: Imperial/Medieval/Nocturn/Hypnosis/action.rsi
       state: hipnosis

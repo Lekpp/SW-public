@@ -1,4 +1,3 @@
-using Content.Shared.Actions;
 using Content.Shared.Clothing;
 using Content.Shared.DoAfter;
 using Content.Shared.Examine;
@@ -19,10 +18,8 @@ public sealed class BloodRubySystem : EntitySystem
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedPointLightSystem _pointLight = default!;
-    [Dependency] private readonly SharedActionsSystem _actions = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly RaceSystem _race = default!;
     [Dependency] private readonly NocturnBloodSpellSystem _bloodSpells = default!;
 
     public override void Initialize()
@@ -208,24 +205,11 @@ public sealed class BloodRubySystem : EntitySystem
 
         args.Handled = true;
 
-        var canTeleport = _race.CanBite(ent.Owner);
         RaiseLocalEvent(actionUid, new MedievalAfterCastSpellEvent
         {
             Action = actionUid,
-            Performer = ent.Owner,
-            ShowManaPopup = canTeleport
+            Performer = ent.Owner
         });
-
-        if (!canTeleport)
-        {
-            _popup.PopupEntity(
-                Loc.GetString("medieval-ancient-nocturne-emergency-teleport-blocked"),
-                ent.Owner,
-                ent.Owner,
-                PopupType.LargeCaution);
-            _actions.SetCooldown(actionUid, TimeSpan.FromSeconds(ent.Comp.EmergencyTeleportBlockedCooldown));
-            return;
-        }
 
         if (ent.Comp.BloodRuby is not { } ruby || TerminatingOrDeleted(ruby))
             return;
