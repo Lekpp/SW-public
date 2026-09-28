@@ -55,4 +55,15 @@ public sealed partial class BossComponent : Component
 
     [ViewVariables(VVAccess.ReadWrite)]
     public TimeSpan NextSongPlay = TimeSpan.Zero;
+
+    [DataField]
+    public TimeSpan VictoryDelay = TimeSpan.FromSeconds(15); // Время до телепортации игроков обратно
+
+    public TimeSpan? ReturnPlayersTime;
+
+    [DataField]
+    public string LinkId = "test"; // Сюда указывать такую же строку, что и в BossPlayerBackPoint. Это отправит игроков на неё в случае победы/поражения
+
+    [DataField]
+    public bool IsEndGame = true; // Начинать конец раунда при поражении/победе, как сейчас к морбиуса
 }

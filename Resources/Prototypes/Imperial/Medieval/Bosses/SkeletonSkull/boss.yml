@@ -53,11 +53,12 @@
   - type: FloatingVisuals
     ignoreGravity: true
   - type: Boss
+    victoryDelay: 30
     song:
       path: /Audio/Imperial/Medieval/Locations/Pantheon's-wrath.ogg
       params:
         volume: -9
-    health: 5000
+    health: 1000
     loseSound:
       path: /Audio/Imperial/Medieval/Effects/boss_fail.ogg
     defeatSound:
@@ -225,4 +226,4 @@
               duration: 1.9
   - type: BossHealthBar
     color: "#800080"
-  #- type: Damageable
+  - type: Damageable
