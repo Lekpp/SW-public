@@ -2,7 +2,7 @@
   id: Bonfire
   parent: BaseStructure
   name: bonfire
-  description: What can be better than a late evening under the sky with guitar and friends?
+  description: A roaring fire under the open sky. Meat can be grilled right on the coals. # imperial medieval
   components:
   - type: Sprite
     noRot: true
@@ -31,12 +31,50 @@
     sound:
       path: /Audio/Ambience/Objects/fireplace.ogg
   - type: AlwaysHot
+  # imperial medieval start - grill food on the open fire
+  - type: Fixtures
+    fixtures:
+      fix1: # same as BaseStructure
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 60
+        mask:
+        - MachineMask
+        layer:
+        - MidImpassable
+        - LowImpassable
+      itemcollide: # what lies on the coals, same setup as the stock heater machines
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.4,-0.4,0.4,0.4"
+        layer:
+        - HighImpassable
+        hard: false
+  - type: ItemPlacer
+    maxEntities: 4
+    whitelist:
+      requireAll: true
+      components:
+      - Item
+      - Temperature
+  - type: MedievalFireGrill
+    heatPerSecond: 650 # a raw steak cooks in about 10 s
+    whitelist:
+      requireAll: true
+      components:
+      - Item
+      - Temperature
+    blacklist:
+      components:
+      - MobState
+  # imperial medieval end
 
 - type: entity
   id: LegionnaireBonfire
   parent: Bonfire
   name: legionnaire bonfire
-  description: There, in the land of lava and ash, place to to cook marshmallow and potato.
+  description: The legion's camp fire. Meat can be grilled right on the coals. # imperial medieval
   components:
   - type: Sprite
     layers:
