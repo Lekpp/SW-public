@@ -423,7 +423,7 @@ namespace Content.Server.Construction
                     if ((!temperatureChangeStep.MinTemperature.HasValue || temp >= temperatureChangeStep.MinTemperature.Value) &&
                         (!temperatureChangeStep.MaxTemperature.HasValue || temp <= temperatureChangeStep.MaxTemperature.Value))
                     {
-                        return HandleResult.True;
+                        return validation ? HandleResult.Validated : HandleResult.True; // imperial medieval - upstream fix: during validation this ran the whole step on the spot instead of queuing it
                     }
 
                     return HandleResult.False;
