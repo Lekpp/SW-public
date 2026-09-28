@@ -630,7 +630,7 @@
   - type: UserInterface
     interfaces:
       enum.MicrowaveUiKey.Key:
-        type: MicrowaveBoundUserInterface
+        type: MedievalCampfireBoundUserInterface # imperial medieval - medieval-styled microwave menu
   - type: Physics
   - type: Fixtures
     fixtures:
