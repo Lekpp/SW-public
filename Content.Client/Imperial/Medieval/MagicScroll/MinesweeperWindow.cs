@@ -44,6 +44,7 @@ public sealed partial class MinesweeperWindow : DefaultWindow
     private int _totalMines = 2;
     private int _moveTimeSeconds;
     private int _minimumMoveDelaySeconds;
+    private int _tipsAvailable;
     private int _tipsRemaining;
     private int _maxRestarts = -1;
     private int _restartsRemaining = -1;
@@ -190,7 +191,8 @@ public sealed partial class MinesweeperWindow : DefaultWindow
         _totalMines = Math.Clamp(totalMines, 1, _gridSize * _gridSize - 1);
         _moveTimeSeconds = Math.Max(0, moveTimeSeconds);
         _minimumMoveDelaySeconds = Math.Max(0, minimumMoveDelaySeconds);
-        _tipsRemaining = Math.Max(0, tipsAvailable);
+        _tipsAvailable = Math.Max(0, tipsAvailable);
+        _tipsRemaining = _tipsAvailable;
         _maxRestarts = maxRestarts;
         _restartsRemaining = maxRestarts;
 
@@ -234,6 +236,7 @@ public sealed partial class MinesweeperWindow : DefaultWindow
         _flagged = new bool[_gridSize, _gridSize];
         _mineCount = _totalMines;
         _revealedCount = 0;
+        _tipsRemaining = _tipsAvailable;
         _hintUsedThisTurn = false;
         _safeRevealAvailable = true;
 
@@ -266,38 +269,25 @@ public sealed partial class MinesweeperWindow : DefaultWindow
     private void MakeRevealSafe(int x, int y)
     {
         var minesToMove = new List<(int x, int y)>();
+
+        if (_mineField[x, y])
+            minesToMove.Add((x, y));
+
         var adjacentMines = new List<(int x, int y)>();
 
-        for (var dx = -1; dx <= 1; dx++)
+        foreach (var pos in GetNeighbors(x, y))
         {
-            for (var dy = -1; dy <= 1; dy++)
-            {
-                var safeX = x + dx;
-                var safeY = y + dy;
-
-                if (safeX < 0 || safeX >= _gridSize || safeY < 0 || safeY >= _gridSize)
-                    continue;
-
-                if (!_mineField[safeX, safeY])
-                    continue;
-
-
-                if (dx == 0 && dy == 0)
-                    minesToMove.Add((safeX, safeY));
-                else
-                    adjacentMines.Add((safeX, safeY));
-            }
+            if (_mineField[pos.x, pos.y])
+                adjacentMines.Add(pos);
         }
 
+        _random.Shuffle(CollectionsMarshal.AsSpan(adjacentMines));
 
-        if (adjacentMines.Count > 0)
-        {
-            _random.Shuffle(CollectionsMarshal.AsSpan(adjacentMines));
-            for (var i = 1; i < adjacentMines.Count; i++)
-            {
-                minesToMove.Add(adjacentMines[i]);
-            }
-        }
+        var clearArea = _random.Next(2) == 0;
+        var startIndex = clearArea ? 0 : 1;
+
+        for (var i = startIndex; i < adjacentMines.Count; i++)
+            minesToMove.Add(adjacentMines[i]);
 
         if (minesToMove.Count == 0)
             return;
@@ -308,7 +298,8 @@ public sealed partial class MinesweeperWindow : DefaultWindow
         {
             for (var newY = 0; newY < _gridSize; newY++)
             {
-                if (Math.Abs(newX - x) <= 1 && Math.Abs(newY - y) <= 1) continue;
+                if (Math.Abs(newX - x) <= 1 && Math.Abs(newY - y) <= 1)
+                    continue;
 
                 if (!_mineField[newX, newY])
                     availablePositions.Add((newX, newY));
@@ -317,7 +308,7 @@ public sealed partial class MinesweeperWindow : DefaultWindow
 
         _random.Shuffle(CollectionsMarshal.AsSpan(availablePositions));
 
-        for (var i = 0; i < minesToMove.Count && i < availablePositions.Count; i++)
+        for (var i = 0; i < minesToMove.Count; i++)
         {
             var oldPosition = minesToMove[i];
             var newPosition = availablePositions[i];
@@ -737,11 +728,7 @@ public sealed partial class MinesweeperWindow : DefaultWindow
     private void UpdateHintButton()
     {
         HintButton.Text = Loc.GetString("magic-scroll-minesweeper-hint-count", ("count", _tipsRemaining));
-        HintButton.Disabled =
-            !_gameStarted ||
-            _gameOver ||
-            _hintUsedThisTurn ||
-            _tipsRemaining <= 0;
+        HintButton.Disabled = !_gameStarted || _gameOver || _safeRevealAvailable || _hintUsedThisTurn || _tipsRemaining <= 0;
     }
 
     private void UpdateRestartButton()

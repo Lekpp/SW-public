@@ -4443,7 +4443,7 @@
     isPractice: true
     requiredIntelligence: 9
     basicPower: 1
-    pointsPerDecodedRune: 2
+    pointsPerDecodedRune: 1
     maxFails: 4
     maxRestarts: -1
   - type: Tag
@@ -4518,14 +4518,14 @@
     castShadows: false
   - type: MagicScroll
     requiredIntelligence: 15
-    basicPower: 30
+    basicPower: 50
     requiresRunePairs: true
-    maxEncryptedPairs: 4
+    maxEncryptedPairs: 6
     gridSize: 9
     totalMines: 11
-    moveTimeSeconds: 30
+    moveTimeSeconds: 20
     tipsAvailable: 3
-    maxRestarts: 2
+    maxRestarts: 3
     powerPerSolvedPair: 20
   - type: Tag
     tags:
@@ -4534,9 +4534,9 @@
     safe: true
   - type: Explosive
     explosionType: Default
-    maxIntensity: 1.1
-    intensitySlope: 8
-    totalIntensity: 36
+    maxIntensity: 3.3
+    intensitySlope: 24
+    totalIntensity: 108
     maxTileBreak: 0
     deleteAfterExplosion: true
 
@@ -4581,9 +4581,9 @@
     slope: 2
   - type: Explosive
     explosionType: Default
-    maxIntensity: 1.1
-    intensitySlope: 8
-    totalIntensity: 36
+    maxIntensity: 3.3
+    intensitySlope: 24
+    totalIntensity: 108
     maxTileBreak: 0
     deleteAfterExplosion: true
 
@@ -4611,13 +4611,6 @@
     - MagicScroll
   - type: TrashClear
     safe: true
-  - type: Explosive
-    explosionType: Default
-    maxIntensity: 1.1
-    intensitySlope: 8
-    totalIntensity: 36
-    maxTileBreak: 0
-    deleteAfterExplosion: true
 
 
 - type: entity

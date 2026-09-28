@@ -11,7 +11,7 @@ using Content.Shared.Imperial.Medieval.Skills;
 //=========================================================================
 
 namespace Content.Shared.Imperial.Medieval.MagicRunes.Systems;
-// made some of the probabilities based on 2d12 and 2d6 dice.
+
 public partial class MagicRuneSystem
 {
 
@@ -25,25 +25,25 @@ public partial class MagicRuneSystem
     [11, 13, 14, 15, 16, 18, 20, 22, 24];
 
     private static readonly int[] UnstableMineWeights =
-    [6, 6, 9, 9, 13, 13, 27, 27, 34];
+    [6, 6, 9, 9, 13, 13, 27, 27, 38];
 
     private static readonly int[] UnstablePairCounts =
-    [2, 3, 4, 5, 6, 7, 8];
+    [1, 2, 3, 4, 5];
 
     private static readonly int[] UnstablePairWeights =
-    [10, 18, 27, 34, 27, 18, 10];
+    [3, 70, 15, 7, 5];
 
     private static readonly int[] UnstableBasicPowerValues =
-    [1, 20, 25, 30, 40, 60, 80, 90, 100];
+    [1, 5, 10, 15, 40, 60, 80, 90, 100];
 
     private static readonly int[] UnstableBasicPowerWeights =
-    [1, 9, 13, 27, 34, 27, 13, 9, 6];
+    [40, 18, 12, 8, 7, 5, 4, 3, 3];
 
     private static readonly int[] UnstablePairPowerValues =
-    [30, 33, 37, 40, 44, 47, 50];
+    [35, 40, 45, 70, 80, 90, 100];
 
     private static readonly int[] UnstablePairPowerWeights =
-    [6, 15, 28, 44, 28, 15, 6];
+    [3, 5, 7, 30, 25, 18, 12];
 
     public void InitializeScroll(EntityUid uid, MagicScrollComponent scroll)
     {
@@ -96,6 +96,8 @@ public partial class MagicRuneSystem
 
     private void RandomizeUnstableScrollSettings(MagicScrollComponent scroll)
     {
+        scroll.MaxRestarts = _random.Next(0, 100) < 20 ? 1 : 0;
+
         scroll.TipsAvailable = _random.Next(1, 6);
 
         scroll.MaxEncryptedPairs = WeightedChoice(UnstablePairCounts, UnstablePairWeights);
@@ -148,7 +150,7 @@ public partial class MagicRuneSystem
 
     public void PopulateStartRunes(EntityUid uid, MagicRuneKnowledgeComponent comp, int intelligence)
     {
-        PopulateRandomRunes(uid, comp, 1);
+        PopulateRandomRunes(uid, comp, comp.StartingRunes);
     }
 
     public void PopulateRandomRunes(EntityUid uid, MagicRuneKnowledgeComponent comp, int count)
