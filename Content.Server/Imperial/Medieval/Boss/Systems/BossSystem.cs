@@ -6,6 +6,7 @@ using Content.Server.Flash;
 using Content.Server.Jittering;
 using Content.Server.MagicBarrier.Components;
 using Content.Shared.Chat;
+using Content.Shared.Damage;
 using Content.Shared.Humanoid;
 using Content.Shared.Imperial.Medieval.Boss;
 using Content.Shared.Jittering;
@@ -40,6 +41,8 @@ public sealed partial class BossSystem : EntitySystem
     {
         base.Initialize();
         InitializeAttacks();
+
+        SubscribeLocalEvent<BossComponent, DamageChangedEvent>(OnDamageChanged);
     }
 
     public override void Update(float frameTime)
@@ -53,6 +56,7 @@ public sealed partial class BossSystem : EntitySystem
         UpdateSpikeMarker();
         UpdateRunes();
         UpdateBHell();
+        UpdateDefeatedBosses();
     }
 
     public void StartBossfight(List<EntityUid> players, EntityUid boss)
@@ -73,12 +77,23 @@ public sealed partial class BossSystem : EntitySystem
             }
         }
 
+        var bar = EnsureComp<BossHealthBarComponent>(boss);
+        bar.MaxHp = bossComp.Health;
+        bar.CurrentHp = bossComp.Health;
+        bar.Active = true;
+        Dirty(boss, bar);
+
+        var bossNetId = GetNetEntity(boss);
+
         foreach (var player in players)
         {
             bossComp.Players.Add(player);
 
             _transform.SetCoordinates(player, Transform(_random.Pick(positions)).Coordinates);
-            EnsureComp<FightingBossComponent>(player);
+
+            var fighting = EnsureComp<FightingBossComponent>(player);
+            fighting.Boss = bossNetId;
+            Dirty(player, fighting);
         }
 
         bossComp.NextAttack = _timing.CurTime + TimeSpan.FromSeconds(13);
@@ -89,6 +104,19 @@ public sealed partial class BossSystem : EntitySystem
         bossComp.NextSongPlay = _timing.CurTime + TimeSpan.FromSeconds(bossComp.SongDuration);
     }
 
+    private void OnDamageChanged(EntityUid uid, BossComponent component, DamageChangedEvent args)
+    {
+        if (args.DamageDelta == null)
+            return;
+
+        var damageDealt = (float) args.DamageDelta.GetTotal();
+
+        if (damageDealt <= 0)
+            return;
+
+        DamageBoss(uid, damageDealt);
+    }
+
     public void DamageBoss(EntityUid boss, float damage)
     {
         if (!TryComp<BossComponent>(boss, out var bossComp))
@@ -96,18 +124,39 @@ public sealed partial class BossSystem : EntitySystem
 
         bossComp.Health -= damage;
 
-        var max = bossComp.Stages.Where(x => x.Value.Threshold >= bossComp.Health).Select(x => x.Key).Max();
-        if (bossComp.Stage != max)
-        {
-            _appearance.SetData(boss, BossStageVisuals.Stage, max);
 
-            if (bossComp.Stage < max)
+        if (TryComp<BossHealthBarComponent>(boss, out var bar))
+        {
+            bar.CurrentHp = MathF.Max(0f, bossComp.Health);
+            Dirty(boss, bar);
+        }
+
+        int? maxStage = null;
+
+        foreach (var (key, stage) in bossComp.Stages)
+        {
+            if (stage.Threshold >= bossComp.Health)
             {
-                _audio.PlayPvs(bossComp.Stages[max].Sound, boss);
+                if (maxStage == null || key > maxStage.Value)
+                    maxStage = key;
+            }
+        }
+
+        if (maxStage.HasValue && bossComp.Stage != maxStage.Value)
+        {
+            var newStage = maxStage.Value;
+            _appearance.SetData(boss, BossStageVisuals.Stage, newStage);
+
+            if (bossComp.Stage < newStage)
+            {
+                var sound = bossComp.Stages[newStage].Sound;
+                if (sound != null)
+                    _audio.PlayPvs(sound, boss);
+
                 _jittering.DoJitter(boss, TimeSpan.FromSeconds(3), true);
             }
 
-            bossComp.Stage = max;
+            bossComp.Stage = newStage;
         }
 
         if (bossComp.Health <= 0)
@@ -138,7 +187,15 @@ public sealed partial class BossSystem : EntitySystem
         _audio.Stop(component.SongEntity);
         component.Active = false;
 
+        component.ReturnPlayersTime = _timing.CurTime + component.SendBackDelay;
+
         EntityManager.AddComponents(boss, component.ComponentsOnDefeat);
+
+        if (TryComp<BossHealthBarComponent>(boss, out var bar))
+        {
+            bar.Active = false;
+            Dirty(boss, bar);
+        }
     }
 
     public void BossWon(EntityUid boss, BossComponent component)
@@ -153,32 +210,59 @@ public sealed partial class BossSystem : EntitySystem
         var ev = new BossWonEvent(boss);
         RaiseLocalEvent(ref ev);
 
-        SendPlayersBack();
+        component.ReturnPlayersTime = _timing.CurTime + component.SendBackDelay;
         component.Active = false;
+
+        if (TryComp<BossHealthBarComponent>(boss, out var bar))
+        {
+            bar.Active = false;
+            Dirty(boss, bar);
+        }
     }
 
-    public void SendPlayersBack()
+    public void SendPlayersBack(BossComponent bossComponent)
     {
-        var query = AllEntityQuery<MagicBarrierComponent>();
-        var players = EntityManager.AllEntities<FightingBossComponent>().Select(x => x.Owner).ToList();
+        var query = AllEntityQuery<BossPlayersBackPointComponent, TransformComponent>();
+        var players = new List<EntityUid>();
 
-        var list = new List<EntityCoordinates>();
-        while (query.MoveNext(out var uid, out var comp))
+        var playerQuery = EntityQueryEnumerator<FightingBossComponent>();
+        while (playerQuery.MoveNext(out var playerUid, out _))
         {
-            list.Add(Transform(uid).Coordinates);
+            players.Add(playerUid);
         }
 
-        if (list.Count == 0)
+        var points = new List<(EntityCoordinates Coords, float Offset)>();
+        while (query.MoveNext(out var uid, out var comp, out var xform))
         {
-            foreach (var item in EntityManager.AllEntities<HumanoidAppearanceComponent>().Where(x => players.Contains(x.Owner)))
-                list.Add(Transform(item.Owner).Coordinates);
+            if (bossComponent.LinkId == comp.LinkId)
+                points.Add((xform.Coordinates, comp.RandomOffset));
         }
 
-        foreach (var item in players)
+        if (points.Count == 0)
         {
-            _flash.Flash(item, null, null, TimeSpan.FromSeconds(5), 1, false);
-            _transform.SetCoordinates(item, _random.Pick(list));
-            RemComp<FightingBossComponent>(item);
+            foreach (var player in players)
+            {
+                points.Add((Transform(player).Coordinates, 0f));
+            }
+        }
+
+        foreach (var player in players)
+        {
+            _flash.Flash(player, null, null, TimeSpan.FromSeconds(5), 1, false);
+
+            var (targetCoords, maxOffset) = _random.Pick(points);
+
+            if (maxOffset > 0f)
+            {
+                var angle = _random.NextAngle();
+                var distance = _random.NextFloat(0f, maxOffset);
+                var offset = angle.ToVec() * distance;
+
+                targetCoords = targetCoords.Offset(offset);
+            }
+
+            _transform.SetCoordinates(player, targetCoords);
+            RemComp<FightingBossComponent>(player);
         }
     }
 
@@ -255,9 +339,22 @@ public sealed partial class BossSystem : EntitySystem
             comp.Index++;
 
             if (comp.Index >= comp.Explosions)
-            {
                 RemComp<ExplosionDefeatedBossComponent>(uid);
-                SendPlayersBack();
+        }
+    }
+
+    private void UpdateDefeatedBosses()
+    {
+        var query = EntityQueryEnumerator<BossComponent>();
+        while (query.MoveNext(out var uid, out var bossComp))
+        {
+            if (bossComp.ReturnPlayersTime == null)
+                continue;
+
+            if (_timing.CurTime >= bossComp.ReturnPlayersTime.Value)
+            {
+                bossComp.ReturnPlayersTime = null;
+                SendPlayersBack(bossComp);
             }
         }
     }

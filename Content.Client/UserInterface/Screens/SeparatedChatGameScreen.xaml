@@ -12,6 +12,7 @@
     xmlns:inventory="clr-namespace:Content.Client.UserInterface.Systems.Inventory.Widgets"
     xmlns:areaMarker="clr-namespace:Content.Client.Imperial.Medieval.AreaMarker"
     xmlns:calendar="clr-namespace:Content.Client.Imperial.Medieval.Calendar"
+    xmlns:boss="clr-namespace:Content.Client.Imperial.Medieval.Boss.HealthBar"
     Name="SeparatedChatHud"
     VerticalExpand="False"
     VerticalAlignment="Bottom"
@@ -29,6 +30,9 @@
             <alerts:AlertsUI Name="Alerts" Access="Protected" />
             <areaMarker:AreaMarkerView SetHeight="200" SetWidth="200" Name="View"/> <!-- Imperial medieval edit -->
             <calendar:CalendarNotificationView /> <!-- Imperial medieval edit -->
+            <boss:BossHealthBarUI Name="BossHealthBar"
+                                  Access="Public"
+                                  Visible="False" /> <!-- Imperial medieval edit -->
         </LayoutContainer>
         <PanelContainer Name="SeparatedChatPanel" MinWidth="300">
             <PanelContainer.PanelOverride>

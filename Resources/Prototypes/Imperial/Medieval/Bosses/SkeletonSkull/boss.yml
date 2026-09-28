@@ -53,6 +53,7 @@
   - type: FloatingVisuals
     ignoreGravity: true
   - type: Boss
+    victoryDelay: 15
     song:
       path: /Audio/Imperial/Medieval/Locations/Pantheon's-wrath.ogg
       params:
@@ -223,3 +224,6 @@
           - !type:BossAppearance
               state: purple
               duration: 1.9
+  - type: BossHealthBar
+    color: "#800080"
+  #- type: Damageable

@@ -200,11 +200,24 @@ public sealed class SkeletonInvasionRuleSystem : GameRuleSystem<SkeletonInvasion
     private void OnBossDefeated(ref BossDefeatedEvent args)
     {
         _result = RoundResult.BossDefeated;
+
+        if (!TryComp<BossComponent>(args.Boss, out var bossComponent))
+            return;
+
+        if (!bossComponent.IsEndGame)
+            return;
+
         _endTime = _timing.CurTime + TimeSpan.FromMinutes(10);
     }
 
     private void OnBossWin(ref BossWonEvent args)
     {
+        if (!TryComp<BossComponent>(args.Boss, out var bossComponent))
+            return;
+
+        if (!bossComponent.IsEndGame)
+            return;
+
         var cursespawners = EntityManager.AllEntities<MagicBarrierCurseSpawnComponent>();
 
         Spawn("MedievalSpawnNecroSenderPreset", Transform(_random.Pick(cursespawners).Owner).Coordinates);
