@@ -200,7 +200,7 @@ public sealed class SkeletonInvasionRuleSystem : GameRuleSystem<SkeletonInvasion
     private void OnBossDefeated(ref BossDefeatedEvent args)
     {
         _result = RoundResult.BossDefeated;
-        _endTime = _timing.CurTime + TimeSpan.FromMinutes(10);
+        //_endTime = _timing.CurTime + TimeSpan.FromMinutes(10);
     }
 
     private void OnBossWin(ref BossWonEvent args)

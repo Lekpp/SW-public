@@ -6,6 +6,7 @@ using Content.Server.Flash;
 using Content.Server.Jittering;
 using Content.Server.MagicBarrier.Components;
 using Content.Shared.Chat;
+using Content.Shared.Damage;
 using Content.Shared.Humanoid;
 using Content.Shared.Imperial.Medieval.Boss;
 using Content.Shared.Jittering;
@@ -40,6 +41,8 @@ public sealed partial class BossSystem : EntitySystem
     {
         base.Initialize();
         InitializeAttacks();
+
+        SubscribeLocalEvent<BossComponent, DamageChangedEvent>(OnDamageChanged);
     }
 
     public override void Update(float frameTime)
@@ -73,12 +76,23 @@ public sealed partial class BossSystem : EntitySystem
             }
         }
 
+        var bar = EnsureComp<BossHealthBarComponent>(boss);
+        bar.MaxHp = bossComp.Health;
+        bar.CurrentHp = bossComp.Health;
+        bar.Active = true;
+        Dirty(boss, bar);
+
+        var bossNetId = GetNetEntity(boss);
+
         foreach (var player in players)
         {
             bossComp.Players.Add(player);
 
             _transform.SetCoordinates(player, Transform(_random.Pick(positions)).Coordinates);
-            EnsureComp<FightingBossComponent>(player);
+
+            var fighting = EnsureComp<FightingBossComponent>(player);
+            fighting.Boss = bossNetId;
+            Dirty(player, fighting);
         }
 
         bossComp.NextAttack = _timing.CurTime + TimeSpan.FromSeconds(13);
@@ -89,6 +103,19 @@ public sealed partial class BossSystem : EntitySystem
         bossComp.NextSongPlay = _timing.CurTime + TimeSpan.FromSeconds(bossComp.SongDuration);
     }
 
+    private void OnDamageChanged(EntityUid uid, BossComponent component, DamageChangedEvent args)
+    {
+        if (args.DamageDelta == null)
+            return;
+
+        var damageDealt = (float) args.DamageDelta.GetTotal();
+
+        if (damageDealt <= 0)
+            return;
+
+        DamageBoss(uid, damageDealt);
+    }
+
     public void DamageBoss(EntityUid boss, float damage)
     {
         if (!TryComp<BossComponent>(boss, out var bossComp))
@@ -96,18 +123,40 @@ public sealed partial class BossSystem : EntitySystem
 
         bossComp.Health -= damage;
 
-        var max = bossComp.Stages.Where(x => x.Value.Threshold >= bossComp.Health).Select(x => x.Key).Max();
-        if (bossComp.Stage != max)
-        {
-            _appearance.SetData(boss, BossStageVisuals.Stage, max);
 
-            if (bossComp.Stage < max)
+        if (TryComp<BossHealthBarComponent>(boss, out var bar))
+        {
+            bar.CurrentHp = MathF.Max(0f, bossComp.Health);
+            Dirty(boss, bar);
+        }
+
+        int? maxStage = null;
+
+        foreach (var (key, stage) in bossComp.Stages)
+        {
+            if (stage.Threshold >= bossComp.Health)
             {
-                _audio.PlayPvs(bossComp.Stages[max].Sound, boss);
+                if (maxStage == null || key > maxStage.Value)
+                    maxStage = key;
+            }
+        }
+
+        if (maxStage.HasValue && bossComp.Stage != maxStage.Value)
+        {
+            var newStage = maxStage.Value;
+            _appearance.SetData(boss, BossStageVisuals.Stage, newStage);
+
+            if (bossComp.Stage < newStage)
+            {
+                var sound = bossComp.Stages[newStage].Sound;
+                if (sound != null)
+                    _audio.PlayPvs(sound, boss);
+
                 _jittering.DoJitter(boss, TimeSpan.FromSeconds(3), true);
             }
 
-            bossComp.Stage = max;
+            bossComp.Stage = newStage;
+            Dirty(boss, bossComp);
         }
 
         if (bossComp.Health <= 0)
@@ -139,6 +188,12 @@ public sealed partial class BossSystem : EntitySystem
         component.Active = false;
 
         EntityManager.AddComponents(boss, component.ComponentsOnDefeat);
+
+        if (TryComp<BossHealthBarComponent>(boss, out var bar))
+        {
+            bar.Active = false;
+            Dirty(boss, bar);
+        }
     }
 
     public void BossWon(EntityUid boss, BossComponent component)
@@ -155,6 +210,12 @@ public sealed partial class BossSystem : EntitySystem
 
         SendPlayersBack();
         component.Active = false;
+
+        if (TryComp<BossHealthBarComponent>(boss, out var bar))
+        {
+            bar.Active = false;
+            Dirty(boss, bar);
+        }
     }
 
     public void SendPlayersBack()

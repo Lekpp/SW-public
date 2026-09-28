@@ -223,3 +223,6 @@
           - !type:BossAppearance
               state: purple
               duration: 1.9
+  - type: BossHealthBar
+    color: "#800080"
+  #- type: Damageable
