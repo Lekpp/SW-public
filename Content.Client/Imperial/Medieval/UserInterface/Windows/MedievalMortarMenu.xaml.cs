@@ -25,7 +25,7 @@ namespace Content.Client.Imperial.Medieval.UserInterface.Windows;
 /// <summary>
 ///     imperial medieval - the enchanted mortar: ingredients on a shelf on top, the mortar grinding on its own in
 ///     the middle, the vessel it pours into underneath. Talks to the stock ReagentGrinderSystem through
-///     <see cref="MedievalMortarBoundUserInterface"/>; the stock auto mode is left out on purpose.
+///     <see cref="MedievalMortarBoundUserInterface"/>; the stock auto mode is shown as the mortar's charm.
 /// </summary>
 [GenerateTypedNameReferences]
 public sealed partial class MedievalMortarMenu : MedievalWindow
@@ -519,6 +519,8 @@ public sealed partial class MedievalMortarMenu : MedievalWindow
     /// <summary>
     ///     Points at what's in the way, worked out the way the stock grinder does it: a program only runs when
     ///     every item suits it, and whatever doesn't fit into what's left of the vessel is silently left behind.
+    ///     These rules mirror the server's ReagentGrinderSystem (Update, CanGrind, CanJuice); if upstream changes
+    ///     them, update this and <see cref="LeftBehind"/> too, or the warnings will point at the wrong things.
     /// </summary>
     private ContentsCheck CheckContents(List<EntityUid> contents, EntityUid? vessel)
     {
