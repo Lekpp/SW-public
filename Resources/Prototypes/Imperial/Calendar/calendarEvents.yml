@@ -67,7 +67,7 @@
   minDay: 2
   minPlayers: 1 # Нужно минимум 1 игрок для включения этого ивента
   maxPlayers: 15 # Если будет больше 15, то ивент не будет включен
-  maxOccurrences: 0
+  maxOccurrences: 1
   minOffset: 2
   tags:
     - Day
