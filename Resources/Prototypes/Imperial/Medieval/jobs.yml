@@ -2033,6 +2033,8 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: MedievalSalaryReceiver
+      paymentAmount: 20
     - type: WarningOnAttach
       message: medieval-warning-base
     - type: MedievalJobSpawn
@@ -2084,6 +2086,8 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: MedievalSalaryReceiver
+      paymentAmount: 15
     - type: Mana
       maxMana: 150
       regen: 1.2
@@ -2486,6 +2490,8 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: MedievalSalaryReceiver
+      paymentAmount: 10
     - type: WarningOnAttach
       message: medieval-warning-leg
     - type: MedievalFactionMember
@@ -2601,6 +2607,8 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: MedievalSalaryReceiver
+      paymentAmount: 20
     - type: WarningOnAttach
       message: medieval-warning-leg
     - type: MedievalFactionMember
@@ -2739,6 +2747,8 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: MedievalSalaryReceiver
+      paymentAmount: 25
     - type: WarningOnAttach
       message: medieval-warning-leg
     - type: MedievalFactionMember
@@ -2814,6 +2824,8 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: MedievalSalaryReceiver
+      paymentAmount: 30
     - type: WarningOnAttach
       message: medieval-warning-leg
     - type: MedievalFactionMember
@@ -3163,6 +3175,8 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: MedievalSalaryReceiver
+      paymentAmount: 30
     - type: WarningOnAttach
       message: medieval-warning-leg-mag
     - type: Mana
@@ -4696,6 +4710,8 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: MedievalSalaryReceiver
+      paymentAmount: 10
     - type: WarningOnAttach
       message: medieval-warning-coll
     - type: Mana
@@ -4777,6 +4793,8 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: MedievalSalaryReceiver
+      paymentAmount: 20
     - type: WarningOnAttach
       message: medieval-warning-coll
     - type: Mana
@@ -4862,6 +4880,8 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: MedievalSalaryReceiver
+      paymentAmount: 50
     - type: WarningOnAttach
       message: medieval-warning-coll
     - type: Mana
