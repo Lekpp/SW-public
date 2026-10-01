@@ -18,4 +18,16 @@ public sealed partial class MedievalSalaryReceiverComponent : Component
 
     [DataField, AutoPausedField]
     public TimeSpan NextPayment;
+
+    /// <summary>
+    /// Salaries of the same role type are changed together by the treasurer.
+    /// </summary>
+    [DataField]
+    public string RoleType = string.Empty;
+
+    /// <summary>
+    /// Set when the treasurer gave this receiver a personal salary, so role changes skip it.
+    /// </summary>
+    [DataField]
+    public bool PersonallyModified;
 }
