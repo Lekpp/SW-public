@@ -41,6 +41,7 @@ public sealed class CalendarSystem : EntitySystem
         SubscribeLocalEvent<DayCycleStageChangedEvent>(OnDayCycleChanged);
         SubscribeLocalEvent<RoundStartedEvent>(OnRoundStart);
         SubscribeLocalEvent<CalendarEventStartedEvent>(OnCalendarEventStarted);
+        SubscribeLocalEvent<DayCycleFinishedEvent>(OnNewDayCycle);
     }
 
     private void OnCalendarEventStarted(CalendarEventStartedEvent args)
@@ -221,14 +222,17 @@ public sealed class CalendarSystem : EntitySystem
         TriggerNextDayStageNotification(args.NextStage);
     }
 
+    private void OnNewDayCycle(ref DayCycleFinishedEvent args)
+    {
+        _curCycle++;
+    }
+
     public void TriggerNextDayStageNotification(int stageNumber)
     {
         switch (stageNumber)
         {
             case DayStageNumber:
                 {
-                    _curCycle++;
-
                     if (_dayDeck.Count == 0)
                     {
                         TriggerDayStageNotification("DefaultCalendarEvent");
@@ -248,7 +252,6 @@ public sealed class CalendarSystem : EntitySystem
                         return;
                     }
 
-                    // Ночь соответствует текущему дню без вычитания единицы
                     var index = _curCycle % _nightDeck.Count;
                     TriggerDayStageNotification(_nightDeck[index]);
                     break;
