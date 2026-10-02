@@ -182,13 +182,14 @@ public sealed class CalendarBoardSystem : EntitySystem
         var state = new CalendarBoardBoundUserInterfaceState(wantedData, stringDayDeck, stringNightDeck, currentCycle, Announcements);
         _ui.SetUiState(uid, CalendarBoardUiKey.Key, state);
 
-        _appearance.SetData(uid, WantedDeskVisuals.Appearance, Announcements.Count switch
+        int papersCount = Announcements.Count + wantedData.Count;
+
+        _appearance.SetData(uid, WantedDeskVisuals.Appearance, papersCount switch
         {
             <= 0 => WantedDeskVisualState.None,
             < 3 => WantedDeskVisualState.Min,
             < 6 => WantedDeskVisualState.Medium,
-            > 6 => WantedDeskVisualState.Full,
-            _ => WantedDeskVisualState.None
+            >= 6 => WantedDeskVisualState.Full
         });
     }
 }
