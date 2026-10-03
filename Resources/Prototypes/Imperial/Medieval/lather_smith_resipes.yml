@@ -260,6 +260,16 @@
   result: WorkpieceMedievalIronGlovesBrig
 
 - type: CP14Recipe
+  id: MedievalIronGlovesChain
+  craftTime: 12
+  iconOverride: MedievalIronGlovesChain
+  stacks:
+    MedievalRivets: 1
+    MedievalChain: 2
+    # 10 total
+  result: WorkpieceMedievalIronGlovesChain
+
+- type: CP14Recipe
   id: MedievalNorthernGloves
   craftTime: 12
   iconOverride: MedievalNorthernGloves
@@ -288,6 +298,15 @@
     MedievalIronPlateSmall: 5
     # 10 total
   result: WorkpieceMedievalClothingFeetSteel
+
+- type: CP14Recipe
+  id: MedievalClothingFeetChain
+  craftTime: 10
+  iconOverride: MedievalClothingFeetChain
+  stacks:
+    MedievalChain: 2
+    # 10 total
+  result: WorkpieceMedievalClothingFeetChain
 
 - type: CP14Recipe
   id: MedievalClothingFeetNorthern

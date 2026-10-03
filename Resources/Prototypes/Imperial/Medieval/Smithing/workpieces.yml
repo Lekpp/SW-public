@@ -245,6 +245,13 @@
     finalProductEntity: MedievalIronGlovesBrig
 
 - type: entity
+  id: WorkpieceMedievalIronGlovesChain
+  parent: BaseArmorWorkpiece
+  components:
+  - type: SmithingWorkpiece
+    finalProductEntity: MedievalIronGlovesChain
+
+- type: entity
   id: WorkpieceMedievalNorthernGloves
   parent: BaseArmorWorkpiece
   components:
@@ -264,6 +271,13 @@
   components:
   - type: SmithingWorkpiece
     finalProductEntity: MedievalClothingFeetSteel
+
+- type: entity
+  id: WorkpieceMedievalClothingFeetChain
+  parent: BaseArmorWorkpiece
+  components:
+  - type: SmithingWorkpiece
+    finalProductEntity: MedievalClothingFeetChain
 
 - type: entity
   id: WorkpieceMedievalClothingFeetNorthern

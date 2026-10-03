@@ -11,11 +11,7 @@
       "name": "icon"
     },
     {
-      "name": "equipped-HELMET",
-      "directions": 4
-    },
-    {
-      "name": "chain_equipped-HELMET",
+      "name": "equipped-HAND",
       "directions": 4
     },
     {

@@ -724,10 +724,16 @@
   - productEntity: MedievalIronGlovesBrig
     cost: 30
     reputationForBuying: 1
+  - productEntity: MedievalIronGlovesChain
+    cost: 30
+    reputationForBuying: 1
   - productEntity: MedievalIronGlovesBear
     cost: 30
     reputationForBuying: 1
   - productEntity: MedievalClothingFeetSteel
+    cost: 35
+    reputationForBuying: 1.15
+  - productEntity: MedievalClothingFeetChain
     cost: 35
     reputationForBuying: 1.15
   - productEntity: MedievalClothingOuterArmorChainMailLight

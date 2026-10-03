@@ -2391,6 +2391,8 @@
         prob: 0.06
       - id: MedievalClothingFeetSteel
         prob: 0.06
+      - id: MedievalClothingFeetChain
+        prob: 0.06
       - id: MedievalClothingHeadHelmetBacinet
         prob: 0.15
       - id: MedievalClothingHeadHelmetBacinetVisorless

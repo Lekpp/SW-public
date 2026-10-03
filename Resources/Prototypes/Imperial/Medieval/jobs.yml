@@ -929,6 +929,7 @@
   - MedievalClothingHandsGlovesColorBrown
   - MedievalGlovesBlacksmith
   - MedievalIronGlovesBrig
+  - MedievalIronGlovesChain
   - MedievalIronGloves
   - MedievalIronGlovesBear
 
@@ -994,6 +995,14 @@
     proto: MedievalTimer10hours
   equipment:
     gloves: MedievalIronGlovesBrig
+
+- type: loadout
+  id: MedievalIronGlovesChain
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: MedievalTimer10hours
+  equipment:
+    gloves: MedievalIronGlovesChain
 
 - type: loadout
   id: MedievalIronGlovesBear
