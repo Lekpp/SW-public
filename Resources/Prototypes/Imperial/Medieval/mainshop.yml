@@ -1174,6 +1174,30 @@
   - MedievalArmor
 
 - type: listing
+  id: MdvShopMedievalClothingHeadHelmetBacinetVisorless
+  productEntity: MedievalClothingHeadHelmetBacinetVisorless
+  cost:
+    Revent: 30
+  categories:
+  - MedievalArmor
+
+- type: listing
+  id: MdvShopMedievalClothingHeadHelmetCervelliere
+  productEntity: MedievalClothingHeadHelmetCervelliere
+  cost:
+    Revent: 30
+  categories:
+  - MedievalArmor
+
+- type: listing
+  id: MdvShopMedievalClothingHeadHelmetChainmail
+  productEntity: MedievalClothingHeadHelmetChainmail
+  cost:
+    Revent: 30
+  categories:
+  - MedievalArmor
+
+- type: listing
   id: MdvShopOintment
   productEntity: Ointment
   cost:

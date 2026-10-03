@@ -760,6 +760,15 @@
   - productEntity: MedievalClothingHeadHelmetBacinet
     cost: 30
     reputationForBuying: 1
+  - productEntity: MedievalClothingHeadHelmetBacinetVisorless
+    cost: 30
+    reputationForBuying: 1
+  - productEntity: MedievalClothingHeadHelmetCervelliere
+    cost: 30
+    reputationForBuying: 1
+  - productEntity: MedievalClothingHeadHelmetChainmail
+    cost: 30
+    reputationForBuying: 1
   - productEntity: MedievalClothingHeadHelmetNazal
     cost: 150
     reputationForBuying: 5

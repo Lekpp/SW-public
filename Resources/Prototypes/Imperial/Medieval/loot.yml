@@ -547,6 +547,12 @@
         prob: 0.025
       - id: MedievalClothingHeadHelmetBacinet
         prob: 0.025
+      - id: MedievalClothingHeadHelmetBacinetVisorless
+        prob: 0.025
+      - id: MedievalClothingHeadHelmetCervelliere
+        prob: 0.025
+      - id: MedievalClothingHeadHelmetChainmail
+        prob: 0.025
       - id: MedievalClothingHeadHelmetNormand
         prob: 0.025
       - id: MedievalClothingHeadHelmetNormandFree
@@ -995,6 +1001,12 @@
       - id: MedievalClothingHeadHelmetSaladLight
         prob: 0.025
       - id: MedievalClothingHeadHelmetBacinet
+        prob: 0.025
+      - id: MedievalClothingHeadHelmetBacinetVisorless
+        prob: 0.025
+      - id: MedievalClothingHeadHelmetCervelliere
+        prob: 0.025
+      - id: MedievalClothingHeadHelmetChainmail
         prob: 0.025
       - id: MedievalClothingHeadHelmetNormand
         prob: 0.025
@@ -1564,6 +1576,12 @@
       - id: MedievalClothingHeadHelmetSaladLight
         prob: 0.025
       - id: MedievalClothingHeadHelmetBacinet
+        prob: 0.025
+      - id: MedievalClothingHeadHelmetBacinetVisorless
+        prob: 0.025
+      - id: MedievalClothingHeadHelmetCervelliere
+        prob: 0.025
+      - id: MedievalClothingHeadHelmetChainmail
         prob: 0.025
       - id: MedievalClothingHeadHelmetNormand
         prob: 0.025

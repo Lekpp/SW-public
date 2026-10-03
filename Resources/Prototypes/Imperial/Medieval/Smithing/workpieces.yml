@@ -1,4 +1,4 @@
-﻿- type: entity
+- type: entity
   id: BaseSmithWorkpiece
   parent: BaseItem
   abstract: true
@@ -194,6 +194,27 @@
   components:
   - type: SmithingWorkpiece
     finalProductEntity: MedievalClothingHeadHelmetBacinet
+
+- type: entity
+  id: WorkpieceMedievalClothingHeadHelmetBacinetVisorless
+  parent: BaseArmorWorkpiece
+  components:
+  - type: SmithingWorkpiece
+    finalProductEntity: MedievalClothingHeadHelmetBacinetVisorless
+
+- type: entity
+  id: WorkpieceMedievalClothingHeadHelmetCervelliere
+  parent: BaseArmorWorkpiece
+  components:
+  - type: SmithingWorkpiece
+    finalProductEntity: MedievalClothingHeadHelmetCervelliere
+
+- type: entity
+  id: WorkpieceMedievalClothingHeadHelmetChainmail
+  parent: BaseArmorWorkpiece
+  components:
+  - type: SmithingWorkpiece
+    finalProductEntity: MedievalClothingHeadHelmetChainmail
 
 - type: entity
   id: WorkpieceMedievalClothingHeadHelmetShapel
