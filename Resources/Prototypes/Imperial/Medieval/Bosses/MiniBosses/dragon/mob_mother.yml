@@ -154,6 +154,16 @@
         #- Door
         #tags:
         #- Wall
+    - type: MedievalTailSweep
+      range: 3.5
+      throwDistance: 3
+      autoRange: 2.4
+      damage:
+        types:
+          Blunt: 50
+      structureDamage:
+        types:
+          Structural: 200
 
 - type: entity
   name: dragon

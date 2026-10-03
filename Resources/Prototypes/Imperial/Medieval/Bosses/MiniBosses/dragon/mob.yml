@@ -158,6 +158,13 @@
         #tags:
         #- Wall
     - type: AchievementTarget
+    - type: MedievalTailSweep
+      damage:
+        types:
+          Blunt: 35
+      structureDamage:
+        types:
+          Structural: 150
 
 - type: entity
   name: dragon

@@ -80,3 +80,33 @@
           - relativePosition: 0,-1
             fadePosition: 0,-1
             distortionPathTime: 1
+
+- type: entity
+  parent: BaseAction
+  id: MedievalActionDragonTailSweep
+  name: tail sweep
+  description: The dragon spins in place and lashes everyone around it with its tail.
+  components:
+  - type: Action
+    useDelay: 20
+    itemIconStyle: BigAction
+    icon:
+      sprite: Imperial/Medieval/Mobs/Bosses/Dragons/tail_sweep.rsi
+      state: icon
+  - type: InstantAction
+    event: !type:MedievalTailSweepActionEvent
+
+- type: entity
+  id: MedievalEffectDragonTailSweep
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: Imperial/Medieval/Mobs/Bosses/Dragons/tail_sweep_effect.rsi
+    state: effect
+    drawdepth: BelowMobs
+    noRot: true
+  - type: TimedDespawn
+    lifetime: 0.45
+  - type: Tag
+    tags:
+    - HideContextMenu
