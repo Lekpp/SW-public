@@ -191,6 +191,35 @@
   result: WorkpieceMedievalClothingHeadHelmetBacinet
 
 - type: CP14Recipe
+  id: MedievalClothingHeadHelmetBacinetVisorless
+  craftTime: 9
+  iconOverride: MedievalClothingHeadHelmetBacinetVisorless
+  stacks:
+    MedievalIronIngot: 1
+    MedievalIronPlateSmall: 5
+    MedievalRivets: 1
+  result: WorkpieceMedievalClothingHeadHelmetBacinetVisorless
+
+- type: CP14Recipe
+  id: MedievalClothingHeadHelmetCervelliere
+  craftTime: 9
+  iconOverride: MedievalClothingHeadHelmetCervelliere
+  stacks:
+    MedievalIronIngot: 1
+    MedievalIronPlateSmall: 5
+    MedievalRivets: 1
+  result: WorkpieceMedievalClothingHeadHelmetCervelliere
+
+- type: CP14Recipe
+  id: MedievalClothingHeadHelmetChainmail
+  craftTime: 9
+  iconOverride: MedievalClothingHeadHelmetChainmail
+  stacks:
+    MedievalChain: 2
+    MedievalRivets: 1
+  result: WorkpieceMedievalClothingHeadHelmetChainmail
+
+- type: CP14Recipe
   id: MedievalClothingHeadHelmetShapel
   craftTime: 9
   iconOverride: MedievalClothingHeadHelmetShapel
@@ -231,6 +260,16 @@
   result: WorkpieceMedievalIronGlovesBrig
 
 - type: CP14Recipe
+  id: MedievalIronGlovesChain
+  craftTime: 12
+  iconOverride: MedievalIronGlovesChain
+  stacks:
+    MedievalRivets: 1
+    MedievalChain: 2
+    # 10 total
+  result: WorkpieceMedievalIronGlovesChain
+
+- type: CP14Recipe
   id: MedievalNorthernGloves
   craftTime: 12
   iconOverride: MedievalNorthernGloves
@@ -259,6 +298,15 @@
     MedievalIronPlateSmall: 5
     # 10 total
   result: WorkpieceMedievalClothingFeetSteel
+
+- type: CP14Recipe
+  id: MedievalClothingFeetChain
+  craftTime: 10
+  iconOverride: MedievalClothingFeetChain
+  stacks:
+    MedievalChain: 2
+    # 10 total
+  result: WorkpieceMedievalClothingFeetChain
 
 - type: CP14Recipe
   id: MedievalClothingFeetNorthern

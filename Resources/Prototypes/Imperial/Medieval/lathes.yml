@@ -1242,13 +1242,18 @@
     - MedievalClothingHeadHelmetNormandFree
     - MedievalClothingHeadHelmetNorthern
     - MedievalClothingHeadHelmetBacinet
+    - MedievalClothingHeadHelmetBacinetVisorless
+    - MedievalClothingHeadHelmetCervelliere
+    - MedievalClothingHeadHelmetChainmail
     - MedievalClothingHeadHelmetShapel
     - MedievalClothingHeadHelmetCrusader
     - MedievalIronGloves
     - MedievalIronGlovesBrig
+    - MedievalIronGlovesChain
     - MedievalNorthernGloves
     - MedievalIronGlovesBear
     - MedievalClothingFeetSteel
+    - MedievalClothingFeetChain
     - MedievalClothingFeetNorthern
     - MedievalClothingOuterArmorChainMailLight
     - MedievalClothingOuterArmorChainMail
