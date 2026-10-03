@@ -1,4 +1,4 @@
-ent-MedievalAtm = ATM
+ent-MedievalAtm = Treasury Crystal
     .desc = Withdraws the salary you have earned.
 
 medieval-atm-empty = You have no salary to withdraw.

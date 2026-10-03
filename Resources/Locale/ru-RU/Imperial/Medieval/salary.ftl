@@ -1,4 +1,4 @@
-ent-MedievalAtm = банкомат
+ent-MedievalAtm = кристалл казны
     .desc = Выдаёт заработанное жалованье.
 
 medieval-atm-empty = У вас нет жалованья для снятия.
