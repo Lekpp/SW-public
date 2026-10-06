@@ -478,7 +478,7 @@
   id: MagicNecroShopMedievalIronHammerNecro
   productEntity: MedievalIronHammerNecro
   cost:
-    UnholyMedieval: 35
+    UnholyMedieval: 45
   categories:
   - MedievalNecroWeapon
 
