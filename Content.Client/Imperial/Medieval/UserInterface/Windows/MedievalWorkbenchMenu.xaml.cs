@@ -61,8 +61,6 @@ public sealed partial class MedievalWorkbenchMenu : MedievalWindow
         _sprite = _entMan.System<SpriteSystem>();
 
         TitleFont = MedievalUiStyle.TitleFont(_resCache);
-        ItemName.FontOverride = MedievalUiStyle.TitleFont(_resCache);
-        ItemName.FontColorOverride = MedievalUiStyle.Gold;
         MaterialsLabel.FontOverride = MedievalUiStyle.TextFont(_resCache);
         MaterialsLabel.FontColorOverride = MedievalUiStyle.Gold;
         HintLabel.FontColorOverride = MedievalUiStyle.TextFaded;
@@ -249,13 +247,16 @@ public sealed partial class MedievalWorkbenchMenu : MedievalWindow
         if (entry == null || _state == null || !_prototype.TryIndex(entry.Value.ProtoId, out var recipe))
         {
             ItemView.Texture = null;
-            ItemName.Text = string.Empty;
+            ItemName.SetMessage(string.Empty);
             ItemDescription.SetMessage(string.Empty);
             CraftButton.Disabled = true;
             return;
         }
 
-        ItemName.Text = RecipeName(recipe);
+        // RichTextLabel so long names wrap; same font as MedievalUiStyle.TitleFont
+        ItemName.SetMessage(
+            FormattedMessage.FromMarkupOrThrow($"[font=\"Vinque\" size=18]{FormattedMessage.EscapeText(RecipeName(recipe))}[/font]"),
+            defaultColor: MedievalUiStyle.Gold);
         ItemDescription.SetMessage(FormattedMessage.FromUnformatted(
                 _prototype.TryIndex(recipe.Result, out EntityPrototype? result) ? result.Description : string.Empty),
             defaultColor: MedievalUiStyle.TextFaded);
