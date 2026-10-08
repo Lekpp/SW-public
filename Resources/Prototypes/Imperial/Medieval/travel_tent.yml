@@ -71,6 +71,7 @@
         mask:
         - TableMask
         layer:
+        - HighImpassable
         - MidImpassable
         - LowImpassable
         - InteractImpassable
@@ -82,6 +83,7 @@
         mask:
         - TableMask
         layer:
+        - HighImpassable
         - MidImpassable
         - LowImpassable
         - InteractImpassable
@@ -93,6 +95,7 @@
         mask:
         - TableMask
         layer:
+        - HighImpassable
         - MidImpassable
         - LowImpassable
         - InteractImpassable
@@ -111,6 +114,7 @@
         mask:
         - TableMask
         layer:
+        - HighImpassable
         - MidImpassable
         - LowImpassable
         - InteractImpassable
