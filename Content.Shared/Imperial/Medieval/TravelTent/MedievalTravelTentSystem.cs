@@ -20,6 +20,9 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Imperial.Medieval.TravelTent;
 
+/// <summary>
+/// Pitching and folding the travel tent, and laying a sleeping bag out inside it.
+/// </summary>
 public sealed class MedievalTravelTentSystem : EntitySystem
 {
     [Dependency] private readonly AnchorableSystem _anchorable = default!;

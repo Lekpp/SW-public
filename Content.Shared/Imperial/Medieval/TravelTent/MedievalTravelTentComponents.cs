@@ -49,6 +49,7 @@ public sealed partial class MedievalTravelTentComponent : Component
     public float BagSearchRange = 0.4f;
 }
 
+/// <summary>The rolled tent is being pitched at <see cref="Location"/>.</summary>
 [Serializable, NetSerializable]
 public sealed partial class MedievalTravelTentPitchDoAfterEvent : DoAfterEvent
 {
@@ -70,5 +71,6 @@ public sealed partial class MedievalTravelTentPitchDoAfterEvent : DoAfterEvent
     }
 }
 
+/// <summary>The pitched tent is being folded back into a roll.</summary>
 [Serializable, NetSerializable]
 public sealed partial class MedievalTravelTentFoldDoAfterEvent : SimpleDoAfterEvent;

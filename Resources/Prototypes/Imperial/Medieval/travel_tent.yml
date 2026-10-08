@@ -1,6 +1,3 @@
-- type: Tag
-  id: MedievalSleepingBag
-
 # Rolled up: carried in a bag or on the back, can hold one rolled sleeping bag.
 - type: entity
   parent: BaseItem
