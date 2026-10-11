@@ -27,6 +27,9 @@ public sealed class MedievalWorkbenchTheme
 
     public Color Selected { get; private init; }
 
+    /// <summary>Drawn over both ends of the craft button when it can be pressed, null for none.</summary>
+    public Texture? ButtonNail { get; private init; }
+
     // grey-blue so brown, pale and dark items all stand out
     private static readonly Color PreviewColor = Color.FromHex("#4e565e");
 
@@ -35,6 +38,7 @@ public sealed class MedievalWorkbenchTheme
         return id switch
         {
             "Leather" => Leather(cache),
+            "Wood" => Wood(cache),
             _ => Plain(),
         };
     }
@@ -97,6 +101,65 @@ public sealed class MedievalWorkbenchTheme
             Material = tag,
             Selected = Color.FromHex("#4a2f1c"),
         };
+    }
+
+    public static MedievalWorkbenchTheme Wood(IResourceCache cache)
+    {
+        const string path = "/Textures/Imperial/Medieval/Interface/Workbench/Wood/";
+
+        // 128x40, light top edge, seams between the boards, dark foot in the bottom 10 px
+        var header = new StyleBoxTexture
+        {
+            Texture = cache.GetTexture(path + "header.png"),
+            Mode = StyleBoxTexture.StretchMode.Tile,
+            PatchMarginTop = 1,
+            PatchMarginBottom = 10,
+        };
+
+        // 32x32, an iron nail in each corner
+        var list = Panel(cache.GetTexture(path + "panel.png"), 10, 8);
+        var details = Panel(cache.GetTexture(path + "panel.png"), 10, 12);
+
+        // 24x24, the nails sit inside the corner patches
+        var preview = Panel(cache.GetTexture(path + "preview.png"), 10, 0);
+
+        // 40x36, the nail takes the left 14 px
+        var plank = new StyleBoxTexture
+        {
+            Texture = cache.GetTexture(path + "tag.png"),
+            Mode = StyleBoxTexture.StretchMode.Tile,
+            PatchMarginLeft = 14,
+            PatchMarginRight = 4,
+            PatchMarginTop = 4,
+            PatchMarginBottom = 4,
+        };
+        plank.SetContentMarginOverride(StyleBox.Margin.Left, 16);
+        plank.SetContentMarginOverride(StyleBox.Margin.Right, 8);
+        plank.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
+
+        return new MedievalWorkbenchTheme
+        {
+            Header = header,
+            HeaderHeight = 40,
+            List = list,
+            Details = details,
+            Preview = preview,
+            Material = plank,
+            Selected = Color.FromHex("#4b3320"),
+            ButtonNail = cache.GetTexture(path + "nail.png"),
+        };
+    }
+
+    private static StyleBoxTexture Panel(Texture texture, float patch, float padding)
+    {
+        var box = new StyleBoxTexture
+        {
+            Texture = texture,
+            Mode = StyleBoxTexture.StretchMode.Tile,
+        };
+        box.SetPatchMargin(StyleBox.Margin.All, patch);
+        box.SetContentMarginOverride(StyleBox.Margin.All, padding);
+        return box;
     }
 
     private static StyleBoxFlat Flat(Color background, Color border, float padding, float borderThickness = 1)

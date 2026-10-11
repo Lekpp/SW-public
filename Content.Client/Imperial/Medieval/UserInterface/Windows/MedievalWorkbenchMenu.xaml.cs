@@ -156,6 +156,16 @@ public sealed partial class MedievalWorkbenchMenu : MedievalWindow
         ListPanel.PanelOverride = _theme.List;
         DetailsPanel.PanelOverride = _theme.Details;
         PreviewPanel.PanelOverride = _theme.Preview;
+
+        NailLeft.Texture = _theme.ButtonNail;
+        NailRight.Texture = _theme.ButtonNail;
+        UpdateButtonNails();
+    }
+
+    // nails only on a button that can be pressed, the disabled one stays plain
+    private void UpdateButtonNails()
+    {
+        CraftNails.Visible = _theme.ButtonNail != null && !CraftButton.Disabled;
     }
 
     private void RebuildList(CP14WorkbenchUiRecipesState state)
@@ -250,6 +260,7 @@ public sealed partial class MedievalWorkbenchMenu : MedievalWindow
             ItemName.SetMessage(string.Empty);
             ItemDescription.SetMessage(string.Empty);
             CraftButton.Disabled = true;
+            UpdateButtonNails();
             return;
         }
 
@@ -291,6 +302,7 @@ public sealed partial class MedievalWorkbenchMenu : MedievalWindow
         }
 
         CraftButton.Disabled = !entry.Value.Craftable;
+        UpdateButtonNails();
     }
 
     private Control MaterialRow(string name, Texture? icon, int have, int need)

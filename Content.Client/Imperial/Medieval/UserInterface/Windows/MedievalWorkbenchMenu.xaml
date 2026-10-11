@@ -42,13 +42,19 @@
                 </ScrollContainer>
                 <Label Name="HintLabel" Text="{Loc 'medieval-workbench-hint'}" Margin="0 6 0 0" />
 
-                <ui:MedievalButton
-                    Name="CraftButton"
-                    Text="{Loc 'medieval-workbench-craft'}"
-                    HorizontalAlignment="Center"
-                    MinWidth="180"
-                    TextAlign="Center"
-                    Margin="0 8 0 0" />
+                <!-- the nails of a theme are drawn over the button, they don't take clicks -->
+                <Control HorizontalAlignment="Center" Margin="0 8 0 0">
+                    <ui:MedievalButton
+                        Name="CraftButton"
+                        Text="{Loc 'medieval-workbench-craft'}"
+                        MinWidth="180"
+                        TextAlign="Center" />
+                    <BoxContainer Name="CraftNails" Orientation="Horizontal" Margin="7 0" Visible="False">
+                        <TextureRect Name="NailLeft" VerticalAlignment="Center" />
+                        <Control HorizontalExpand="True" />
+                        <TextureRect Name="NailRight" VerticalAlignment="Center" />
+                    </BoxContainer>
+                </Control>
             </BoxContainer>
         </PanelContainer>
     </BoxContainer>

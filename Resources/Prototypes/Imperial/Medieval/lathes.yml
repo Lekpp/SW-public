@@ -927,6 +927,7 @@
   - type: Pullable
   - type: CP14Workbench
     craftSound: "/Audio/Imperial/Medieval/craft_wood.ogg"
+    uiTheme: Wood
     recipes:
     - MedievalWeaponCrossbow
     - MedievalWeaponCrossbowHeavy
