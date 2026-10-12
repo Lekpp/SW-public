@@ -50,6 +50,9 @@ public sealed partial class MedievalWorkbenchMenu : MedievalWindow
     private string? _shownRecipes;
     private ProtoId<CP14WorkbenchRecipePrototype>? _selected;
 
+    // a theme's cloth over the craft button, under its text
+    private readonly PanelContainer _buttonFabric = new();
+
     private readonly List<RecipeRow> _rows = new();
     private readonly List<(Control Header, bool Craftable)> _headers = new();
 
@@ -78,6 +81,9 @@ public sealed partial class MedievalWorkbenchMenu : MedievalWindow
             if (_selected is { } selected)
                 OnCraft?.Invoke(selected);
         };
+
+        CraftButton.AddChild(_buttonFabric);
+        _buttonFabric.SetPositionInParent(0);
 
         _theme = MedievalWorkbenchTheme.Plain();
         ApplyTheme();
@@ -159,13 +165,16 @@ public sealed partial class MedievalWorkbenchMenu : MedievalWindow
 
         NailLeft.Texture = _theme.ButtonNail;
         NailRight.Texture = _theme.ButtonNail;
-        UpdateButtonNails();
+        UpdateButtonDecor();
     }
 
-    // nails only on a button that can be pressed, the disabled one stays plain
-    private void UpdateButtonNails()
+    // nails and cloth only on a button that can be pressed, the disabled one stays plain
+    private void UpdateButtonDecor()
     {
         CraftNails.Visible = _theme.ButtonNail != null && !CraftButton.Disabled;
+
+        _buttonFabric.PanelOverride = _theme.ButtonFabric;
+        _buttonFabric.Visible = _theme.ButtonFabric != null && !CraftButton.Disabled;
     }
 
     private void RebuildList(CP14WorkbenchUiRecipesState state)
@@ -260,7 +269,7 @@ public sealed partial class MedievalWorkbenchMenu : MedievalWindow
             ItemName.SetMessage(string.Empty);
             ItemDescription.SetMessage(string.Empty);
             CraftButton.Disabled = true;
-            UpdateButtonNails();
+            UpdateButtonDecor();
             return;
         }
 
@@ -302,7 +311,7 @@ public sealed partial class MedievalWorkbenchMenu : MedievalWindow
         }
 
         CraftButton.Disabled = !entry.Value.Craftable;
-        UpdateButtonNails();
+        UpdateButtonDecor();
     }
 
     private Control MaterialRow(string name, Texture? icon, int have, int need)

@@ -30,6 +30,9 @@ public sealed class MedievalWorkbenchTheme
     /// <summary>Drawn over both ends of the craft button when it can be pressed, null for none.</summary>
     public Texture? ButtonNail { get; private init; }
 
+    /// <summary>Tiled over the craft button when it can be pressed, null for none.</summary>
+    public StyleBox? ButtonFabric { get; private init; }
+
     // grey-blue so brown, pale and dark items all stand out
     private static readonly Color PreviewColor = Color.FromHex("#4e565e");
 
@@ -40,6 +43,7 @@ public sealed class MedievalWorkbenchTheme
             "Leather" => Leather(cache),
             "Wood" => Wood(cache),
             "Blacksmith" => Blacksmith(cache),
+            "Tailor" => Tailor(cache),
             _ => Plain(),
         };
     }
@@ -188,6 +192,55 @@ public sealed class MedievalWorkbenchTheme
             Preview = Flat(PreviewColor, edge, 0, 2),
             Material = tag,
             Selected = Color.FromHex("#3a2e27"),
+        };
+    }
+
+    public static MedievalWorkbenchTheme Tailor(IResourceCache cache)
+    {
+        const string path = "/Textures/Imperial/Medieval/Interface/Workbench/Tailor/";
+        var edge = Color.FromHex("#090b10");
+        var rim = Color.FromHex("#3d2e24");
+
+        // 128x44, indigo weave, a band of gold thread under the title, dark foot in the bottom 10 px
+        var header = new StyleBoxTexture
+        {
+            Texture = cache.GetTexture(path + "header.png"),
+            Mode = StyleBoxTexture.StretchMode.Tile,
+            PatchMarginTop = 1,
+            PatchMarginBottom = 10,
+        };
+
+        // 8x4 translucent weave, tiled over the craft button
+        var fabric = new StyleBoxTexture
+        {
+            Texture = cache.GetTexture(path + "weave.png"),
+            Mode = StyleBoxTexture.StretchMode.Tile,
+        };
+
+        // 42x36, a cloth swatch: the pinked edge takes the left 14 px
+        var swatch = new StyleBoxTexture
+        {
+            Texture = cache.GetTexture(path + "tag.png"),
+            Mode = StyleBoxTexture.StretchMode.Tile,
+            PatchMarginLeft = 14,
+            PatchMarginRight = 4,
+            PatchMarginTop = 4,
+            PatchMarginBottom = 4,
+        };
+        swatch.SetContentMarginOverride(StyleBox.Margin.Left, 16);
+        swatch.SetContentMarginOverride(StyleBox.Margin.Right, 8);
+        swatch.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
+
+        return new MedievalWorkbenchTheme
+        {
+            Header = header,
+            HeaderHeight = 44,
+            List = Flat(MedievalUiStyle.Inset, rim, 6),
+            Details = Flat(MedievalUiStyle.Inset, rim, 12),
+            Preview = Flat(PreviewColor, edge, 0, 2),
+            Material = swatch,
+            Selected = Color.FromHex("#242a38"),
+            ButtonFabric = fabric,
         };
     }
 

@@ -1433,6 +1433,7 @@
   - type: Pullable
   - type: CP14Workbench
     craftSound: "/Audio/Imperial/Medieval/craft_cloth.ogg"
+    uiTheme: Tailor
     recipes:
       - MedievalSewingNeedle
       - MedievalSewingPatches
