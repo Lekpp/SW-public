@@ -39,6 +39,7 @@ public sealed class MedievalWorkbenchTheme
         {
             "Leather" => Leather(cache),
             "Wood" => Wood(cache),
+            "Blacksmith" => Blacksmith(cache),
             _ => Plain(),
         };
     }
@@ -147,6 +148,46 @@ public sealed class MedievalWorkbenchTheme
             Material = plank,
             Selected = Color.FromHex("#4b3320"),
             ButtonNail = cache.GetTexture(path + "nail.png"),
+        };
+    }
+
+    public static MedievalWorkbenchTheme Blacksmith(IResourceCache cache)
+    {
+        const string path = "/Textures/Imperial/Medieval/Interface/Workbench/Blacksmith/";
+        var edge = Color.FromHex("#0b0c0e");
+
+        // 288x40, charred boards with an iron strap, dark foot in the bottom 10 px
+        var header = new StyleBoxTexture
+        {
+            Texture = cache.GetTexture(path + "header.png"),
+            Mode = StyleBoxTexture.StretchMode.Tile,
+            PatchMarginTop = 1,
+            PatchMarginBottom = 10,
+        };
+
+        // 40x36, a flat iron strip takes the left 8 px
+        var tag = new StyleBoxTexture
+        {
+            Texture = cache.GetTexture(path + "tag.png"),
+            Mode = StyleBoxTexture.StretchMode.Tile,
+            PatchMarginLeft = 8,
+            PatchMarginRight = 4,
+            PatchMarginTop = 4,
+            PatchMarginBottom = 4,
+        };
+        tag.SetContentMarginOverride(StyleBox.Margin.Left, 16);
+        tag.SetContentMarginOverride(StyleBox.Margin.Right, 8);
+        tag.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
+
+        return new MedievalWorkbenchTheme
+        {
+            Header = header,
+            HeaderHeight = 40,
+            List = Flat(MedievalUiStyle.Inset, edge, 6),
+            Details = Flat(MedievalUiStyle.Inset, edge, 12),
+            Preview = Flat(PreviewColor, edge, 0, 2),
+            Material = tag,
+            Selected = Color.FromHex("#3a2e27"),
         };
     }
 
