@@ -38,9 +38,10 @@
   description: trait-medieval-skills-food-desc
   category: MedievalBody
   cost: 1
+  overrideExisting: true # Hunger is already on the mob
   components:
-    - type: Stamina
-      critThreshold: 110 # fix later
+    - type: Hunger
+      baseDecayRate: 0.0125 # 25% below the default 0.01666
 
 - type: trait
   id: MedievalThirst
@@ -48,9 +49,10 @@
   description: trait-medieval-skills-thirst-desc
   category: MedievalBody
   cost: 1
+  overrideExisting: true # Thirst is already on the mob
   components:
-    - type: Stamina
-      critThreshold: 110 # fix later
+    - type: Thirst
+      baseDecayRate: 0.075 # 25% below the default 0.1
 
 - type: trait
   id: MedievalEye
@@ -58,6 +60,7 @@
   description: trait-medieval-skills-eye-desc
   category: MedievalBody
   cost: 1
+  overrideExisting: true # ContentEye is already on the mob
   components:
     - type: ContentEye
       maxZoom: 1.045, 1.045
@@ -69,12 +72,21 @@
   description: trait-medieval-skills-pain-desc
   category: MedievalBody
   cost: 1
+  overrideExisting: true # these components are already on the mob, so the lists are copied from Species/base.yml
   components:
     - type: DamageForceSay
       damageThreshold: 200
     - type: EmoteOnDamage
+      emotes:
+      - PainScream
       emoteChance: 0
+      withChat: true
+      emoteCooldown: 3.5
     - type: SoftCritEmotes
+      emotes:
+      - Cough
+      - Gasp
+      - PassiveScream
       minDamage: 200
 
 - type: trait
@@ -83,6 +95,7 @@
   description: trait-medieval-skills-stamina-desc
   category: MedievalBody
   cost: 1
+  overrideExisting: true # Stamina is already on the mob
   components:
     - type: Stamina
       critThreshold: 110
