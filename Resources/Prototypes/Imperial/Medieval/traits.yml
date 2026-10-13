@@ -38,10 +38,9 @@
   description: trait-medieval-skills-food-desc
   category: MedievalBody
   cost: 1
-  overrideExisting: true # Hunger is already on the mob
   components:
-    - type: Hunger
-      baseDecayRate: 0.0125 # 25% below the default 0.01666
+    - type: HungerRateModifier
+      modifier: 0.75 # 25% slower than the race's own rate
 
 - type: trait
   id: MedievalThirst
@@ -49,10 +48,9 @@
   description: trait-medieval-skills-thirst-desc
   category: MedievalBody
   cost: 1
-  overrideExisting: true # Thirst is already on the mob
   components:
-    - type: Thirst
-      baseDecayRate: 0.075 # 25% below the default 0.1
+    - type: ThirstRateModifier
+      modifier: 0.75 # 25% slower than the race's own rate
 
 - type: trait
   id: MedievalEye
