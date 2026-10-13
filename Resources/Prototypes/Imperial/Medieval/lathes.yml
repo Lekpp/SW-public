@@ -1033,6 +1033,7 @@
   - type: CP14Workbench
     craftSpeed: 1
     craftSound: "/Audio/Imperial/Medieval/craft_foundry.ogg"
+    uiTheme: Foundry
     recipes:
     - MedievalAstrolit
     - MedievalGlinaFormaReady

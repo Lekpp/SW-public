@@ -44,6 +44,7 @@ public sealed class MedievalWorkbenchTheme
             "Wood" => Wood(cache),
             "Blacksmith" => Blacksmith(cache),
             "Tailor" => Tailor(cache),
+            "Foundry" => Foundry(cache),
             _ => Plain(),
         };
     }
@@ -241,6 +242,48 @@ public sealed class MedievalWorkbenchTheme
             Material = swatch,
             Selected = Color.FromHex("#242a38"),
             ButtonFabric = fabric,
+        };
+    }
+
+    public static MedievalWorkbenchTheme Foundry(IResourceCache cache)
+    {
+        const string path = "/Textures/Imperial/Medieval/Interface/Workbench/Foundry/";
+        var edge = Color.FromHex("#090b10");
+        var rim = Color.FromHex("#3d2e24");
+
+        // 132x44, sooted brick fading into the window, edge in the last row
+        var header = new StyleBoxTexture
+        {
+            Texture = cache.GetTexture(path + "header.png"),
+            Mode = StyleBoxTexture.StretchMode.Tile,
+            PatchMarginTop = 1,
+            PatchMarginBottom = 10,
+        };
+
+        // 40x36, a brick plaque: the outline sits inside the 4 px patches
+        var plaque = new StyleBoxTexture
+        {
+            Texture = cache.GetTexture(path + "tag.png"),
+            Mode = StyleBoxTexture.StretchMode.Tile,
+        };
+        plaque.SetPatchMargin(StyleBox.Margin.All, 4);
+        plaque.SetContentMarginOverride(StyleBox.Margin.Left, 16);
+        plaque.SetContentMarginOverride(StyleBox.Margin.Right, 8);
+        plaque.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
+
+        // flat iron plate with an amber edge, drawn over the craft button when it can be pressed
+        var plate = Flat(Color.FromHex("#2a2e34"), Color.FromHex("#a85a22"), 0);
+
+        return new MedievalWorkbenchTheme
+        {
+            Header = header,
+            HeaderHeight = 44,
+            List = Flat(MedievalUiStyle.Inset, rim, 6),
+            Details = Flat(MedievalUiStyle.Inset, rim, 12),
+            Preview = Flat(PreviewColor, edge, 0, 2),
+            Material = plaque,
+            Selected = Color.FromHex("#4a2519"),
+            ButtonFabric = plate,
         };
     }
 
