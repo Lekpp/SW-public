@@ -45,6 +45,8 @@
       MagicMedievalDarkness: 10
       ArchmagePoints: 1
     bonusCount: 5
+    buySuccessSound: !type:SoundPathSpecifier
+      path: /Audio/Imperial/Medieval/magic_craft.ogg
 
 - type: entity
   parent: MedievalSpellBookBase

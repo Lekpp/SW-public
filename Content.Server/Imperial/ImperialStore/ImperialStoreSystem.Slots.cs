@@ -4,6 +4,7 @@ using Content.Shared.DoAfter;
 using Content.Shared.FixedPoint;
 using Content.Shared.Imperial.ImperialStore;
 using Content.Shared.Imperial.Medieval.Language;
+using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server.Imperial.ImperialStore;
@@ -19,15 +20,16 @@ public sealed partial class ImperialStoreSystem
     [Dependency] private readonly SharedTransformSystem _xform = default!;
 
     /// <summary>
-    /// Effect around the player and the word over the head for every school.
+    /// Effect around the player, the word over the head and its colour for every school. The colours are the ones
+    /// most spells of the school are said in.
     /// </summary>
-    private static readonly Dictionary<string, (string Effect, string Word)> SlotVisuals = new()
+    private static readonly Dictionary<string, (string Effect, string Word, Color Color)> SlotVisuals = new()
     {
-        ["MagicMedievalFire"] = ("ImperialStoreSlotEffectFire", "imperial-store-slot-word-fire"),
-        ["MagicMedievalLight"] = ("ImperialStoreSlotEffectLight", "imperial-store-slot-word-light"),
-        ["MagicMedievalVodka"] = ("ImperialStoreSlotEffectVodka", "imperial-store-slot-word-vodka"),
-        ["MagicMedievalEarth"] = ("ImperialStoreSlotEffectEarth", "imperial-store-slot-word-earth"),
-        ["MagicMedievalDarkness"] = ("ImperialStoreSlotEffectDarkness", "imperial-store-slot-word-darkness"),
+        ["MagicMedievalFire"] = ("ImperialStoreSlotEffectFire", "imperial-store-slot-word-fire", Color.FromHex("#FF5900")),
+        ["MagicMedievalLight"] = ("ImperialStoreSlotEffectLight", "imperial-store-slot-word-light", Color.FromHex("#FFE57E")),
+        ["MagicMedievalVodka"] = ("ImperialStoreSlotEffectVodka", "imperial-store-slot-word-vodka", Color.FromHex("#78C6ED")),
+        ["MagicMedievalEarth"] = ("ImperialStoreSlotEffectEarth", "imperial-store-slot-word-earth", Color.FromHex("#838275")),
+        ["MagicMedievalDarkness"] = ("ImperialStoreSlotEffectDarkness", "imperial-store-slot-word-darkness", Color.FromHex("#B600FF")),
     };
 
     private void InitializeSlots()
@@ -87,6 +89,7 @@ public sealed partial class ImperialStoreSystem
         }
 
         SaySlotWord(user, msg.School);
+
     }
 
     private void OnSetSlotDoAfter(EntityUid uid, ImperialStoreComponent component, ImperialStoreSetSlotDoAfterEvent args)
@@ -139,6 +142,7 @@ public sealed partial class ImperialStoreSystem
             Loc.GetString(visuals.Word),
             InGameICChatType.Speak,
             hideChat: true,
+            color: visuals.Color,
             language: _proto.Index(SharedLanguageSystem.Universal));
     }
 
@@ -170,20 +174,30 @@ public sealed partial class ImperialStoreSystem
     }
 
     /// <summary>
-    /// A school can be put into a slot if the store has enough of it for a spell of that school,
+    /// A school can be put into a slot if the store has enough of it for a spell that can still be bought,
     /// or a spell of that school is already learned (so a slot can never be lost for good).
     /// </summary>
+    /// <remarks>
+    /// A spell that was bought is not among the available listings any more, so the learned ones are looked up
+    /// in all listings of the store.
+    /// </remarks>
     public bool IsSchoolSelectable(EntityUid? user, ImperialStoreComponent store, string school, IEnumerable<ImperialListingData> listings)
     {
-        foreach (var listing in listings)
+        if (store.Balance.TryGetValue(school, out var balance))
         {
-            if (!listing.Cost.TryGetValue(school, out var price))
+            foreach (var listing in listings)
+            {
+                if (listing.Cost.TryGetValue(school, out var price) && balance >= price)
+                    return true;
+            }
+        }
+
+        foreach (var listing in store.Listings)
+        {
+            if (!listing.Cost.ContainsKey(school))
                 continue;
 
             if (listing.PurchaseAmount > 0)
-                return true;
-
-            if (store.Balance.TryGetValue(school, out var balance) && balance >= price)
                 return true;
 
             // spells learned somewhere else, for example from a scroll
