@@ -1,0 +1,87 @@
+# Effects around the player while a school is put into an essence slot of a grimoire (3 seconds).
+# They reuse the sprites of the spell cast effects; earth has no such sprite yet and uses the platform of baze.rsi.
+
+- type: entity
+  id: ImperialStoreSlotEffectFire
+  components:
+  - type: Sprite
+    sprite: Imperial/Medieval/SpellCastEffects/fire/boost.rsi
+    color: "#FF5900"
+    noRot: true
+    layers:
+      - state: beginner
+        shader: unshaded
+  - type: PointLight
+    radius: 1.2
+    energy: 1
+    color: "#FF5900"
+  - type: TimedDespawn
+    lifetime: 3.5
+
+- type: entity
+  id: ImperialStoreSlotEffectLight
+  components:
+  - type: Sprite
+    sprite: Imperial/Medieval/SpellCastEffects/light/magic_light.rsi
+    color: "#FFE57E"
+    noRot: true
+    layers:
+      - state: beginner
+        shader: unshaded
+  - type: PointLight
+    radius: 1.2
+    energy: 1
+    color: "#FFE57E"
+  - type: TimedDespawn
+    lifetime: 3.5
+
+- type: entity
+  id: ImperialStoreSlotEffectVodka
+  components:
+  - type: Sprite
+    sprite: Imperial/Medieval/SpellCastEffects/vodka/sphere.rsi
+    color: "#0CBFE9"
+    noRot: true
+    layers:
+      - state: beginner
+        shader: unshaded
+  - type: PointLight
+    radius: 1.2
+    energy: 1
+    color: "#0CBFE9"
+  - type: TimedDespawn
+    lifetime: 3.5
+
+- type: entity
+  id: ImperialStoreSlotEffectEarth
+  components:
+  - type: Sprite
+    sprite: Imperial/Medieval/SpellCastEffects/baze.rsi
+    color: "#8A6A4A"
+    noRot: true
+    layers:
+      - state: platform
+        shader: unshaded
+  - type: PointLight
+    radius: 1.2
+    energy: 0.8
+    color: "#8A6A4A"
+  - type: TimedDespawn
+    lifetime: 3.5
+
+- type: entity
+  id: ImperialStoreSlotEffectDarkness
+  components:
+  - type: Sprite
+    sprite: Imperial/Medieval/SpellCastEffects/darkness/mana_burn.rsi
+    color: "#B600FF"
+    noRot: true
+    layers:
+      - state: beginner
+        shader: unshaded
+  - type: PointLight
+    radius: 1.2
+    energy: 1
+    color: "#B600FF"
+  - type: TimedDespawn
+    lifetime: 3.5
