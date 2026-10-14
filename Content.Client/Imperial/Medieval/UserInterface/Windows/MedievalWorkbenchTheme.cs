@@ -36,6 +36,12 @@ public sealed class MedievalWorkbenchTheme
     // grey-blue so brown, pale and dark items all stand out
     private static readonly Color PreviewColor = Color.FromHex("#4e565e");
 
+    // outline of the preview frame in the blue and dark themes
+    private static readonly Color Edge = Color.FromHex("#090b10");
+
+    // outline of the list and details panels
+    private static readonly Color Rim = MedievalUiStyle.BackgroundHover;
+
     public static MedievalWorkbenchTheme Get(string? id, IResourceCache cache)
     {
         return id switch
@@ -68,13 +74,7 @@ public sealed class MedievalWorkbenchTheme
         var edge = Color.FromHex("#140c07");
 
         // 128x40, seam and edge in the bottom 10 px
-        var header = new StyleBoxTexture
-        {
-            Texture = cache.GetTexture(path + "header.png"),
-            Mode = StyleBoxTexture.StretchMode.Tile,
-            PatchMarginTop = 1,
-            PatchMarginBottom = 10,
-        };
+        var header = HeaderStrip(cache, path);
 
         var list = new StyleBoxTexture
         {
@@ -85,18 +85,7 @@ public sealed class MedievalWorkbenchTheme
         list.SetContentMarginOverride(StyleBox.Margin.All, 6);
 
         // 40x36, the point takes the left 14 px
-        var tag = new StyleBoxTexture
-        {
-            Texture = cache.GetTexture(path + "tag.png"),
-            Mode = StyleBoxTexture.StretchMode.Tile,
-            PatchMarginLeft = 14,
-            PatchMarginRight = 4,
-            PatchMarginTop = 4,
-            PatchMarginBottom = 4,
-        };
-        tag.SetContentMarginOverride(StyleBox.Margin.Left, 16);
-        tag.SetContentMarginOverride(StyleBox.Margin.Right, 8);
-        tag.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
+        var tag = Tag(cache, path, 14);
 
         return new MedievalWorkbenchTheme
         {
@@ -115,13 +104,7 @@ public sealed class MedievalWorkbenchTheme
         const string path = "/Textures/Imperial/Medieval/Interface/Workbench/Wood/";
 
         // 128x40, light top edge, seams between the boards, dark foot in the bottom 10 px
-        var header = new StyleBoxTexture
-        {
-            Texture = cache.GetTexture(path + "header.png"),
-            Mode = StyleBoxTexture.StretchMode.Tile,
-            PatchMarginTop = 1,
-            PatchMarginBottom = 10,
-        };
+        var header = HeaderStrip(cache, path);
 
         // 32x32, an iron nail in each corner
         var list = Panel(cache.GetTexture(path + "panel.png"), 10, 8);
@@ -131,18 +114,7 @@ public sealed class MedievalWorkbenchTheme
         var preview = Panel(cache.GetTexture(path + "preview.png"), 10, 0);
 
         // 40x36, the nail takes the left 14 px
-        var plank = new StyleBoxTexture
-        {
-            Texture = cache.GetTexture(path + "tag.png"),
-            Mode = StyleBoxTexture.StretchMode.Tile,
-            PatchMarginLeft = 14,
-            PatchMarginRight = 4,
-            PatchMarginTop = 4,
-            PatchMarginBottom = 4,
-        };
-        plank.SetContentMarginOverride(StyleBox.Margin.Left, 16);
-        plank.SetContentMarginOverride(StyleBox.Margin.Right, 8);
-        plank.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
+        var plank = Tag(cache, path, 14);
 
         return new MedievalWorkbenchTheme
         {
@@ -163,27 +135,10 @@ public sealed class MedievalWorkbenchTheme
         var edge = Color.FromHex("#0b0c0e");
 
         // 288x40, charred boards with an iron strap, dark foot in the bottom 10 px
-        var header = new StyleBoxTexture
-        {
-            Texture = cache.GetTexture(path + "header.png"),
-            Mode = StyleBoxTexture.StretchMode.Tile,
-            PatchMarginTop = 1,
-            PatchMarginBottom = 10,
-        };
+        var header = HeaderStrip(cache, path);
 
         // 40x36, a flat iron strip takes the left 8 px
-        var tag = new StyleBoxTexture
-        {
-            Texture = cache.GetTexture(path + "tag.png"),
-            Mode = StyleBoxTexture.StretchMode.Tile,
-            PatchMarginLeft = 8,
-            PatchMarginRight = 4,
-            PatchMarginTop = 4,
-            PatchMarginBottom = 4,
-        };
-        tag.SetContentMarginOverride(StyleBox.Margin.Left, 16);
-        tag.SetContentMarginOverride(StyleBox.Margin.Right, 8);
-        tag.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
+        var tag = Tag(cache, path, 8);
 
         return new MedievalWorkbenchTheme
         {
@@ -200,17 +155,9 @@ public sealed class MedievalWorkbenchTheme
     public static MedievalWorkbenchTheme Tailor(IResourceCache cache)
     {
         const string path = "/Textures/Imperial/Medieval/Interface/Workbench/Tailor/";
-        var edge = Color.FromHex("#090b10");
-        var rim = Color.FromHex("#3d2e24");
 
         // 128x44, indigo weave, a band of gold thread under the title, dark foot in the bottom 10 px
-        var header = new StyleBoxTexture
-        {
-            Texture = cache.GetTexture(path + "header.png"),
-            Mode = StyleBoxTexture.StretchMode.Tile,
-            PatchMarginTop = 1,
-            PatchMarginBottom = 10,
-        };
+        var header = HeaderStrip(cache, path);
 
         // 8x4 translucent weave, tiled over the craft button
         var fabric = new StyleBoxTexture
@@ -220,26 +167,15 @@ public sealed class MedievalWorkbenchTheme
         };
 
         // 42x36, a cloth swatch: the pinked edge takes the left 14 px
-        var swatch = new StyleBoxTexture
-        {
-            Texture = cache.GetTexture(path + "tag.png"),
-            Mode = StyleBoxTexture.StretchMode.Tile,
-            PatchMarginLeft = 14,
-            PatchMarginRight = 4,
-            PatchMarginTop = 4,
-            PatchMarginBottom = 4,
-        };
-        swatch.SetContentMarginOverride(StyleBox.Margin.Left, 16);
-        swatch.SetContentMarginOverride(StyleBox.Margin.Right, 8);
-        swatch.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
+        var swatch = Tag(cache, path, 14);
 
         return new MedievalWorkbenchTheme
         {
             Header = header,
             HeaderHeight = 44,
-            List = Flat(MedievalUiStyle.Inset, rim, 6),
-            Details = Flat(MedievalUiStyle.Inset, rim, 12),
-            Preview = Flat(PreviewColor, edge, 0, 2),
+            List = Flat(MedievalUiStyle.Inset, Rim, 6),
+            Details = Flat(MedievalUiStyle.Inset, Rim, 12),
+            Preview = Flat(PreviewColor, Edge, 0, 2),
             Material = swatch,
             Selected = Color.FromHex("#242a38"),
             ButtonFabric = fabric,
@@ -249,28 +185,12 @@ public sealed class MedievalWorkbenchTheme
     public static MedievalWorkbenchTheme Foundry(IResourceCache cache)
     {
         const string path = "/Textures/Imperial/Medieval/Interface/Workbench/Foundry/";
-        var edge = Color.FromHex("#090b10");
-        var rim = Color.FromHex("#3d2e24");
 
         // 132x44, sooted brick fading into the window, edge in the last row
-        var header = new StyleBoxTexture
-        {
-            Texture = cache.GetTexture(path + "header.png"),
-            Mode = StyleBoxTexture.StretchMode.Tile,
-            PatchMarginTop = 1,
-            PatchMarginBottom = 10,
-        };
+        var header = HeaderStrip(cache, path);
 
         // 40x36, a brick plaque: the outline sits inside the 4 px patches
-        var plaque = new StyleBoxTexture
-        {
-            Texture = cache.GetTexture(path + "tag.png"),
-            Mode = StyleBoxTexture.StretchMode.Tile,
-        };
-        plaque.SetPatchMargin(StyleBox.Margin.All, 4);
-        plaque.SetContentMarginOverride(StyleBox.Margin.Left, 16);
-        plaque.SetContentMarginOverride(StyleBox.Margin.Right, 8);
-        plaque.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
+        var plaque = Tag(cache, path, 4);
 
         // flat iron plate with an amber edge, drawn over the craft button when it can be pressed
         var plate = Flat(Color.FromHex("#2a2e34"), Color.FromHex("#a85a22"), 0);
@@ -279,9 +199,9 @@ public sealed class MedievalWorkbenchTheme
         {
             Header = header,
             HeaderHeight = 44,
-            List = Flat(MedievalUiStyle.Inset, rim, 6),
-            Details = Flat(MedievalUiStyle.Inset, rim, 12),
-            Preview = Flat(PreviewColor, edge, 0, 2),
+            List = Flat(MedievalUiStyle.Inset, Rim, 6),
+            Details = Flat(MedievalUiStyle.Inset, Rim, 12),
+            Preview = Flat(PreviewColor, Edge, 0, 2),
             Material = plaque,
             Selected = Color.FromHex("#4a2519"),
             ButtonFabric = plate,
@@ -291,34 +211,16 @@ public sealed class MedievalWorkbenchTheme
     public static MedievalWorkbenchTheme Magic(IResourceCache cache)
     {
         const string path = "/Textures/Imperial/Medieval/Interface/Workbench/Magic/";
-        var edge = Color.FromHex("#090b10");
 
         // 176x44, four violet plates with a dim sigil each, edge in the last row
-        var header = new StyleBoxTexture
-        {
-            Texture = cache.GetTexture(path + "header.png"),
-            Mode = StyleBoxTexture.StretchMode.Tile,
-            PatchMarginTop = 1,
-            PatchMarginBottom = 10,
-        };
+        var header = HeaderStrip(cache, path);
 
         // 24x24, cut corners with a violet line inside the outline
         var list = Panel(cache.GetTexture(path + "panel.png"), 8, 7);
         var details = Panel(cache.GetTexture(path + "panel.png"), 8, 12);
 
         // 40x36, a cut plaque: the gem takes the left 14 px
-        var plaque = new StyleBoxTexture
-        {
-            Texture = cache.GetTexture(path + "tag.png"),
-            Mode = StyleBoxTexture.StretchMode.Tile,
-            PatchMarginLeft = 14,
-            PatchMarginRight = 4,
-            PatchMarginTop = 4,
-            PatchMarginBottom = 4,
-        };
-        plaque.SetContentMarginOverride(StyleBox.Margin.Left, 16);
-        plaque.SetContentMarginOverride(StyleBox.Margin.Right, 8);
-        plaque.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
+        var plaque = Tag(cache, path, 14);
 
         // flat violet plate with a cyan edge, drawn over the craft button when it can be pressed
         var plate = Flat(Color.FromHex("#241a44"), Color.FromHex("#2a7f9c"), 0);
@@ -329,12 +231,42 @@ public sealed class MedievalWorkbenchTheme
             HeaderHeight = 44,
             List = list,
             Details = details,
-            Preview = Flat(PreviewColor, edge, 0, 2),
+            Preview = Flat(PreviewColor, Edge, 0, 2),
             Material = plaque,
             Selected = Color.FromHex("#34286a"),
             ButtonNail = cache.GetTexture(path + "gem.png"),
             ButtonFabric = plate,
         };
+    }
+
+    /// <summary>The same header strip in every theme: top row, body, seam and edge in the bottom 10 px.</summary>
+    private static StyleBoxTexture HeaderStrip(IResourceCache cache, string path)
+    {
+        return new StyleBoxTexture
+        {
+            Texture = cache.GetTexture(path + "header.png"),
+            Mode = StyleBoxTexture.StretchMode.Tile,
+            PatchMarginTop = 1,
+            PatchMarginBottom = 10,
+        };
+    }
+
+    /// <summary>Plaque under a material: <paramref name="leftPatch"/> px on the left hold the nail, point or gem.</summary>
+    private static StyleBoxTexture Tag(IResourceCache cache, string path, float leftPatch)
+    {
+        var box = new StyleBoxTexture
+        {
+            Texture = cache.GetTexture(path + "tag.png"),
+            Mode = StyleBoxTexture.StretchMode.Tile,
+            PatchMarginLeft = leftPatch,
+            PatchMarginRight = 4,
+            PatchMarginTop = 4,
+            PatchMarginBottom = 4,
+        };
+        box.SetContentMarginOverride(StyleBox.Margin.Left, 16);
+        box.SetContentMarginOverride(StyleBox.Margin.Right, 8);
+        box.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
+        return box;
     }
 
     private static StyleBoxTexture Panel(Texture texture, float patch, float padding)
