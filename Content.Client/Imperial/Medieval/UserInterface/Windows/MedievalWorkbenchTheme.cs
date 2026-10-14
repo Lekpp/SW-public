@@ -45,6 +45,7 @@ public sealed class MedievalWorkbenchTheme
             "Blacksmith" => Blacksmith(cache),
             "Tailor" => Tailor(cache),
             "Foundry" => Foundry(cache),
+            "Magic" => Magic(cache),
             _ => Plain(),
         };
     }
@@ -283,6 +284,55 @@ public sealed class MedievalWorkbenchTheme
             Preview = Flat(PreviewColor, edge, 0, 2),
             Material = plaque,
             Selected = Color.FromHex("#4a2519"),
+            ButtonFabric = plate,
+        };
+    }
+
+    public static MedievalWorkbenchTheme Magic(IResourceCache cache)
+    {
+        const string path = "/Textures/Imperial/Medieval/Interface/Workbench/Magic/";
+        var edge = Color.FromHex("#090b10");
+
+        // 176x44, four violet plates with a dim sigil each, edge in the last row
+        var header = new StyleBoxTexture
+        {
+            Texture = cache.GetTexture(path + "header.png"),
+            Mode = StyleBoxTexture.StretchMode.Tile,
+            PatchMarginTop = 1,
+            PatchMarginBottom = 10,
+        };
+
+        // 24x24, cut corners with a violet line inside the outline
+        var list = Panel(cache.GetTexture(path + "panel.png"), 8, 7);
+        var details = Panel(cache.GetTexture(path + "panel.png"), 8, 12);
+
+        // 40x36, a cut plaque: the gem takes the left 14 px
+        var plaque = new StyleBoxTexture
+        {
+            Texture = cache.GetTexture(path + "tag.png"),
+            Mode = StyleBoxTexture.StretchMode.Tile,
+            PatchMarginLeft = 14,
+            PatchMarginRight = 4,
+            PatchMarginTop = 4,
+            PatchMarginBottom = 4,
+        };
+        plaque.SetContentMarginOverride(StyleBox.Margin.Left, 16);
+        plaque.SetContentMarginOverride(StyleBox.Margin.Right, 8);
+        plaque.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
+
+        // flat violet plate with a cyan edge, drawn over the craft button when it can be pressed
+        var plate = Flat(Color.FromHex("#241a44"), Color.FromHex("#2a7f9c"), 0);
+
+        return new MedievalWorkbenchTheme
+        {
+            Header = header,
+            HeaderHeight = 44,
+            List = list,
+            Details = details,
+            Preview = Flat(PreviewColor, edge, 0, 2),
+            Material = plaque,
+            Selected = Color.FromHex("#34286a"),
+            ButtonNail = cache.GetTexture(path + "gem.png"),
             ButtonFabric = plate,
         };
     }

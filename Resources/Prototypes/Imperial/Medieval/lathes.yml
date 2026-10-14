@@ -1090,6 +1090,7 @@
   - type: Pullable
   - type: CP14Workbench
     craftSound: "/Audio/Imperial/Medieval/craft_iron.ogg"
+    uiTheme: Magic
     recipes:
     - RecycleCrystalToEssenceVodka
     - RecycleCrystalToEssenceFire

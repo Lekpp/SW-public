@@ -37,7 +37,7 @@ public sealed partial class CP14WorkbenchComponent : Component
     public string CraftSound = "/Audio/Imperial/Medieval/craft_wood.ogg";
 
     /// <summary>
-    /// imperial medieval - crafting window look: "Leather", "Wood", "Blacksmith", "Tailor", "Foundry", empty is the plain one. See MedievalWorkbenchTheme.
+    /// imperial medieval - crafting window look: "Leather", "Wood", "Blacksmith", "Tailor", "Foundry", "Magic", empty is the plain one. See MedievalWorkbenchTheme.
     /// </summary>
     [DataField]
     public string UiTheme = string.Empty;
