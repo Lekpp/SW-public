@@ -930,6 +930,7 @@
     uiTheme: Wood
     recipes:
     - MedievalWeaponCrossbow
+    - MedievalAlchemyWhiskCraft
     - MedievalWeaponCrossbowHeavy
     - MedievalWoodenSword
     - MedievalWoodenClaymore
@@ -1093,6 +1094,7 @@
     uiTheme: Magic
     recipes:
     - RecycleCrystalToEssenceVodka
+    - MedievalAlchemyCoolCraft
     - RecycleCrystalToEssenceFire
     - RecycleCrystalToEssenceLight
     - RecycleCrystalToEssenceEarth
@@ -1225,6 +1227,12 @@
     uiTheme: Blacksmith
     recipes:
     - MedievalGear
+    - MedievalAlchemyCoolCraft
+    - MedievalAlchemyDistillCraft
+    - MedievalAlchemyRectifyCraft
+    - MedievalAlchemyExtractCraft
+    - MedievalAlchemyFilterCraft
+    - MedievalAlchemyInfuseCraft
     - MedievalChain
     - MedievalLeatherBelt
     - MedievalIronPlate
@@ -1336,6 +1344,10 @@
     - MedievalHatchet
     - BarberScissors
     - MedievalGrenade
+    - MedievalAlchemyGrenadeT1
+    - MedievalCryoGrenade
+    - MedievalAlchemyGrenadeT2
+    - MedievalAlchemyGrenadeT3
     - MedievalLintstock
     - MedievalRamrod
     - MedievalGunpowderCharge
