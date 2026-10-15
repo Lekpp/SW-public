@@ -17,6 +17,9 @@
         type: ImperialStoreBoundUserInterface
   - type: ActivatableUI
     key: enum.ImperialStoreUiKey.Key
+    # the book opens only while it is held in a hand, not from a backpack or from the floor
+    inHandsOnly: true
+    requireActiveHand: false
   - type: BindStoreOnEquip
   - type: ImperialStore
     name: medieval-store-name
