@@ -36,9 +36,11 @@ public sealed class FoliantRibbon : ContainerButton
 
     private readonly StyleBoxTexture _normal;
     private readonly StyleBoxTexture _hover;
+    private readonly StyleBoxTexture? _trim;
 
-    public FoliantRibbon(IResourceCache cache, string name, string? school, string amount, Color tint, Color color, bool chosen)
+    public FoliantRibbon(IResourceCache cache, string name, string? school, string amount, Color tint, Color color, bool chosen, string theme = "")
     {
+        _trim = FoliantStyle.RibbonTrim(cache, theme);
         _normal = FoliantStyle.Ribbon(cache, tint);
         _hover = FoliantStyle.Ribbon(cache, new Color(
             Math.Min(1f, tint.R * 1.2f),
@@ -72,6 +74,14 @@ public sealed class FoliantRibbon : ContainerButton
         });
         column.AddChild(amountRow);
         AddChild(column);
+    }
+
+    protected override void Draw(DrawingHandleScreen handle)
+    {
+        base.Draw(handle);
+
+        // over the cloth, under the text (the children are drawn after the parent)
+        _trim?.Draw(handle, PixelSizeBox, UIScale);
     }
 
     protected override void DrawModeChanged()

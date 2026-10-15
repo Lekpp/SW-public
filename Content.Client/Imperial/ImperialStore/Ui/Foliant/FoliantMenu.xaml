@@ -68,6 +68,9 @@
         <!-- 404 = where the ribbon in the seam starts: half of the book, minus half of the seam (20), plus 16 -->
         <TextureRect Name="BookmarkTail" Stretch="Keep" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="404 0 0 0" />
 
+        <!-- a medallion over the seam, only in the themes that have one. 399 = 404 + 11 (the middle of the ribbon) - 16 -->
+        <TextureRect Name="Medallion" Stretch="Keep" Visible="False" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="399 6 0 0" />
+
         <!-- there is no title bar, the book is closed with a cross on its cover -->
         <TextureButton Name="CloseButton" StyleClasses="windowCloseButton"
                        HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 4 6 0" />

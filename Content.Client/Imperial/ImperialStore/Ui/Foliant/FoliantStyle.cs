@@ -3,6 +3,7 @@ using Robust.Client.Graphics;
 using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
+using Robust.Shared.Utility;
 
 namespace Content.Client.Imperial.ImperialStore.Ui.Foliant;
 
@@ -49,6 +50,32 @@ public static class FoliantStyle
 
     public static Texture Tex(IResourceCache cache, string file) => cache.GetTexture(TexturePath + file);
 
+    /// <summary>
+    ///     The texture of a theme (a folder inside the Foliant one, e.g. <c>archmage</c>). A theme paints only what it needs,
+    ///     the rest is taken from the common textures.
+    /// </summary>
+    public static Texture Tex(IResourceCache cache, string theme, string file)
+    {
+        if (TryTheme(cache, theme, file, out var texture))
+            return texture;
+
+        return Tex(cache, file);
+    }
+
+    /// <summary>The texture of a theme, if the theme has one of its own.</summary>
+    public static bool TryTheme(IResourceCache cache, string theme, string file, [System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out Texture? texture)
+    {
+        texture = null;
+        if (string.IsNullOrEmpty(theme))
+            return false;
+
+        if (!cache.TryGetResource<TextureResource>(new ResPath(TexturePath + theme + "/" + file), out var resource))
+            return false;
+
+        texture = resource.Texture;
+        return true;
+    }
+
     /// <summary>Colour of a school in the window.</summary>
     public static Color School(string? currency, Color fallback)
     {
@@ -80,11 +107,11 @@ public static class FoliantStyle
             Math.Min(1f, cloth.B / RibbonBase));
     }
 
-    public static StyleBoxTexture Patch(IResourceCache cache, string file, float patch, float content)
+    public static StyleBoxTexture Patch(IResourceCache cache, string file, float patch, float content, string theme = "")
     {
         var box = new StyleBoxTexture
         {
-            Texture = Tex(cache, file),
+            Texture = Tex(cache, theme, file),
             Mode = StyleBoxTexture.StretchMode.Tile,
         };
         box.SetPatchMargin(StyleBox.Margin.All, patch);
@@ -92,17 +119,17 @@ public static class FoliantStyle
         return box;
     }
 
-    public static StyleBoxTexture Cover(IResourceCache cache) => Patch(cache, "cover.png", 16, 16);
+    public static StyleBoxTexture Cover(IResourceCache cache, string theme = "") => Patch(cache, "cover.png", 16, 16, theme);
 
-    public static StyleBoxTexture Page(IResourceCache cache, bool left) => Patch(cache, left ? "page_l.png" : "page_r.png", 20, 18);
+    public static StyleBoxTexture Page(IResourceCache cache, bool left, string theme = "") => Patch(cache, left ? "page_l.png" : "page_r.png", 20, 18, theme);
 
     /// <summary>The fold between the pages, repeats down the book.</summary>
-    public static StyleBoxTexture Gutter(IResourceCache cache)
+    public static StyleBoxTexture Gutter(IResourceCache cache, string theme = "")
     {
         // the top and the bottom are the edge of a page, only the middle is tiled
         var box = new StyleBoxTexture
         {
-            Texture = Tex(cache, "gutter.png"),
+            Texture = Tex(cache, theme, "gutter.png"),
             Mode = StyleBoxTexture.StretchMode.Tile,
         };
         box.SetPatchMargin(StyleBox.Margin.Vertical, 20);
@@ -124,6 +151,25 @@ public static class FoliantStyle
         box.SetContentMarginOverride(StyleBox.Margin.Right, 6);
         box.SetContentMarginOverride(StyleBox.Margin.Top, 6);
         box.SetContentMarginOverride(StyleBox.Margin.Bottom, 15);
+        return box;
+    }
+
+    /// <summary>
+    ///     The trim of a ribbon of a theme (stitches, a hem), drawn over the tinted ribbon so that it keeps its own colour.
+    ///     Null when the theme has none.
+    /// </summary>
+    public static StyleBoxTexture? RibbonTrim(IResourceCache cache, string theme)
+    {
+        if (!TryTheme(cache, theme, "ribbon_trim.png", out var texture))
+            return null;
+
+        var box = new StyleBoxTexture
+        {
+            Texture = texture,
+            Mode = StyleBoxTexture.StretchMode.Tile,
+        };
+        box.SetPatchMargin(StyleBox.Margin.Top, 8);
+        box.SetPatchMargin(StyleBox.Margin.Bottom, 13);
         return box;
     }
 

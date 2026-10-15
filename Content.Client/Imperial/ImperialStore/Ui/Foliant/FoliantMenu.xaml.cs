@@ -55,6 +55,8 @@ public sealed partial class FoliantMenu : FoliantWindow
     private List<string> _selectable = new();
     private bool _allowRefund;
     private string _withdrawText = string.Empty;
+    private string _theme = string.Empty;
+    private Label? _sealsNote;
 
     private string _category = string.Empty;
     private int? _pickSlot;
@@ -85,11 +87,7 @@ public sealed partial class FoliantMenu : FoliantWindow
 
         CloseButton.OnPressed += _ => Close();
 
-        Cover.PanelOverride = FoliantStyle.Cover(_cache);
-        LeftPage.PanelOverride = FoliantStyle.Page(_cache, true);
-        RightPage.PanelOverride = FoliantStyle.Page(_cache, false);
-        Gutter.PanelOverride = FoliantStyle.Gutter(_cache);
-        BookmarkTail.Texture = FoliantStyle.Tex(_cache, "ribbon_tail.png");
+        ApplyTheme(string.Empty);
 
         PortraitRing.Texture = FoliantStyle.Tex(_cache, "socket.png");
         PortraitRing.TextureScale = new Vector2(2, 2);
@@ -207,6 +205,26 @@ public sealed partial class FoliantMenu : FoliantWindow
     public void SetStore(ImperialStoreComponent store)
     {
         _withdrawText = Loc.GetString(store.WithdrawText);
+        ApplyTheme(store.FoliantTheme);
+    }
+
+    /// <summary>
+    /// The look of the book. An empty theme is the common (collegium) one, any other has its own folder of textures that
+    /// replace the common ones, see <see cref="FoliantStyle.Tex(IResourceCache, string, string)"/>.
+    /// </summary>
+    private void ApplyTheme(string theme)
+    {
+        _theme = theme;
+
+        Cover.PanelOverride = FoliantStyle.Cover(_cache, theme);
+        LeftPage.PanelOverride = FoliantStyle.Page(_cache, true, theme);
+        RightPage.PanelOverride = FoliantStyle.Page(_cache, false, theme);
+        Gutter.PanelOverride = FoliantStyle.Gutter(_cache, theme);
+        BookmarkTail.Texture = FoliantStyle.Tex(_cache, theme, "ribbon_tail.png");
+
+        var hasMedallion = FoliantStyle.TryTheme(_cache, theme, "medallion.png", out var medallion);
+        Medallion.Visible = hasMedallion;
+        Medallion.Texture = medallion;
     }
 
     public void UpdateState(ImperialStoreUpdateState state)
@@ -325,7 +343,8 @@ public sealed partial class FoliantMenu : FoliantWindow
                 tab.School == null ? " " : Amount(tab.School),
                 FoliantStyle.RibbonTint(tab.School, color),
                 color,
-                chosen);
+                chosen,
+                _theme);
 
             var id = tab.Category.ID;
             ribbon.OnPressed += _ =>
@@ -387,6 +406,8 @@ public sealed partial class FoliantMenu : FoliantWindow
     private void RebuildSeals()
     {
         SealsBox.RemoveAllChildren();
+        _sealsNote?.Orphan();
+        _sealsNote = null;
 
         foreach (var (key, amount) in _balance)
         {
@@ -399,14 +420,29 @@ public sealed partial class FoliantMenu : FoliantWindow
                 SealsBox.AddChild(FoliantStyle.Seal(_cache));
             }
 
-            SealsBox.AddChild(new Label
+            // more than two seals and the name does not fit beside them, it goes under them
+            var wrap = amount > 2 && SealsBox.Parent is BoxContainer;
+            var note = new Label
             {
                 Text = Loc.GetString("foliant-seals"),
                 FontOverride = FoliantStyle.Vinque(_cache, 12),
                 FontColorOverride = FoliantStyle.InkFaded,
                 VerticalAlignment = VAlignment.Center,
-                Margin = new Thickness(6, 0, 0, 0),
-            });
+                Margin = wrap ? new Thickness(0, 2, 0, 0) : new Thickness(6, 0, 0, 0),
+            };
+
+            if (wrap)
+            {
+                var parent = (BoxContainer) SealsBox.Parent!;
+                parent.AddChild(note);
+                note.SetPositionInParent(SealsBox.GetPositionInParent() + 1);
+                _sealsNote = note;
+            }
+            else
+            {
+                SealsBox.AddChild(note);
+            }
+
             return;
         }
     }
