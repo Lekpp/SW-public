@@ -125,6 +125,7 @@
   suffix: Empty
   components:
   - type: ImperialStore
+    foliantTheme: legion
     balance:
       MagicMedievalFire: 70
       MagicMedievalLight: 70
