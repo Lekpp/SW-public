@@ -41,11 +41,11 @@ public sealed class FoliantRibbon : ContainerButton
     public FoliantRibbon(IResourceCache cache, string name, string? school, string amount, Color tint, Color color, bool chosen, string theme = "")
     {
         _trim = FoliantStyle.RibbonTrim(cache, theme);
-        _normal = FoliantStyle.Ribbon(cache, tint);
+        _normal = FoliantStyle.Ribbon(cache, tint, theme);
         _hover = FoliantStyle.Ribbon(cache, new Color(
             Math.Min(1f, tint.R * 1.2f),
             Math.Min(1f, tint.G * 1.2f),
-            Math.Min(1f, tint.B * 1.2f)));
+            Math.Min(1f, tint.B * 1.2f)), theme);
         StyleBoxOverride = _normal;
 
         // the chosen one hangs lower, the others are as tall as their text

@@ -58,6 +58,8 @@ public static class FoliantStyle
     {
         // the necromancer: a dark brown line of the search, darker hints, dull ribbons, blood-red words on the buttons
         ["necro"] = new Palette(Color.FromHex("#6b5a40"), Color.FromHex("#5a4a32"), 0.7f, Color.FromHex("#b8322a"), Color.FromHex("#e0584a")),
+        // the wanderer: the cloth of the ribbons has faded in the sun
+        ["wanderer"] = new Palette(null, InkFaded, 0.75f, Gold, GoldBright),
     };
 
     public static Palette PaletteOf(string theme) => Palettes.TryGetValue(theme, out var palette) ? palette : CommonPalette;
@@ -166,11 +168,11 @@ public static class FoliantStyle
     }
 
     /// <summary>A ribbon. The middle repeats, so a taller (chosen) ribbon is just longer.</summary>
-    public static StyleBoxTexture Ribbon(IResourceCache cache, Color tint)
+    public static StyleBoxTexture Ribbon(IResourceCache cache, Color tint, string theme = "")
     {
         var box = new StyleBoxTexture
         {
-            Texture = Tex(cache, "ribbon.png"),
+            Texture = Tex(cache, theme, "ribbon.png"),
             Mode = StyleBoxTexture.StretchMode.Tile,
             Modulate = tint,
         };
