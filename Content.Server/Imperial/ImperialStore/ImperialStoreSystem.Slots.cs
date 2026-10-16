@@ -72,12 +72,13 @@ public sealed partial class ImperialStoreSystem
             Effect = effect == null ? NetEntity.Invalid : GetNetEntity(effect.Value),
         };
 
-        var args = new DoAfterArgs(EntityManager, user, ImperialStoreSlots.ChangeSeconds, ev, eventTarget: uid)
+        var args = new DoAfterArgs(EntityManager, user, ImperialStoreSlots.ChangeSeconds, ev, eventTarget: uid, used: uid)
         {
             BreakOnMove = true,
             BreakOnDamage = true,
-            // a second request of the same user while this one is running is dropped
+            // a second request of the same user while this one is running is dropped, it must not cancel the first
             DuplicateCondition = DuplicateConditions.SameEvent,
+            CancelDuplicate = false,
         };
 
         if (!_doAfter.TryStartDoAfter(args))
