@@ -107,18 +107,21 @@ public sealed class FoliantButton : ContainerButton
     public readonly Label Title;
     public readonly BoxContainer CostBox;
 
-    public FoliantButton(IResourceCache cache, string text)
+    private readonly FoliantStyle.Palette _palette;
+
+    public FoliantButton(IResourceCache cache, string text, string theme = "")
     {
-        _normal = FoliantStyle.Button(cache, "button.png");
-        _hover = FoliantStyle.Button(cache, "button_hover.png");
-        _off = FoliantStyle.Button(cache, "button_off.png");
+        _palette = FoliantStyle.PaletteOf(theme);
+        _normal = FoliantStyle.Button(cache, "button.png", theme);
+        _hover = FoliantStyle.Button(cache, "button_hover.png", theme);
+        _off = FoliantStyle.Button(cache, "button_off.png", theme);
         StyleBoxOverride = _normal;
 
         Title = new Label
         {
             Text = text,
             FontOverride = FoliantStyle.Vinque(cache, 14),
-            FontColorOverride = FoliantStyle.Gold,
+            FontColorOverride = _palette.ButtonText,
             VerticalAlignment = VAlignment.Center,
         };
         CostBox = new BoxContainer
@@ -155,11 +158,11 @@ public sealed class FoliantButton : ContainerButton
             case DrawModeEnum.Hover:
             case DrawModeEnum.Pressed:
                 StyleBoxOverride = _hover;
-                Title.FontColorOverride = FoliantStyle.GoldBright;
+                Title.FontColorOverride = _palette.ButtonTextHot;
                 break;
             default:
                 StyleBoxOverride = _normal;
-                Title.FontColorOverride = FoliantStyle.Gold;
+                Title.FontColorOverride = _palette.ButtonText;
                 break;
         }
     }
@@ -283,7 +286,7 @@ public sealed class FoliantRitual : Control
 
     private const float FlashTime = 0.8f;
 
-    public FoliantRitual(IResourceCache cache, IReadOnlyList<FoliantSocket> sockets, int? picked, (int Slot, Color Color, TimeSpan Start)? flash)
+    public FoliantRitual(IResourceCache cache, IReadOnlyList<FoliantSocket> sockets, int? picked, (int Slot, Color Color, TimeSpan Start)? flash, string theme = "")
     {
         _timing = IoCManager.Resolve<IGameTiming>();
         _flash = flash;
@@ -309,7 +312,7 @@ public sealed class FoliantRitual : Control
 
             face.AddChild(new TextureRect
             {
-                Texture = FoliantStyle.Tex(cache, "socket.png"),
+                Texture = FoliantStyle.Tex(cache, theme, "socket.png"),
                 Stretch = TextureRect.StretchMode.Keep,
                 HorizontalAlignment = HAlignment.Center,
                 VerticalAlignment = VAlignment.Center,

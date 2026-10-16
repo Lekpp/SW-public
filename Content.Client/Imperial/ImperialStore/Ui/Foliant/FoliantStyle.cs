@@ -43,6 +43,25 @@ public static class FoliantStyle
         ["MagicMedievalLight"] = Color.FromHex("#a67c24"),
     };
 
+    /// <summary>
+    /// The colours a theme changes. A theme that is not listed here is the common look.
+    /// </summary>
+    /// <param name="SearchLine">The line of the search box, the colour of the school when empty.</param>
+    /// <param name="Hint">The faded words: hints, the name of the seals.</param>
+    /// <param name="TabSaturation">How much of the colour of the school stays in the cloth of a ribbon.</param>
+    /// <param name="ButtonText">The words on a button and on a pressed one.</param>
+    public sealed record Palette(Color? SearchLine, Color Hint, float TabSaturation, Color ButtonText, Color ButtonTextHot);
+
+    private static readonly Palette CommonPalette = new(null, InkFaded, 1f, Gold, GoldBright);
+
+    private static readonly Dictionary<string, Palette> Palettes = new()
+    {
+        // the necromancer: a dark brown line of the search, darker hints, dull ribbons, blood-red words on the buttons
+        ["necro"] = new Palette(Color.FromHex("#6b5a40"), Color.FromHex("#5a4a32"), 0.7f, Color.FromHex("#b8322a"), Color.FromHex("#e0584a")),
+    };
+
+    public static Palette PaletteOf(string theme) => Palettes.TryGetValue(theme, out var palette) ? palette : CommonPalette;
+
     // brightness of the ribbon texture, the tint is divided by it
     private const float RibbonBase = 0.8f;
 
@@ -95,11 +114,21 @@ public static class FoliantStyle
         return new Color(school.R * 0.75f, school.G * 0.75f, school.B * 0.75f);
     }
 
-    public static Color RibbonTint(string? currency, Color school)
+    public static Color RibbonTint(string? currency, Color school, float saturation = 1f)
     {
         var cloth = currency != null && ClothColors.TryGetValue(currency, out var color)
             ? color
             : new Color(school.R * 0.55f, school.G * 0.55f, school.B * 0.55f);
+
+        if (saturation < 1f)
+        {
+            // towards the grey of the same brightness
+            var grey = cloth.R * 0.3f + cloth.G * 0.59f + cloth.B * 0.11f;
+            cloth = new Color(
+                grey + (cloth.R - grey) * saturation,
+                grey + (cloth.G - grey) * saturation,
+                grey + (cloth.B - grey) * saturation);
+        }
 
         return new Color(
             Math.Min(1f, cloth.R / RibbonBase),
@@ -173,7 +202,7 @@ public static class FoliantStyle
         return box;
     }
 
-    public static StyleBoxTexture Button(IResourceCache cache, string file) => Patch(cache, file, 5, 4);
+    public static StyleBoxTexture Button(IResourceCache cache, string file, string theme = "") => Patch(cache, file, 5, 4, theme);
 
     /// <summary>A flat tinted panel, e.g. a row of a list.</summary>
     public static StyleBoxFlat Flat(Color background, Color border, float thickness)
@@ -212,11 +241,11 @@ public static class FoliantStyle
     }
 
     /// <summary>A wax seal, one for every point of archmage.</summary>
-    public static TextureRect Seal(IResourceCache cache)
+    public static TextureRect Seal(IResourceCache cache, string theme = "")
     {
         return new TextureRect
         {
-            Texture = Tex(cache, "seal.png"),
+            Texture = Tex(cache, theme, "seal.png"),
             TextureScale = new System.Numerics.Vector2(2, 2),
             Stretch = TextureRect.StretchMode.Keep,
         };

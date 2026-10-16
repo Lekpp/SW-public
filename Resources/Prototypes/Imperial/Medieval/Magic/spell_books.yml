@@ -159,6 +159,7 @@
   suffix: Empty
   components:
   - type: ImperialStore
+    foliantTheme: necro
     balance:
       MagicMedievalFire: 55
       MagicMedievalLight: 55

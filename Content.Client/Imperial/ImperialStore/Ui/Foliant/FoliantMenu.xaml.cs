@@ -56,6 +56,7 @@ public sealed partial class FoliantMenu : FoliantWindow
     private bool _allowRefund;
     private string _withdrawText = string.Empty;
     private string _theme = string.Empty;
+    private FoliantStyle.Palette _palette = FoliantStyle.PaletteOf(string.Empty);
     private Label? _sealsNote;
 
     private string _category = string.Empty;
@@ -89,7 +90,6 @@ public sealed partial class FoliantMenu : FoliantWindow
 
         ApplyTheme(string.Empty);
 
-        PortraitRing.Texture = FoliantStyle.Tex(_cache, "socket.png");
         PortraitRing.TextureScale = new Vector2(2, 2);
         PortraitRune.TextureScale = new Vector2(5, 5);
         PortraitRune.HorizontalAlignment = HAlignment.Center;
@@ -99,7 +99,6 @@ public sealed partial class FoliantMenu : FoliantWindow
         SchoolName.FontColorOverride = FoliantStyle.InkRed;
 
         RitualHint.FontOverride = FoliantStyle.Vinque(_cache, 12);
-        RitualHint.FontColorOverride = FoliantStyle.InkFaded;
 
         SourceTitle.Text = Loc.GetString("foliant-circle-title");
         SourceTitle.FontOverride = FoliantStyle.Vinque(_cache, 16);
@@ -117,7 +116,7 @@ public sealed partial class FoliantMenu : FoliantWindow
         FillDivider(DividerPick, FoliantStyle.Ink);
 
         SearchBar.PlaceHolder = Loc.GetString("foliant-search");
-        SearchBar.StyleBoxOverride = SearchStyle(FoliantStyle.RowLine);
+        SearchBar.StyleBoxOverride = SearchStyle(_palette.SearchLine ?? FoliantStyle.RowLine);
         SearchBar.Stylesheet = SearchTextStyle();
         SearchBar.OnTextChanged += args =>
         {
@@ -192,7 +191,7 @@ public sealed partial class FoliantMenu : FoliantWindow
         var right = new HLine { Color = color, Thickness = 1, HorizontalExpand = true, VerticalAlignment = VAlignment.Center };
         var diamond = new TextureRect
         {
-            Texture = FoliantStyle.Tex(_cache, "diamond.png"),
+            Texture = FoliantStyle.Tex(_cache, _theme, "diamond.png"),
             Stretch = TextureRect.StretchMode.Keep,
             VerticalAlignment = VAlignment.Center,
         };
@@ -215,12 +214,21 @@ public sealed partial class FoliantMenu : FoliantWindow
     private void ApplyTheme(string theme)
     {
         _theme = theme;
+        _palette = FoliantStyle.PaletteOf(theme);
 
         Cover.PanelOverride = FoliantStyle.Cover(_cache, theme);
         LeftPage.PanelOverride = FoliantStyle.Page(_cache, true, theme);
         RightPage.PanelOverride = FoliantStyle.Page(_cache, false, theme);
         Gutter.PanelOverride = FoliantStyle.Gutter(_cache, theme);
         BookmarkTail.Texture = FoliantStyle.Tex(_cache, theme, "ribbon_tail.png");
+        PortraitRing.Texture = FoliantStyle.Tex(_cache, theme, "socket.png");
+        RitualHint.FontColorOverride = _palette.Hint;
+        SearchBar.StyleBoxOverride = SearchStyle(_palette.SearchLine ?? FoliantStyle.RowLine);
+
+        // the divider has its own knot in some themes
+        FillDivider(DividerTop, FoliantStyle.Ink);
+        FillDivider(DividerBottom, FoliantStyle.Ink);
+        FillDivider(DividerPick, FoliantStyle.Ink);
 
         var hasMedallion = FoliantStyle.TryTheme(_cache, theme, "medallion.png", out var medallion);
         Medallion.Visible = hasMedallion;
@@ -341,7 +349,7 @@ public sealed partial class FoliantMenu : FoliantWindow
                 Loc.GetString(tab.Category.Name),
                 tab.School,
                 tab.School == null ? " " : Amount(tab.School),
-                FoliantStyle.RibbonTint(tab.School, color),
+                FoliantStyle.RibbonTint(tab.School, color, _palette.TabSaturation),
                 color,
                 chosen,
                 _theme);
@@ -376,7 +384,7 @@ public sealed partial class FoliantMenu : FoliantWindow
             // the lines of the page take the colour of the school
             var accent = FoliantStyle.Accent(tab.School, color);
             FillDivider(DividerTop, accent);
-            SearchBar.StyleBoxOverride = SearchStyle(accent);
+            SearchBar.StyleBoxOverride = SearchStyle(_palette.SearchLine ?? accent);
 
             AmountBox.RemoveAllChildren();
             if (tab.School != null)
@@ -417,7 +425,7 @@ public sealed partial class FoliantMenu : FoliantWindow
 
             for (var i = 0; i < (int) amount; i++)
             {
-                SealsBox.AddChild(FoliantStyle.Seal(_cache));
+                SealsBox.AddChild(FoliantStyle.Seal(_cache, _theme));
             }
 
             // more than two seals and the name does not fit beside them, it goes under them
@@ -426,7 +434,7 @@ public sealed partial class FoliantMenu : FoliantWindow
             {
                 Text = Loc.GetString("foliant-seals"),
                 FontOverride = FoliantStyle.Vinque(_cache, 12),
-                FontColorOverride = FoliantStyle.InkFaded,
+                FontColorOverride = _palette.Hint,
                 VerticalAlignment = VAlignment.Center,
                 Margin = wrap ? new Thickness(0, 2, 0, 0) : new Thickness(6, 0, 0, 0),
             };
@@ -461,7 +469,7 @@ public sealed partial class FoliantMenu : FoliantWindow
                 school == null ? Loc.GetString("foliant-slot-empty") : FoliantStyle.SchoolName(school)))
             .ToList();
 
-        var ritual = new FoliantRitual(_cache, sockets, _pickSlot, _flash);
+        var ritual = new FoliantRitual(_cache, sockets, _pickSlot, _flash, _theme);
         ritual.OnPressed += slot =>
         {
             _pickSlot = _pickSlot == slot ? null : slot;
@@ -549,7 +557,7 @@ public sealed partial class FoliantMenu : FoliantWindow
             {
                 Text = Loc.GetString(string.IsNullOrEmpty(_search) ? "foliant-empty" : "foliant-empty-search"),
                 FontOverride = FoliantStyle.Vinque(_cache, 15),
-                FontColorOverride = FoliantStyle.InkFaded,
+                FontColorOverride = _palette.Hint,
                 HorizontalAlignment = HAlignment.Center,
                 Margin = new Thickness(0, 60, 0, 0),
             });
@@ -572,7 +580,7 @@ public sealed partial class FoliantMenu : FoliantWindow
 
         // a square plate, the icons of the spells are round in some and square in other
         var plate = new Control { MinSize = new Vector2(48, 48), VerticalAlignment = VAlignment.Top, Margin = new Thickness(0, 6, 0, 0) };
-        plate.AddChild(new TextureRect { Texture = FoliantStyle.Tex(_cache, "plate.png"), Stretch = TextureRect.StretchMode.Keep });
+        plate.AddChild(new TextureRect { Texture = FoliantStyle.Tex(_cache, _theme, "plate.png"), Stretch = TextureRect.StretchMode.Keep });
         plate.AddChild(new TextureRect
         {
             Texture = IconOf(listing),
@@ -621,7 +629,7 @@ public sealed partial class FoliantMenu : FoliantWindow
 
     private FoliantButton BuyButton(ImperialListingData listing)
     {
-        var button = new FoliantButton(_cache, Loc.GetString("foliant-learn"));
+        var button = new FoliantButton(_cache, Loc.GetString("foliant-learn"), _theme);
         var enough = true;
 
         foreach (var (currency, price) in listing.Cost)
@@ -733,7 +741,7 @@ public sealed partial class FoliantMenu : FoliantWindow
 
         if (open && !chosen)
         {
-            var pick = new FoliantButton(_cache, Loc.GetString("foliant-pick-select"))
+            var pick = new FoliantButton(_cache, Loc.GetString("foliant-pick-select"), _theme)
             {
                 VerticalAlignment = VAlignment.Center,
                 Margin = new Thickness(0, 6, 8, 6),
