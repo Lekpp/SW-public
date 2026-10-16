@@ -41,6 +41,9 @@ public sealed partial class FoliantMenu : FoliantWindow
     // the width of the text of a spell: a page minus its margins, the scroll bar, the plate and the gaps
     private const float SpellTextWidth = 254;
 
+    // the admin grimoire has a hundred points, a row of that many seals would not fit the page
+    private const int MaxSeals = 12;
+
     public event Action<ImperialListingData>? OnBuy;
     public event Action<int, string?>? OnSetSlot;
     public event Action<string, int>? OnWithdraw;
@@ -122,6 +125,7 @@ public sealed partial class FoliantMenu : FoliantWindow
         {
             _search = args.Text.Trim().ToLowerInvariant();
             RebuildSpells();
+            SpellsScroll.SetScrollValue(Vector2.Zero);
         };
     }
 
@@ -176,7 +180,7 @@ public sealed partial class FoliantMenu : FoliantWindow
     private static StyleBoxFlat SearchStyle(Color border)
     {
         // a little darker than the page, with a thin line of the colour of the school
-        var box = FoliantStyle.Flat(Color.FromHex("#bda67b"), border, 1);
+        var box = FoliantStyle.Flat(FoliantStyle.SearchFill, border, 1);
         box.SetContentMarginOverride(StyleBox.Margin.Horizontal, 8);
         box.SetContentMarginOverride(StyleBox.Margin.Vertical, 4);
         return box;
@@ -247,7 +251,7 @@ public sealed partial class FoliantMenu : FoliantWindow
             _pickSlot = null;
 
         // the list is rebuilt on every update, keep the place in it
-        _restoreScroll = SpellsScroll.VScroll;
+        _restoreScroll ??= SpellsScroll.VScroll;
         _restoreFrames = 2;
 
         Rebuild();
@@ -307,7 +311,12 @@ public sealed partial class FoliantMenu : FoliantWindow
             foreach (var id in listing.Categories)
             {
                 if (!categories.TryGetValue(id, out var known))
-                    known = (_prototype.Index(id), null);
+                {
+                    if (!_prototype.TryIndex<ImperialStoreCategoryPrototype>(id, out var category))
+                        continue;
+
+                    known = (category, null);
+                }
 
                 // the school of a category is the school currency its spells cost
                 if (known.School == null)
@@ -363,6 +372,7 @@ public sealed partial class FoliantMenu : FoliantWindow
                 _category = id;
                 _pickSlot = null;
                 Rebuild();
+                SpellsScroll.SetScrollValue(Vector2.Zero);
             };
 
             Ribbons.AddChild(ribbon);
@@ -419,11 +429,10 @@ public sealed partial class FoliantMenu : FoliantWindow
 
         foreach (var (key, amount) in _balance)
         {
-            var proto = _prototype.Index(key);
-            if (!proto.DrawSeparately || amount <= 0)
+            if (!_prototype.TryIndex(key, out var proto) || !proto.DrawSeparately || amount <= 0)
                 continue;
 
-            for (var i = 0; i < (int) amount; i++)
+            for (var i = 0; i < Math.Min((int) amount, MaxSeals); i++)
             {
                 SealsBox.AddChild(FoliantStyle.Seal(_cache, _theme));
             }
@@ -487,8 +496,7 @@ public sealed partial class FoliantMenu : FoliantWindow
 
         var withdrawable = _balance.Where(pair =>
         {
-            var proto = _prototype.Index(pair.Key);
-            return proto.CanWithdraw && proto.Cash != null;
+            return _prototype.TryIndex(pair.Key, out var proto) && proto.CanWithdraw && proto.Cash != null;
         }).ToList();
 
         if (withdrawable.Count > 0)
@@ -543,7 +551,8 @@ public sealed partial class FoliantMenu : FoliantWindow
             .Where(listing => listing.Categories.Contains(_category))
             .Where(MatchesSearch)
             .OrderBy(listing => listing.Priority)
-            .ThenBy(listing => listing.Cost.Values.Sum());
+            .ThenBy(listing => listing.Cost.Values.Sum())
+            .ThenBy(listing => listing.ID);
 
         foreach (var listing in listings)
         {
@@ -637,8 +646,7 @@ public sealed partial class FoliantMenu : FoliantWindow
             var has = _balance.TryGetValue(currency, out var amount) && amount >= price;
             enough &= has;
 
-            var proto = _prototype.Index(currency);
-            if (proto.IgnoreInPurchaseButton)
+            if (!_prototype.TryIndex(currency, out var proto) || proto.IgnoreInPurchaseButton)
                 continue;
 
             button.CostBox.AddChild(FoliantStyle.Text(price.ToString(), null, has ? FoliantStyle.Price : FoliantStyle.PriceMissing));

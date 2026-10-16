@@ -1,3 +1,4 @@
+using Content.Client.Imperial.Medieval.UserInterface.Elements;
 using Content.Client.Resources;
 using Robust.Client.Graphics;
 using Robust.Client.ResourceManagement;
@@ -22,12 +23,15 @@ public static class FoliantStyle
     public static readonly Color InkFaded = Color.FromHex("#7d6a4a");
     public static readonly Color RowHover = Color.FromHex("#d2bf96");
     public static readonly Color RowLine = Color.FromHex("#b39c72");
+    public static readonly Color SearchFill = Color.FromHex("#bda67b");
+    public static readonly Color LinkHover = Color.FromHex("#a3401f");
+    public static readonly Color RitualLine = Color.FromHex("#8c7552");
 
     // text on the dark parts: ribbons, buttons
     public static readonly Color Cloth = Color.FromHex("#f0e6d0");
-    public static readonly Color Gold = Color.FromHex("#d4af37");
-    public static readonly Color GoldBright = Color.FromHex("#ffdf7a");
-    public static readonly Color Faded = Color.FromHex("#7a6a58");
+    public static readonly Color Gold = MedievalUiStyle.Gold;
+    public static readonly Color GoldBright = MedievalUiStyle.GoldBright;
+    public static readonly Color Faded = MedievalUiStyle.TextFaded;
     public static readonly Color Price = Color.FromHex("#ffb070");
     public static readonly Color PriceMissing = Color.FromHex("#e0664a");
 
@@ -83,6 +87,9 @@ public static class FoliantStyle
         return Tex(cache, file);
     }
 
+    // a theme does not have every texture, a missing one is looked for once and not on every row of the list
+    private static readonly Dictionary<(string Theme, string File), Texture?> ThemeTextures = new();
+
     /// <summary>The texture of a theme, if the theme has one of its own.</summary>
     public static bool TryTheme(IResourceCache cache, string theme, string file, [System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out Texture? texture)
     {
@@ -90,11 +97,15 @@ public static class FoliantStyle
         if (string.IsNullOrEmpty(theme))
             return false;
 
-        if (!cache.TryGetResource<TextureResource>(new ResPath(TexturePath + theme + "/" + file), out var resource))
-            return false;
+        if (!ThemeTextures.TryGetValue((theme, file), out texture))
+        {
+            texture = cache.TryGetResource<TextureResource>(new ResPath(TexturePath + theme + "/" + file), out var resource)
+                ? resource.Texture
+                : null;
+            ThemeTextures[(theme, file)] = texture;
+        }
 
-        texture = resource.Texture;
-        return true;
+        return texture != null;
     }
 
     /// <summary>Colour of a school in the window.</summary>
@@ -103,19 +114,19 @@ public static class FoliantStyle
         return currency != null && SchoolColors.TryGetValue(currency, out var color) ? color : fallback;
     }
 
-    /// <summary>Tint for the ribbon texture of a school.</summary>
     /// <summary>The colour of a school that is dark enough for lines and text on a page.</summary>
     public static Color Accent(string? currency, Color school)
     {
         if (currency == null)
             return Ink;
 
-        if (currency == "MagicMedievalLight")
-            return Color.FromHex("#a67c24");
+        if (ClothColors.TryGetValue(currency, out var cloth))
+            return cloth;
 
         return new Color(school.R * 0.75f, school.G * 0.75f, school.B * 0.75f);
     }
 
+    /// <summary>Tint for the ribbon texture of a school.</summary>
     public static Color RibbonTint(string? currency, Color school, float saturation = 1f)
     {
         var cloth = currency != null && ClothColors.TryGetValue(currency, out var color)

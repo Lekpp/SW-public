@@ -173,8 +173,6 @@ public sealed class FoliantButton : ContainerButton
 /// </summary>
 public sealed class FoliantLink : ContainerButton
 {
-    private static readonly Color Hover = Color.FromHex("#a3401f");
-
     private readonly Label _label;
 
     public FoliantLink(IResourceCache cache, string text)
@@ -200,7 +198,7 @@ public sealed class FoliantLink : ContainerButton
         _label.FontColorOverride = DrawMode switch
         {
             DrawModeEnum.Disabled => FoliantStyle.InkFaded,
-            DrawModeEnum.Hover or DrawModeEnum.Pressed => Hover,
+            DrawModeEnum.Hover or DrawModeEnum.Pressed => FoliantStyle.LinkHover,
             _ => FoliantStyle.InkRed,
         };
     }
@@ -274,8 +272,6 @@ public sealed class FoliantRitual : Control
     // the star is taller above its centre than below it, the circle is moved down to stand in the middle
     private const float CenterShift = 8;
     private const float SealSize = 60;
-
-    private static readonly Color Line = Color.FromHex("#8c7552");
 
     public event Action<int>? OnPressed;
 
@@ -354,7 +350,7 @@ public sealed class FoliantRitual : Control
         base.Draw(handle);
 
         var center = new Vector2(AreaWidth / 2, AreaHeight / 2 + CenterShift) * UIScale;
-        handle.DrawCircle(center, Radius * UIScale, Line, false);
+        handle.DrawCircle(center, Radius * UIScale, FoliantStyle.RitualLine, false);
 
         // a ring spreads from the socket that has just been filled
         if (_flash is { } flash)
@@ -372,7 +368,7 @@ public sealed class FoliantRitual : Control
         // every point is joined with the second one after it
         for (var i = 0; i < _count; i++)
         {
-            handle.DrawLine(Point(i, 1, _count) * UIScale, Point((i + 2) % _count, 1, _count) * UIScale, Line);
+            handle.DrawLine(Point(i, 1, _count) * UIScale, Point((i + 2) % _count, 1, _count) * UIScale, FoliantStyle.RitualLine);
         }
     }
 }
