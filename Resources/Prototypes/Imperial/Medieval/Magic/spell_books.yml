@@ -177,6 +177,7 @@
   suffix: Empty
   components:
   - type: ImperialStore
+    foliantTheme: student
     balance:
       MagicMedievalFire: 45
       MagicMedievalLight: 45
@@ -194,6 +195,7 @@
   suffix: Empty
   components:
   - type: ImperialStore
+    foliantTheme: student
     balance:
       MagicMedievalFire: 50
       MagicMedievalLight: 25
@@ -210,6 +212,7 @@
   suffix: Empty
   components:
   - type: ImperialStore
+    foliantTheme: student
     balance:
       MagicMedievalFire: 25
       MagicMedievalLight: 25
@@ -226,6 +229,7 @@
   suffix: Empty
   components:
   - type: ImperialStore
+    foliantTheme: student
     balance:
       MagicMedievalFire: 25
       MagicMedievalLight: 50
@@ -242,6 +246,7 @@
   suffix: Empty
   components:
   - type: ImperialStore
+    foliantTheme: student
     balance:
       MagicMedievalFire: 25
       MagicMedievalLight: 25
