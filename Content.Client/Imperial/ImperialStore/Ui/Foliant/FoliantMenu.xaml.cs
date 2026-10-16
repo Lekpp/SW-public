@@ -60,6 +60,8 @@ public sealed partial class FoliantMenu : FoliantWindow
     private string _withdrawText = string.Empty;
     private string _theme = string.Empty;
     private FoliantStyle.Palette _palette = FoliantStyle.PaletteOf(string.Empty);
+    private const float PageTop = 56;
+    private const float PageTopTight = 36;
     private Label? _sealsNote;
 
     private string _category = string.Empty;
@@ -426,6 +428,7 @@ public sealed partial class FoliantMenu : FoliantWindow
         SealsBox.RemoveAllChildren();
         _sealsNote?.Orphan();
         _sealsNote = null;
+        LeftBox.Margin = new Thickness(0, PageTop, 0, 0);
 
         foreach (var (key, amount) in _balance)
         {
@@ -450,6 +453,8 @@ public sealed partial class FoliantMenu : FoliantWindow
 
             if (wrap)
             {
+                // the note takes a line under the seals, so the page starts higher to keep the links inside the frame
+                LeftBox.Margin = new Thickness(0, PageTopTight, 0, 0);
                 var parent = (BoxContainer) SealsBox.Parent!;
                 parent.AddChild(note);
                 note.SetPositionInParent(SealsBox.GetPositionInParent() + 1);
