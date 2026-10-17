@@ -151,3 +151,22 @@ medieval-spell-speech-fire-wall = ͚̟̼̳̗̂͂M̂u̘͓̠͖̿ͧ͑̏r̘͑ͮu̬̹
 medieval-spell-speech-spark = snaps fingers
 medieval-store-spells-fire-swater-beginner-name = Water bubble
 medieval-store-spells-fire-swater-beginner-desc = Creates a magical water bubble in your hand.
+
+medieval-spell-speach-fire-fists = IGNIS PUGNUS
+medieval-spell-fire-fists-need-two-hands = This spell needs both hands free.
+
+medieval-store-spells-fire-fists-beginner-name = Fists of anger
+medieval-store-spells-fire-fists-beginner-desc = Sets both fists ablaze for 20 seconds (both hands must be free): hits deal extra fire damage. Hold the mouse button to keep striking. Costs 30 mana.
+
+medieval-store-spells-fire-fists-middle-name = Fists of rage
+medieval-store-spells-fire-fists-middle-desc = The fire burns stronger and longer, hits are faster and harder. Costs 45 mana.
+
+medieval-store-spells-fire-fists-senior-name = Fists of hellfire
+medieval-store-spells-fire-fists-senior-desc = A blazing fist that strikes very often and burns hard. Costs 60 mana.
+
+ent-FireFistsBeginner = fist of anger
+    .desc = A mage's blazing fist. Every hit scorches the target.
+ent-FireFistsMiddle = fist of rage
+    .desc = A mage's blazing fist. Strikes faster and burns harder.
+ent-FireFistsSenior = fist of hellfire
+    .desc = A mage's blazing fist. Strikes very often and burns fiercely.

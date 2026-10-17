@@ -1,0 +1,61 @@
+- type: imperialListing
+  id: MedievalSpellFireFistsBeginner
+  name: medieval-store-spells-fire-fists-beginner-name
+  description: medieval-store-spells-fire-fists-beginner-desc
+  productAction: MedievalActionFireFistsBeginner
+  priority: 10
+  productUpgradeId:
+    - MedievalSpellFireFistsMiddle
+  icon:
+    sprite: Imperial/Medieval/Magic/Fire/FireFists/icons.rsi
+    state: beginner
+  cost:
+    MagicMedievalFire: 20
+  categories:
+  - MedievalFireSpells
+  conditions:
+  - !type:ImperialListingLimitedStockCondition
+    stock: 1
+
+- type: imperialListing
+  id: MedievalSpellFireFistsMiddle
+  name: medieval-store-spells-fire-fists-middle-name
+  description: medieval-store-spells-fire-fists-middle-desc
+  priority: 10
+  productUpgradeId:
+    - MedievalSpellFireFistsSenior
+  icon:
+    sprite: Imperial/Medieval/Magic/Fire/FireFists/icons.rsi
+    state: middle
+  cost:
+    MagicMedievalFire: 50
+  categories:
+  - MedievalFireSpells
+  conditions:
+  - !type:ImperialListingLimitedStockCondition
+    stock: 1
+  - !type:ImperialBuyBeforeCondition
+    whitelist:
+      - MedievalSpellFireFistsBeginner
+
+- type: imperialListing
+  id: MedievalSpellFireFistsSenior
+  name: medieval-store-spells-fire-fists-senior-name
+  description: medieval-store-spells-fire-fists-senior-desc
+  priority: 10
+  productUpgradeId:
+    - MedievalSpellFireFistsSenior
+  icon:
+    sprite: Imperial/Medieval/Magic/Fire/FireFists/icons.rsi
+    state: senior
+  cost:
+    MagicMedievalFire: 85
+    ArchmagePoints: 1
+  categories:
+  - MedievalFireSpells
+  conditions:
+  - !type:ImperialListingLimitedStockCondition
+    stock: 1
+  - !type:ImperialBuyBeforeCondition
+    whitelist:
+      - MedievalSpellFireFistsMiddle
