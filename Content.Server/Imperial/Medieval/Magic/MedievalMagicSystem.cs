@@ -7,6 +7,7 @@ using Content.Server.Imperial.MouseInput;
 using Content.Server.Imperial.TargetOverlay;
 using Content.Server.Weapons.Ranged.Systems;
 using Content.Shared.Imperial.Medieval.Language;
+using Content.Server.Imperial.Medieval.Magic.VolleySpell;
 using Content.Shared.Imperial.Medieval.Magic;
 using Content.Shared.Tag;
 using Robust.Server.GameObjects;
@@ -38,6 +39,7 @@ public sealed partial class MedievalMagicSystem : SharedMedievalMagicSystem
     [Dependency] private readonly MapSystem _mapSystem = default!;
     [Dependency] private readonly TagSystem _tagSystem = default!;
     [Dependency] private readonly IPrototypeManager _proto = default!;
+    [Dependency] private readonly MedievalVolleySystem _volleySystem = default!;
 
     private static readonly Gauge SpellCastedMetrics = Metrics.CreateGauge(
         "imperial_medieval_spell_casted",
