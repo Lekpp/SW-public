@@ -78,6 +78,8 @@ public sealed partial class FoliantMenu : FoliantWindow
     // the slot that has just been filled and when, the ritual circle lights it
     private (int Slot, Color Color, TimeSpan Start)? _flash;
 
+    // the place in the list of spells after a rebuild, set again once the new list has been measured: a value set earlier
+    // is cut to the start because the scroll area is still empty
     private float? _restoreScroll;
     private int _restoreFrames;
 
@@ -322,7 +324,7 @@ public sealed partial class FoliantMenu : FoliantWindow
 
                 // the school of a category is the school currency its spells cost
                 if (known.School == null)
-                    known.School = listing.Cost.Keys.Select(key => key.Id).FirstOrDefault(key => ImperialStoreSlots.Schools.Contains(key));
+                    known.School = listing.Cost.Keys.Select(key => key.Id).FirstOrDefault(key => ImperialStoreSlots.IsSchool(_prototype, key));
 
                 categories[id] = known;
             }
@@ -702,7 +704,7 @@ public sealed partial class FoliantMenu : FoliantWindow
         PickBox.RemoveAllChildren();
         PickLinks.RemoveAllChildren();
 
-        foreach (var school in ImperialStoreSlots.Schools)
+        foreach (var (school, _) in ImperialStoreSlots.GetSchools(_prototype))
         {
             if (!_prototype.TryIndex<ImperialCurrencyPrototype>(school, out var proto))
                 continue;

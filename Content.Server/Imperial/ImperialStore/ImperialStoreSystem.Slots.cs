@@ -19,19 +19,6 @@ public sealed partial class ImperialStoreSystem
     [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
 
-    /// <summary>
-    /// Effect around the player, the word over the head and its colour for every school. The colours are the ones
-    /// most spells of the school are said in.
-    /// </summary>
-    private static readonly Dictionary<string, (string Effect, string Word, Color Color)> SlotVisuals = new()
-    {
-        ["MagicMedievalFire"] = ("ImperialStoreSlotEffectFire", "imperial-store-slot-word-fire", Color.FromHex("#FF5900")),
-        ["MagicMedievalLight"] = ("ImperialStoreSlotEffectLight", "imperial-store-slot-word-light", Color.FromHex("#FFE57E")),
-        ["MagicMedievalVodka"] = ("ImperialStoreSlotEffectVodka", "imperial-store-slot-word-vodka", Color.FromHex("#78C6ED")),
-        ["MagicMedievalEarth"] = ("ImperialStoreSlotEffectEarth", "imperial-store-slot-word-earth", Color.FromHex("#838275")),
-        ["MagicMedievalDarkness"] = ("ImperialStoreSlotEffectDarkness", "imperial-store-slot-word-darkness", Color.FromHex("#B600FF")),
-    };
-
     private void InitializeSlots()
     {
         SubscribeLocalEvent<ImperialStoreComponent, ImperialStoreSetSlotMessage>(OnSetSlot);
@@ -57,7 +44,7 @@ public sealed partial class ImperialStoreSystem
             return;
         }
 
-        if (!ImperialStoreSlots.Schools.Contains(msg.School) ||
+        if (!ImperialStoreSlots.IsSchool(_proto, msg.School) ||
             GetSlotSchool(component, msg.Slot) == msg.School ||
             !IsSchoolSelectable(user, uid, component, msg.School))
         {
@@ -104,7 +91,7 @@ public sealed partial class ImperialStoreSystem
         args.Handled = true;
 
         // everything is checked again, the balance and the spells could have changed while it was running
-        if (!ImperialStoreSlots.Schools.Contains(args.School) ||
+        if (!ImperialStoreSlots.IsSchool(_proto, args.School) ||
             !IsSchoolSelectable(args.User, uid, component, args.School) ||
             !TrySetBonusSlot(uid, args.Slot, args.School, component))
         {
@@ -124,26 +111,26 @@ public sealed partial class ImperialStoreSystem
 
     private EntityUid? SpawnSlotEffect(EntityUid user, string school)
     {
-        if (!SlotVisuals.TryGetValue(school, out var visuals))
+        if (!ImperialStoreSlots.TryGetSchool(_proto, school, out var data))
             return null;
 
-        var effect = Spawn(visuals.Effect, Transform(user).Coordinates);
+        var effect = Spawn(data.Effect, Transform(user).Coordinates);
         _xform.SetParent(effect, user);
         return effect;
     }
 
     private void SaySlotWord(EntityUid user, string school)
     {
-        if (!SlotVisuals.TryGetValue(school, out var visuals))
+        if (!ImperialStoreSlots.TryGetSchool(_proto, school, out var data))
             return;
 
         // same as the words of the spells: everyone understands it and it is not written to the chat
         _chat.TrySendInGameICMessage(
             user,
-            Loc.GetString(visuals.Word),
+            Loc.GetString(data.Word),
             InGameICChatType.Speak,
             hideChat: true,
-            color: visuals.Color,
+            color: data.Color,
             language: _proto.Index(SharedLanguageSystem.Universal));
     }
 
@@ -224,7 +211,7 @@ public sealed partial class ImperialStoreSystem
 
         var available = listings.ToList();
 
-        foreach (var school in ImperialStoreSlots.Schools)
+        foreach (var (school, _) in ImperialStoreSlots.GetSchools(_proto))
         {
             if (IsSchoolSelectable(user, store, school, available))
                 selectable.Add(school);

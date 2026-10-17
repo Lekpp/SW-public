@@ -1,9 +1,12 @@
 using Content.Client.Imperial.Medieval.UserInterface.Elements;
 using Content.Client.Resources;
+using Content.Shared.Imperial.ImperialStore;
 using Robust.Client.Graphics;
 using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
+using Robust.Shared.IoC;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 
 namespace Content.Client.Imperial.ImperialStore.Ui.Foliant;
@@ -34,18 +37,6 @@ public static class FoliantStyle
     public static readonly Color Faded = MedievalUiStyle.TextFaded;
     public static readonly Color Price = Color.FromHex("#ffb070");
     public static readonly Color PriceMissing = Color.FromHex("#e0664a");
-
-    // currency colours that don't read on a dark socket or on cloth
-    private static readonly Dictionary<string, Color> SchoolColors = new()
-    {
-        ["MagicMedievalEarth"] = Color.FromHex("#8a6a4a"),
-    };
-
-    // yellow turns olive green when it is darkened, so the light school gets its own cloth
-    private static readonly Dictionary<string, Color> ClothColors = new()
-    {
-        ["MagicMedievalLight"] = Color.FromHex("#a67c24"),
-    };
 
     /// <summary>
     /// The colours a theme changes. A theme that is not listed here is the common look.
@@ -108,10 +99,15 @@ public static class FoliantStyle
         return texture != null;
     }
 
+    private static ImperialSchoolData? SchoolOf(string? currency)
+    {
+        return ImperialStoreSlots.TryGetSchool(IoCManager.Resolve<IPrototypeManager>(), currency, out var data) ? data : null;
+    }
+
     /// <summary>Colour of a school in the window.</summary>
     public static Color School(string? currency, Color fallback)
     {
-        return currency != null && SchoolColors.TryGetValue(currency, out var color) ? color : fallback;
+        return SchoolOf(currency)?.WindowColor ?? fallback;
     }
 
     /// <summary>The colour of a school that is dark enough for lines and text on a page.</summary>
@@ -120,7 +116,7 @@ public static class FoliantStyle
         if (currency == null)
             return Ink;
 
-        if (ClothColors.TryGetValue(currency, out var cloth))
+        if (SchoolOf(currency)?.ClothColor is { } cloth)
             return cloth;
 
         return new Color(school.R * 0.75f, school.G * 0.75f, school.B * 0.75f);
@@ -129,9 +125,7 @@ public static class FoliantStyle
     /// <summary>Tint for the ribbon texture of a school.</summary>
     public static Color RibbonTint(string? currency, Color school, float saturation = 1f)
     {
-        var cloth = currency != null && ClothColors.TryGetValue(currency, out var color)
-            ? color
-            : new Color(school.R * 0.55f, school.G * 0.55f, school.B * 0.55f);
+        var cloth = SchoolOf(currency)?.ClothColor ?? new Color(school.R * 0.55f, school.G * 0.55f, school.B * 0.55f);
 
         if (saturation < 1f)
         {
@@ -228,17 +222,7 @@ public static class FoliantStyle
         };
     }
 
-    // sign of every school, grey textures tinted with the colour of the school
-    private static readonly Dictionary<string, string> Runes = new()
-    {
-        ["MagicMedievalFire"] = "rune_fire.png",
-        ["MagicMedievalLight"] = "rune_light.png",
-        ["MagicMedievalVodka"] = "rune_water.png",
-        ["MagicMedievalEarth"] = "rune_earth.png",
-        ["MagicMedievalDarkness"] = "rune_dark.png",
-    };
-
-    public static string RuneFile(string school) => Runes.TryGetValue(school, out var file) ? file : "rune_none.png";
+    public static string RuneFile(string school) => SchoolOf(school)?.Rune ?? "rune_none.png";
 
     /// <summary>The sign of a school (13x13 pixels, <paramref name="scale"/> times bigger), a plain diamond for anything else.</summary>
     public static TextureRect Rune(IResourceCache cache, string? school, Color color, float scale)
@@ -264,7 +248,7 @@ public static class FoliantStyle
         };
     }
 
-    public static string SchoolName(string school) => Loc.GetString("foliant-school-" + school);
+    public static string SchoolName(string school) => SchoolOf(school) is { } data ? Loc.GetString(data.Name) : school;
 
     public static Label Text(string text, Font? font, Color color)
     {
