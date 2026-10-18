@@ -28,7 +28,7 @@
     sprite: Imperial/Medieval/Magic/Fire/FireFists/icons.rsi
     state: middle
   cost:
-    MagicMedievalFire: 50
+    MagicMedievalFire: 45
   categories:
   - MedievalFireSpells
   conditions:
@@ -49,7 +49,7 @@
     sprite: Imperial/Medieval/Magic/Fire/FireFists/icons.rsi
     state: senior
   cost:
-    MagicMedievalFire: 85
+    MagicMedievalFire: 65
     ArchmagePoints: 1
   categories:
   - MedievalFireSpells
