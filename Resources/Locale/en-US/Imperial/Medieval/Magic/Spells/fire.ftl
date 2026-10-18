@@ -159,10 +159,10 @@ medieval-store-spells-fire-fists-beginner-name = Fists of anger
 medieval-store-spells-fire-fists-beginner-desc = Sets both fists ablaze for 20 seconds (both hands must be free): hits deal extra fire damage. Hold the mouse button to keep striking. Costs 30 mana.
 
 medieval-store-spells-fire-fists-middle-name = Fists of rage
-medieval-store-spells-fire-fists-middle-desc = The fire burns stronger and longer, hits are faster and harder. Costs 45 mana.
+medieval-store-spells-fire-fists-middle-desc = The fire burns stronger and lasts 25 seconds: you strike faster and harder. Costs 45 mana.
 
 medieval-store-spells-fire-fists-senior-name = Fists of hellfire
-medieval-store-spells-fire-fists-senior-desc = A blazing fist that strikes very often and burns hard. Costs 60 mana.
+medieval-store-spells-fire-fists-senior-desc = Your fists blaze for 30 seconds: you strike even faster and harder, and every hit scorches the enemy. Costs 60 mana.
 
 ent-FireFistsBeginner = fist of anger
     .desc = A mage's blazing fist. Every hit scorches the target.

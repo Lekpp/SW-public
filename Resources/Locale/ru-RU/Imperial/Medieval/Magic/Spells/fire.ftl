@@ -135,10 +135,10 @@ medieval-store-spells-fire-fists-beginner-name = Кулаки гнева
 medieval-store-spells-fire-fists-beginner-desc = Поджигает оба кулака на 20 секунд (обе руки должны быть свободны): удары наносят дополнительный огненный урон. Можно бить, зажав кнопку мыши. Стоимость 30 маны.
 
 medieval-store-spells-fire-fists-middle-name = Кулаки ярости
-medieval-store-spells-fire-fists-middle-desc = Огонь горит сильнее и дольше, удары быстрее и больнее. Стоимость 45 маны.
+medieval-store-spells-fire-fists-middle-desc = Огонь разгорается сильнее и держится 25 секунд: ты бьёшь быстрее и больнее. Стоимость 45 маны.
 
 medieval-store-spells-fire-fists-senior-name = Кулаки пекла
-medieval-store-spells-fire-fists-senior-desc = Пылающий кулак бьёт очень часто и сильно жжёт. Стоимость 60 маны.
+medieval-store-spells-fire-fists-senior-desc = Твои кулаки пылают 30 секунд: ты бьёшь ещё чаще и сильнее, а каждый удар обжигает врага. Стоимость 60 маны.
 
 ent-FireFistsBeginner = кулак гнева
     .desc = Пылающий кулак мага. Каждый удар обжигает цель.
