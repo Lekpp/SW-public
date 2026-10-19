@@ -128,6 +128,7 @@
 - type: entity
   parent: MedievalEffectDragonTailTrail
   id: MedievalEffectDragonTailTrailIce
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     state: ice
@@ -135,6 +136,7 @@
 - type: entity
   parent: MedievalEffectDragonTailTrail
   id: MedievalEffectDragonTailTrailFire
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     state: fire
@@ -142,6 +144,7 @@
 - type: entity
   parent: MedievalEffectDragonTailTrail
   id: MedievalEffectDragonTailTrailAcid
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     state: acid
@@ -149,6 +152,7 @@
 - type: entity
   parent: MedievalEffectDragonTailTrail
   id: MedievalEffectDragonTailTrailThunder
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     state: thunder
@@ -156,6 +160,7 @@
 - type: entity
   parent: MedievalEffectDragonTailTrail
   id: MedievalEffectDragonTailTrailNecro
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     state: necro
@@ -165,6 +170,7 @@
 - type: entity
   parent: MedievalEffectDragonTailTrailIce
   id: MedievalEffectDragonTailTrailIceMother
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     scale: 2, 2
@@ -172,6 +178,7 @@
 - type: entity
   parent: MedievalEffectDragonTailTrailFire
   id: MedievalEffectDragonTailTrailFireMother
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     scale: 2, 2
@@ -179,6 +186,7 @@
 - type: entity
   parent: MedievalEffectDragonTailTrailAcid
   id: MedievalEffectDragonTailTrailAcidMother
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     scale: 2, 2
@@ -186,6 +194,7 @@
 - type: entity
   parent: MedievalEffectDragonTailTrailThunder
   id: MedievalEffectDragonTailTrailThunderMother
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     scale: 2, 2
@@ -193,6 +202,7 @@
 - type: entity
   parent: MedievalEffectDragonTailTrailNecro
   id: MedievalEffectDragonTailTrailNecroMother
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     scale: 2, 2
