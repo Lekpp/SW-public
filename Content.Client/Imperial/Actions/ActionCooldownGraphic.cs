@@ -28,8 +28,16 @@ public sealed class ActionCooldownGraphic : Control
     // Angle of the 12 o'clock direction on the screen, where the sweep starts
     private const float TopAngle = -MathF.PI / 2f;
 
+    /// <summary>
+    /// Below this many seconds left the time is shown with tenths
+    /// </summary>
+    private const float TenthsBelow = 10f;
+
     private const int GlyphWidth = 3;
     private const int GlyphHeight = 5;
+
+    // The decimal point is one cell wide and sits on the bottom row
+    private static readonly int[] Point = { 0b0, 0b0, 0b0, 0b0, 0b1 };
 
     // 3x5 pixel digits, one row per number (the lowest 3 bits), top to bottom
     private static readonly int[][] Digits =
@@ -186,13 +194,17 @@ public sealed class ActionCooldownGraphic : Control
 
     private void DrawSeconds(DrawingHandleScreen handle, Vector2 center, float left)
     {
-        var seconds = (int) MathF.Ceiling(left);
+        // Round up, so the number never shows zero while the ability is still on cooldown
+        var tenths = (int) MathF.Ceiling(left * 10f);
+        var key = tenths < TenthsBelow * 10f ? tenths : 1000 + (int) MathF.Ceiling(left);
 
-        // The text changes once a second, no need to build a new string every frame
-        if (seconds != _shownSeconds)
+        // The text changes at most ten times a second, no need to build a new string every frame
+        if (key != _shownSeconds)
         {
-            _shownSeconds = seconds;
-            _secondsText = seconds.ToString();
+            _shownSeconds = key;
+            _secondsText = tenths < TenthsBelow * 10f
+                ? $"{tenths / 10}.{tenths % 10}"
+                : ((int) MathF.Ceiling(left)).ToString();
         }
 
         DrawPixelNumber(handle, center, _secondsText);
@@ -205,7 +217,7 @@ public sealed class ActionCooldownGraphic : Control
     {
         var cell = MathF.Max(2f, MathF.Round(3f * UIScale));
         var outline = MathF.Max(1f, MathF.Round(cell / 2f));
-        var width = (text.Length * (GlyphWidth + 1) - 1) * cell;
+        var width = TextColumns(text) * cell;
         var height = GlyphHeight * cell;
         var left = MathF.Round(center.X - width / 2f);
         var top = MathF.Round(center.Y - height / 2f);
@@ -214,20 +226,21 @@ public sealed class ActionCooldownGraphic : Control
         // Outline first so it never covers the neighbour digit
         for (var pass = 0; pass < 2; pass++)
         {
+            var offset = 0;
+
             for (var i = 0; i < text.Length; i++)
             {
-                var digit = text[i] - '0';
-                if (digit < 0 || digit > 9) continue;
+                var glyph = GetGlyph(text[i], out var glyphWidth);
 
-                var glyph = Digits[digit];
+                if (glyph == null) continue;
 
                 for (var row = 0; row < GlyphHeight; row++)
                 {
-                    for (var column = 0; column < GlyphWidth; column++)
+                    for (var column = 0; column < glyphWidth; column++)
                     {
-                        if ((glyph[row] & (1 << (GlyphWidth - 1 - column))) == 0) continue;
+                        if ((glyph[row] & (1 << (glyphWidth - 1 - column))) == 0) continue;
 
-                        var x = left + (i * (GlyphWidth + 1) + column) * cell;
+                        var x = left + (offset + column) * cell;
                         var y = top + row * cell;
 
                         if (pass == 0)
@@ -240,8 +253,42 @@ public sealed class ActionCooldownGraphic : Control
                         }
                     }
                 }
+
+                offset += glyphWidth + 1;
             }
         }
+    }
+
+    private static int[]? GetGlyph(char symbol, out int width)
+    {
+        if (symbol == '.')
+        {
+            width = 1;
+            return Point;
+        }
+
+        width = GlyphWidth;
+
+        var digit = symbol - '0';
+
+        return digit is >= 0 and <= 9 ? Digits[digit] : null;
+    }
+
+    /// <summary>
+    /// Width of the text in cells, with a one cell gap between the symbols
+    /// </summary>
+    private static int TextColumns(string text)
+    {
+        var columns = 0;
+
+        foreach (var symbol in text)
+        {
+            if (GetGlyph(symbol, out var glyphWidth) == null) continue;
+
+            columns += glyphWidth + 1;
+        }
+
+        return Math.Max(0, columns - 1);
     }
 
     private void DrawReady(DrawingHandleScreen handle, Vector2 size)
