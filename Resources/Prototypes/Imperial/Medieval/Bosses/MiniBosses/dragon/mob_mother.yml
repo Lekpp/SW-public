@@ -171,6 +171,8 @@
   id: MedievalMotherBossIceDragon
   description: big dragon
   components:
+    - type: MedievalTailSweep
+      windupEffect: MedievalEffectDragonTailTrailIceMother
     - type: Sprite
       drawdepth: Mobs
       layers:
@@ -226,6 +228,8 @@
   id: MedievalMotherBossFireDragon
   description: big dragon
   components:
+    - type: MedievalTailSweep
+      windupEffect: MedievalEffectDragonTailTrailFireMother
     - type: Sprite
       drawdepth: Mobs
       layers:
@@ -271,6 +275,8 @@
   id: MedievalMotherBossAcidDragon
   description: big dragon
   components:
+    - type: MedievalTailSweep
+      windupEffect: MedievalEffectDragonTailTrailAcidMother
     - type: Sprite
       drawdepth: Mobs
       layers:
@@ -316,6 +322,8 @@
   id: MedievalMotherBossThunderDragon
   description: big dragon
   components:
+    - type: MedievalTailSweep
+      windupEffect: MedievalEffectDragonTailTrailThunderMother
     - type: Sprite
       drawdepth: Mobs
       layers:
@@ -386,6 +394,8 @@
   id: MedievalMotherBossNecroDragon
   description: big dragon
   components:
+    - type: MedievalTailSweep
+      windupEffect: MedievalEffectDragonTailTrailNecroMother
     - type: Sprite
       drawdepth: Mobs
       layers:

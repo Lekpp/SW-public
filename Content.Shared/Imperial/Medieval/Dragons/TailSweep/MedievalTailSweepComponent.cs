@@ -94,6 +94,14 @@ public sealed partial class MedievalTailSweepComponent : Component
     public EntProtoId? Effect = "MedievalEffectDragonTailSweep";
 
     /// <summary>
+    /// Effect spawned when the wind-up starts: the trail of the tail while the dragon spins.
+    /// It has a 4-directional state and gets the dragon's starting rotation, so it starts behind the dragon.
+    /// Empty means no effect.
+    /// </summary>
+    [DataField]
+    public EntProtoId? WindupEffect;
+
+    /// <summary>
     /// AI: sweep if at least this many enemies are within <see cref="AutoRange"/>.
     /// </summary>
     [DataField]
