@@ -48,12 +48,18 @@ public abstract partial class SharedMedievalMagicSystem
         );
 
         args.SpellCastDoAfter.CopyToDoAfter(ref doAfterArgs);
-        TryStartSpellDoAfter(
+        var started = TryStartSpellDoAfter(
             args.Performer,
             args.Action,
             casterComponent,
             speedModifier,
             doAfterArgs);
+
+        if (started && args is MedievalProjectileSpellEvent { FaceTargetWhileCasting: true })
+        {
+            var facing = EnsureComp<MedievalCastFacingComponent>(args.Performer);
+            facing.Target = _transformSystem.ToMapCoordinates(args.Target);
+        }
     }
 
     #region Helpers
@@ -70,7 +76,8 @@ public abstract partial class SharedMedievalMagicSystem
                     Performer = GetNetEntity(projectileSpell.Performer),
                     CastSpeedModifier = projectileSpell.SpellCastDoAfter?.SpeedModifier ?? 1.0f,
                     Action = GetNetEntity(projectileSpell.Action),
-                    ProjectileSpeed = projectileSpell.ProjectileSpeed
+                    ProjectileSpeed = projectileSpell.ProjectileSpeed,
+                    SpawnForwardOffset = projectileSpell.SpawnForwardOffset
                 });
                 break;
             case MedievalSpawnSpellEvent spawnSpell:
@@ -112,7 +119,8 @@ public abstract partial class SharedMedievalMagicSystem
                         ProjectilePrototype = projectileSpell.ProjectilePrototype,
                         Action = GetNetEntity(projectileSpell.Action),
                         TargetSpellType = projectileSpell.TargetSpellType,
-                        ProjectileSpeed = projectileSpell.ProjectileSpeed
+                        ProjectileSpeed = projectileSpell.ProjectileSpeed,
+                        SpawnForwardOffset = projectileSpell.SpawnForwardOffset
                     }
                 },
             MedievalSpawnSpellEvent spawnSpell =>

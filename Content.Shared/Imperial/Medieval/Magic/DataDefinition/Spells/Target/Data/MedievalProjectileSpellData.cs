@@ -17,4 +17,7 @@ public sealed partial class MedievalProjectileSpellData : MedievalTargetSpellDat
 
     [DataField]
     public float ProjectileSpeed = 20f;
+
+    [DataField]
+    public float SpawnForwardOffset = 0f;
 }

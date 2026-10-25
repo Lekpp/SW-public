@@ -21,4 +21,16 @@ public sealed partial class MedievalProjectileSpellEvent : MedievalTargetSpellEv
     /// </summary>
     [DataField]
     public float ProjectileSpeed = 20f;
+
+    /// <summary>
+    /// How far in front of the caster (towards the target) the projectile appears, in tiles.
+    /// </summary>
+    [DataField]
+    public float SpawnForwardOffset = 0f;
+
+    /// <summary>
+    /// If true, the caster turns towards the target point and stays facing it while the spell is being cast.
+    /// </summary>
+    [DataField]
+    public bool FaceTargetWhileCasting = false;
 }

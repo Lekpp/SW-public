@@ -1,3 +1,4 @@
+using System.Numerics;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Popups;
 using Robust.Shared.Network;
@@ -17,6 +18,7 @@ public sealed partial class EffectSystem : EntitySystem
 
         SubscribeLocalEvent<SpellCastEffectComponent, MedievalBeforeCastSpellEvent>(OnBeforeCast);
         SubscribeLocalEvent<SpellCastEffectComponent, MedievalAfterCastSpellEvent>(OnAfterCast);
+        SubscribeLocalEvent<SpellCastEffectComponent, MedievalFailCastSpellEvent>(OnFailCast);
     }
 
     private void OnBeforeCast(EntityUid uid, SpellCastEffectComponent component, ref MedievalBeforeCastSpellEvent args)
@@ -32,6 +34,15 @@ public sealed partial class EffectSystem : EntitySystem
         {
             var Effect = Spawn(component.EffectProto, Transform(args.Performer).Coordinates);
             _transform.SetParent(Effect, args.Performer);
+
+            if (component.ForwardEffectProto is { } forwardProto)
+            {
+                var forward = Spawn(forwardProto, Transform(args.Performer).Coordinates);
+                _transform.SetParent(forward, args.Performer);
+                _transform.SetLocalPosition(forward, new Vector2(0f, -component.ForwardEffectOffset));
+                _forwardEffects[args.Performer] = forward;
+            }
+
             CanSpawn = false;
         }
         return;
@@ -40,10 +51,26 @@ public sealed partial class EffectSystem : EntitySystem
     private void OnAfterCast(EntityUid uid, SpellCastEffectComponent component, ref MedievalAfterCastSpellEvent args)
     {
         CanSpawn = true;
-        return;
+        RemoveForwardEffect(args.Performer);
+    }
+
+    private void OnFailCast(EntityUid uid, SpellCastEffectComponent component, MedievalFailCastSpellEvent args)
+    {
+        CanSpawn = true;
+        RemoveForwardEffect(args.Performer);
+    }
+
+    private void RemoveForwardEffect(EntityUid performer)
+    {
+        if (!_forwardEffects.Remove(performer, out var effect))
+            return;
+
+        if (_net.IsServer && !TerminatingOrDeleted(effect))
+            QueueDel(effect);
     }
 
     #region Helpers
     private bool CanSpawn = true;
+    private readonly Dictionary<EntityUid, EntityUid> _forwardEffects = new();
     #endregion
 }

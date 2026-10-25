@@ -51,6 +51,15 @@ public sealed partial class MedievalMagicSystem
 
         var userVelocity = _physicsSystem.GetMapLinearVelocity(performer);
 
+        var spawnCoords = xform.Coordinates;
+        var toTarget = targetMapCoords.Position - spawnMapCoords.Position;
+
+        if (args.SpawnForwardOffset > 0f && toTarget.LengthSquared() > 0.01f)
+        {
+            spawnCoords = _transformSystem.ToCoordinates(
+                new MapCoordinates(spawnMapCoords.Position + toTarget.Normalized() * args.SpawnForwardOffset, spawnMapCoords.MapId));
+        }
+
         foreach (var spawnedDirection in args.ProjectilePrototype.Keys)
         {
             var projectilePrototype = args.ProjectilePrototype[spawnedDirection];
@@ -60,13 +69,17 @@ public sealed partial class MedievalMagicSystem
                 Performer = performer,
                 SpawnedEntityPrototype = projectilePrototype,
                 Direction = spawnedDirection,
-                Coordinates = xform.Coordinates
+                Coordinates = spawnCoords
             };
 
             RaiseLocalEvent(action, ref evBefore);
             if (evBefore.Cancelled) continue;
 
-            var ent = Spawn(projectilePrototype, xform.Coordinates);
+            var ent = Spawn(projectilePrototype, spawnCoords);
+
+            if (TryComp<MedievalDetonateAtTargetComponent>(ent, out var detonate))
+                detonate.Target = targetMapCoords;
+
             var direction = spawnedDirection.RotateVec(targetMapCoords.Position - spawnMapCoords.Position);
             var rotation = spawnedDirection;
 

@@ -55,6 +55,8 @@ public abstract partial class SharedMedievalMagicSystem : EntitySystem
     {
         if (args.Handled) return;
 
+        RemCompDeferred<MedievalCastFacingComponent>(uid);
+
         var casterComponent = EnsureComp<MedievalSpellCasterComponent>(uid);
         var spellData = GetSpellData(args);
         casterComponent.SpeedModifiers.Remove(spellData.CastSpeedModifier);
