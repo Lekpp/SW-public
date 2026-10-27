@@ -3,6 +3,7 @@ using Content.Server.Weapons.Ranged.Systems;
 using Content.Shared.Imperial.Medieval.Magic;
 using Content.Shared.Imperial.Medieval.Magic.MedievalLaunchAfterSpawn;
 using Content.Shared.Imperial.Medieval.Magic.MedievalTargetOverlayOnAiming;
+using Robust.Shared.Map;
 using Robust.Shared.Timing;
 
 namespace Content.Server.Imperial.Medieval.Magic.MedievalLaunchAfterSpawn;
@@ -13,6 +14,11 @@ public sealed class MedievalLaunchAfterSpawnSystem : EntitySystem
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly GunSystem _gun = default!;
+
+    /// <summary>
+    /// Farthest point the caster can send a projectile at. Matches the range of the spell actions, which the client checks.
+    /// </summary>
+    private const float MaxTargetDistance = 60f;
 
     public override void Initialize()
     {
@@ -48,8 +54,19 @@ public sealed class MedievalLaunchAfterSpawnSystem : EntitySystem
             return;
         }
 
+        // The target comes from the client: the cursor must be a real point near the caster on its map,
+        // otherwise it would poison the position and the velocity of the boulder
+        if (!IsValidCursor(args.Target.CursorPosition, args.Performer))
+        {
+            QueueDel(uid);
+
+            return;
+        }
+
+        var targetEntity = IsValidTargetEntity(args.Target.TargetEntity, args.Performer) ? args.Target.TargetEntity : null;
+
         component.Performer = args.Performer;
-        component.Target = args.Target;
+        component.Target = (args.Target.CursorPosition, targetEntity);
         component.SpawnedAt = _timing.CurTime;
         component.LaunchAt = _timing.CurTime + TimeSpan.FromSeconds(component.Delay + component.DelayStep * index);
 
@@ -64,7 +81,8 @@ public sealed class MedievalLaunchAfterSpawnSystem : EntitySystem
     }
 
     /// <summary>
-    /// How many entities of the same cast are already spawned
+    /// How many entities of the same cast are already spawned. They all appear in the same tick
+    /// and the cooldown of the spell is much longer than the window, so entities of other casts are not counted.
     /// </summary>
     private int CountSameCast(EntityUid self, EntityUid performer)
     {
@@ -98,6 +116,27 @@ public sealed class MedievalLaunchAfterSpawnSystem : EntitySystem
         _gun.ShootProjectile(projectile, direction, Vector2.Zero, shooter, shooter, component.Speed);
 
         QueueDel(uid);
+    }
+
+    private bool IsValidCursor(MapCoordinates cursor, EntityUid performer)
+    {
+        if (!float.IsFinite(cursor.Position.X) || !float.IsFinite(cursor.Position.Y)) return false;
+        if (cursor.MapId != _transform.GetMapId(performer)) return false;
+
+        return IsInRange(cursor.Position, performer);
+    }
+
+    private bool IsValidTargetEntity(EntityUid? target, EntityUid performer)
+    {
+        if (target is not { } uid || TerminatingOrDeleted(uid)) return false;
+        if (_transform.GetMapId(uid) != _transform.GetMapId(performer)) return false;
+
+        return IsInRange(_transform.GetWorldPosition(uid), performer);
+    }
+
+    private bool IsInRange(Vector2 position, EntityUid performer)
+    {
+        return (position - _transform.GetWorldPosition(performer)).LengthSquared() <= MaxTargetDistance * MaxTargetDistance;
     }
 
     private Vector2 GetTargetPosition(MedievalLaunchAfterSpawnComponent component)
