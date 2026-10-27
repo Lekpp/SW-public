@@ -30,7 +30,6 @@
   - type: Action
     useDelay: 7
     itemIconStyle: BigAction
-    backgroundOn: Imperial/Medieval/Interface/Actions/selected_slot.png # highlights the slot while a target is being chosen
     icon:
       sprite: Imperial/Medieval/Magic/Light/RadiantPhalanx/icons.rsi
       state: beginner
@@ -85,7 +84,6 @@
   - type: Action
     useDelay: 9
     itemIconStyle: BigAction
-    backgroundOn: Imperial/Medieval/Interface/Actions/selected_slot.png # highlights the slot while a target is being chosen
     icon:
       sprite: Imperial/Medieval/Magic/Light/RadiantPhalanx/icons.rsi
       state: middle
@@ -136,7 +134,6 @@
   - type: Action
     useDelay: 12
     itemIconStyle: BigAction
-    backgroundOn: Imperial/Medieval/Interface/Actions/selected_slot.png # highlights the slot while a target is being chosen
     icon:
       sprite: Imperial/Medieval/Magic/Light/RadiantPhalanx/icons.rsi
       state: senior

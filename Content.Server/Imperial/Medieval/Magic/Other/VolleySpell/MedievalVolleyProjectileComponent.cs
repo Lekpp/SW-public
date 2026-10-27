@@ -43,6 +43,12 @@ public sealed partial class MedievalVolleyProjectileComponent : Component
     [ViewVariables]
     public Vector2 Back;
 
+    /// <summary>
+    /// Smoothed shift along the caster's velocity, see VelocityLead in the system
+    /// </summary>
+    [ViewVariables]
+    public Vector2 Lead;
+
     [ViewVariables]
     public float Phase;
 

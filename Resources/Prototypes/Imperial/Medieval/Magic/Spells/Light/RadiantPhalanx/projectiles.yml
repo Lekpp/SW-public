@@ -22,8 +22,13 @@
     angle: 180
     onlyCollideWhenShot: true
     forceSound: true # otherwise the Heat part makes mobs play their energy hit sound
+    impactEffect: RadiantSwordImpact
     soundHit:
       path: /Audio/Weapons/bladeslice.ogg
+  - type: DelayedSpawn
+    proto: RadiantSwordSummonFlash
+    delay: 0.02
+    attached: true
   - type: TimedDespawn
     lifetime: 30
 
@@ -77,3 +82,37 @@
     damage:
       types:
         Heat: 3
+
+# Effects
+
+- type: entity
+  id: RadiantSwordSummonFlash
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: Imperial/Medieval/Magic/Light/RadiantPhalanx/effects.rsi
+    drawdepth: Effects
+    noRot: true
+    layers:
+    - state: summon
+      shader: unshaded
+  - type: TimedDespawn
+    lifetime: 0.3
+
+- type: entity
+  id: RadiantSwordImpact
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: TimedDespawn
+    lifetime: 0.3
+  - type: Sprite
+    sprite: Imperial/Medieval/Magic/Light/RadiantPhalanx/effects.rsi
+    drawdepth: Effects
+    layers:
+    - state: impact
+      shader: unshaded
+      map: ["enum.EffectLayers.Unshaded"]
+  - type: EffectVisuals
+  - type: Tag
+    tags:
+    - HideContextMenu

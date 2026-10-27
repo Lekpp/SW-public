@@ -58,6 +58,14 @@ public sealed class MedievalVolleySystem : EntitySystem
     private const float SwaySpeed = 6f;
     private const float FollowSpeed = 8f;
 
+    /// <summary>
+    /// The server position reaches the client late, so a moving caster runs away from the projectiles.
+    /// The projectiles are shifted ahead along the caster's velocity by this many seconds to make up for it.
+    /// </summary>
+    private const float VelocityLead = 0.15f;
+
+    private const float LeadSmoothing = 10f;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -308,7 +316,10 @@ public sealed class MedievalVolleySystem : EntitySystem
             ? wanted
             : Math.Min(wanted, comp.Radius + RadiusRecoverSpeed * frameTime);
 
-        _transform.SetWorldPosition(uid, casterCoordinates.Position + direction * comp.Radius);
+        var velocity = _physics.GetMapLinearVelocity(comp.Caster) * VelocityLead;
+        comp.Lead = Vector2.Lerp(comp.Lead, velocity, Math.Min(1f, frameTime * LeadSmoothing));
+
+        _transform.SetWorldPosition(uid, casterCoordinates.Position + comp.Lead + direction * comp.Radius);
     }
 
     private void UpdateRotation(EntityUid uid, MedievalVolleyProjectileComponent comp)
@@ -363,7 +374,7 @@ public sealed class MedievalVolleySystem : EntitySystem
         _gun.ShootProjectile(
             uid,
             direction,
-            _physics.GetMapLinearVelocity(comp.Caster),
+            Vector2.Zero, // the caster's own speed must not push the sword away from the target
             comp.Caster,
             comp.Caster,
             comp.Speed);
