@@ -54,6 +54,11 @@ public sealed class MedievalVolleySystem : EntitySystem
     /// </summary>
     private const float RadiusRecoverSpeed = 4f;
 
+    /// <summary>
+    /// Farthest point the caster can send a projectile at. Matches the range of the spell actions, which the client checks.
+    /// </summary>
+    private const float MaxTargetDistance = 60f;
+
     private const float SwayAmplitude = 0.06f;
     private const float SwaySpeed = 6f;
     private const float FollowSpeed = 8f;
@@ -81,7 +86,7 @@ public sealed class MedievalVolleySystem : EntitySystem
         if (args.SenderSession.AttachedEntity is not { } caster) return;
         if (!TryGetRequestedAction(caster, ev.Action, out var action, out var settings)) return;
 
-        // The client can repeat the request at will. Swords that still wait are kept (and their removal is cancelled)
+        // The client can repeat the request at will. Projectiles that still wait are kept (and their removal is cancelled)
         // so that repeated requests neither spawn entities nor replay the sound.
         if (RefreshWaitingProjectiles(caster, action, settings))
             return;
@@ -143,8 +148,8 @@ public sealed class MedievalVolleySystem : EntitySystem
         for (var i = 0; i < settings.Count; i++)
         {
             var slot = settings.Count == 1 ? 0f : -settings.Arc / 2 + settings.Arc * i / (settings.Count - 1);
-            var sword = Spawn(settings.Projectile, coordinates);
-            var comp = EnsureComp<MedievalVolleyProjectileComponent>(sword);
+            var projectile = Spawn(settings.Projectile, coordinates);
+            var comp = EnsureComp<MedievalVolleyProjectileComponent>(projectile);
 
             comp.Caster = caster;
             comp.Action = action;
@@ -154,10 +159,10 @@ public sealed class MedievalVolleySystem : EntitySystem
             comp.Back = back;
             comp.Radius = settings.HoverRadius;
             comp.Phase = i * 1.3f;
-            comp.Rotation = GetFacing(caster).ToWorldAngle() + GetSpriteAngle(sword);
+            comp.Rotation = GetFacing(caster).ToWorldAngle() + GetSpriteAngle(projectile);
             comp.Deadline = _timing.CurTime + TimeSpan.FromSeconds(settings.HoverTimeout);
 
-            UpdatePosition(sword, comp, 0f);
+            UpdatePosition(projectile, comp, 0f);
         }
 
         if (settings.SummonSound != null)
@@ -195,38 +200,39 @@ public sealed class MedievalVolleySystem : EntitySystem
         List<(MapCoordinates Cursor, EntityUid? Target)> targets,
         float speed)
     {
-
-        // The list comes from the client: only as many targets as there are projectiles can be used, and the coordinates
-        // must be real numbers on the caster's map, otherwise they would poison the physics of the projectile
+        // The list comes from the client: only as many targets as there are projectiles can be used, the coordinates
+        // must be real numbers near the caster on its map, and an entity under the cursor must be just as close
         var casterMap = _transform.GetMapId(caster);
+        var casterPosition = _transform.GetWorldPosition(caster);
         var checkedTargets = new List<(MapCoordinates Cursor, EntityUid? Target)>();
 
-        foreach (var entry in targets)
+        foreach (var (cursor, target) in targets)
         {
             if (checkedTargets.Count >= settings.Count) break;
-            if (entry.Cursor.MapId != casterMap) continue;
-            if (!float.IsFinite(entry.Cursor.Position.X) || !float.IsFinite(entry.Cursor.Position.Y)) continue;
+            if (cursor.MapId != casterMap) continue;
+            if (!float.IsFinite(cursor.Position.X) || !float.IsFinite(cursor.Position.Y)) continue;
+            if ((cursor.Position - casterPosition).LengthSquared() > MaxTargetDistance * MaxTargetDistance) continue;
 
-            checkedTargets.Add(entry);
+            checkedTargets.Add((cursor, IsValidTarget(target, casterMap, casterPosition) ? target : null));
         }
 
         if (checkedTargets.Count == 0) return;
 
         targets = checkedTargets;
 
-        var swords = GetWaitingProjectiles(caster, action);
+        var waiting = GetWaitingProjectiles(caster, action);
 
-        if (swords.Count == 0)
+        if (waiting.Count == 0)
         {
             Summon(caster, action, settings);
-            swords = GetWaitingProjectiles(caster, action);
+            waiting = GetWaitingProjectiles(caster, action);
         }
 
-        swords.Sort((a, b) => a.Comp.Order.CompareTo(b.Comp.Order));
+        waiting.Sort((a, b) => a.Comp.Order.CompareTo(b.Comp.Order));
 
-        for (var i = 0; i < swords.Count; i++)
+        for (var i = 0; i < waiting.Count; i++)
         {
-            var comp = swords[i].Comp;
+            var comp = waiting[i].Comp;
             var (cursor, target) = targets[i % targets.Count];
 
             comp.Target = target;
@@ -269,6 +275,14 @@ public sealed class MedievalVolleySystem : EntitySystem
     }
 
     #region Helpers
+
+    private bool IsValidTarget(EntityUid? target, MapId casterMap, Vector2 casterPosition)
+    {
+        if (target is not { } uid || TerminatingOrDeleted(uid)) return false;
+        if (_transform.GetMapId(uid) != casterMap) return false;
+
+        return (_transform.GetWorldPosition(uid) - casterPosition).LengthSquared() <= MaxTargetDistance * MaxTargetDistance;
+    }
 
     private List<(EntityUid Owner, MedievalVolleyProjectileComponent Comp)> GetWaitingProjectiles(EntityUid caster, EntityUid action)
     {
@@ -367,14 +381,13 @@ public sealed class MedievalVolleySystem : EntitySystem
         if (!float.IsFinite(direction.X) || !float.IsFinite(direction.Y) || direction.LengthSquared() < 0.01f)
             direction = GetFacing(comp.Caster);
 
-
         if (comp.LaunchSound != null)
             _audio.PlayPvs(comp.LaunchSound, uid);
 
         _gun.ShootProjectile(
             uid,
             direction,
-            Vector2.Zero, // the caster's own speed must not push the sword away from the target
+            Vector2.Zero, // the caster's own speed must not push the projectile away from the target
             comp.Caster,
             comp.Caster,
             comp.Speed);

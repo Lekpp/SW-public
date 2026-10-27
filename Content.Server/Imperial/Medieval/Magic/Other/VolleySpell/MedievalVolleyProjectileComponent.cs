@@ -16,9 +16,6 @@ public sealed partial class MedievalVolleyProjectileComponent : Component
     [ViewVariables]
     public EntityUid Action;
 
-    /// <summary>
-    /// Position in the order of launch
-    /// </summary>
     [ViewVariables]
     public int Order;
 

@@ -12,15 +12,9 @@ namespace Content.Shared.Imperial.Medieval.Magic.VolleySpell;
 [RegisterComponent]
 public sealed partial class MedievalVolleySpellComponent : Component
 {
-    /// <summary>
-    /// The projectile that is summoned
-    /// </summary>
     [DataField(required: true)]
     public EntProtoId Projectile;
 
-    /// <summary>
-    /// How many projectiles are summoned
-    /// </summary>
     [DataField]
     public int Count = 2;
 
@@ -30,9 +24,6 @@ public sealed partial class MedievalVolleySpellComponent : Component
     [DataField]
     public float Arc = 60f;
 
-    /// <summary>
-    /// Distance from the caster to the hovering projectiles
-    /// </summary>
     [DataField]
     public float HoverRadius = 1.4f;
 
@@ -48,15 +39,9 @@ public sealed partial class MedievalVolleySpellComponent : Component
     [DataField]
     public float HoverTimeout = 15f;
 
-    /// <summary>
-    /// Sound played when the projectiles are summoned
-    /// </summary>
     [DataField]
     public SoundSpecifier? SummonSound;
 
-    /// <summary>
-    /// Sound played at the projectile when it is launched
-    /// </summary>
     [DataField]
     public SoundSpecifier? LaunchSound;
 }
