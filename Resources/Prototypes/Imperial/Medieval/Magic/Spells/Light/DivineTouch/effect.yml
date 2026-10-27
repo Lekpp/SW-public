@@ -28,3 +28,18 @@
   - type: TimedDespawn
     lifetime: 3.5
 
+# Heal feedback
+
+- type: entity
+  id: DivineHealSparkles
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: Imperial/Medieval/Magic/Light/DivineTouch/heal.rsi
+    drawdepth: Effects
+    noRot: true
+    layers:
+    - state: sparkles
+      shader: unshaded
+  - type: TimedDespawn
+    lifetime: 0.9
