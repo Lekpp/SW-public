@@ -92,7 +92,7 @@ medieval-store-spells-earth-bed-beginner-desc = Создайте в указан
 
 # Boulder
 
-medieval-spell-speach-boulder = LAPIS IACTUS
+medieval-spell-speach-boulder = L̄â̠p̵̣ìs̸̀ I̝̣a̠c̄̃́t̝u̵s̠
 
 medieval-store-spells-earth-boulder-beginner-name = Метательный валун
 medieval-store-spells-earth-boulder-beginner-desc = Вызовите из земли валун и метните его в выбранную цель. Стоимость 40 маны.

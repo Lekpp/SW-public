@@ -107,7 +107,7 @@ medieval-store-spells-earth-seedlings-senior-desc = Summon a forest at the selec
 
 # Boulder
 
-medieval-spell-speach-boulder = LAPIS IACTUS
+medieval-spell-speach-boulder = L̄â̠p̵̣ìs̸̀ I̝̣a̠c̄̃́t̝u̵s̠
 
 medieval-store-spells-earth-boulder-beginner-name = Hurled Boulder
 medieval-store-spells-earth-boulder-beginner-desc = Summon a boulder from the ground and hurl it at the selected target. Cost: 40 mana.
