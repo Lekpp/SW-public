@@ -6,6 +6,7 @@ using Content.Shared.Imperial.Medieval.Magic.MedievalTargetOverlayOnAiming;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Robust.Shared.Map;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
 namespace Content.Server.Imperial.Medieval.Magic.MedievalBloodMark;
@@ -60,6 +61,7 @@ public sealed class MedievalBloodMarkSystem : EntitySystem
     {
         QueueDel(uid);
 
+        if (IsOverTargetLimit(args.Action)) return;
         if (args.Target.TargetEntity is not { } target) return;
         if (target == args.Performer || TerminatingOrDeleted(target)) return;
 
@@ -75,7 +77,11 @@ public sealed class MedievalBloodMarkSystem : EntitySystem
         // Marks do not stack: the strongest one stays and the longest time wins
         if (TryComp<MedievalBloodMarkComponent>(target, out var mark))
         {
-            mark.Multiplier = MathF.Max(mark.Multiplier, component.Multiplier);
+            if (component.Multiplier > mark.Multiplier)
+            {
+                mark.Multiplier = component.Multiplier;
+                ReplaceSign(target, mark, component.Effect);
+            }
 
             if (expireAt > mark.ExpireAt)
             {
@@ -98,6 +104,41 @@ public sealed class MedievalBloodMarkSystem : EntitySystem
             mark.Effect = Spawn(effect, new EntityCoordinates(target, Vector2.Zero));
     }
 
+    /// <summary>
+    /// A stronger mark brings its own sign, but only if it looks different from the current one
+    /// </summary>
+    private void ReplaceSign(EntityUid target, MedievalBloodMarkComponent mark, EntProtoId? effect)
+    {
+        if (effect is not { } proto || mark.Effect is { } current && MetaData(current).EntityPrototype?.ID == proto.Id)
+            return;
+
+        if (mark.Effect is { } old) QueueDel(old);
+
+        mark.Effect = Spawn(proto, new EntityCoordinates(target, Vector2.Zero));
+        mark.StampUntil = _timing.CurTime + TimeSpan.FromSeconds(StampTime);
+        mark.Visual = MedievalBloodMarkStage.Appear;
+    }
+
+    /// <summary>
+    /// One cast marks at most as many targets as the action allows, extra ones come from a modified client
+    /// </summary>
+    private bool IsOverTargetLimit(EntityUid action)
+    {
+        var limit = EnsureComp<MedievalBloodMarkCastComponent>(action);
+
+        if (limit.Tick != _timing.CurTick)
+        {
+            limit.Tick = _timing.CurTick;
+            limit.Count = 0;
+        }
+
+        limit.Count++;
+
+        var max = TryComp<MedievalTargetOverlayOnAimingComponent>(action, out var overlay) ? overlay.MaxTargetCount : 1;
+
+        return limit.Count > max;
+    }
+
     private void UpdateStage(MedievalBloodMarkComponent component)
     {
         if (component.Effect is not { } effect || component.Total <= TimeSpan.Zero) return;
@@ -114,7 +155,6 @@ public sealed class MedievalBloodMarkSystem : EntitySystem
                 if (left <= limit) stage++;
             }
 
-            component.Stage = stage;
             visual = (MedievalBloodMarkStage) ((int) MedievalBloodMarkStage.Stage0 + stage);
         }
 

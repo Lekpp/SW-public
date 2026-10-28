@@ -25,12 +25,6 @@ public sealed partial class MedievalBloodMarkComponent : Component
     public TimeSpan Total;
 
     /// <summary>
-    /// Stage of the sign: 0 is a fresh mark, the last one (4) is about to vanish
-    /// </summary>
-    [ViewVariables]
-    public int Stage;
-
-    /// <summary>
     /// The stamp animation is playing until this time
     /// </summary>
     [ViewVariables]
