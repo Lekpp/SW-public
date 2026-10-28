@@ -106,7 +106,7 @@ medieval-store-spells-light-summon-foliant-beginner-desc = Призывает с
 
 # Radiant Phalanx
 
-medieval-spell-speach-radiant-phalanx = PHALANX RADIANS
+medieval-spell-speach-radiant-phalanx = P͜h͜a̧͡ĺa̵n͜͢x̷ R̷a̵d̕i̵a͢n̴s̸͜
 
 medieval-store-spells-light-radiant-phalanx-beginner-name = Пара сияющих клинков
 medieval-store-spells-light-radiant-phalanx-beginner-desc = Призывает два сияющих клинка, которые парят за спиной. После выбора целей клинки по очереди устремляются к ним. Стоимость 25 маны.

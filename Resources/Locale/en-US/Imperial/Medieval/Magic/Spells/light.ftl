@@ -129,7 +129,7 @@ medieval-spell-speach-magic-light = Íl͏ĺ̡͡um̴̷͠ín͢͜͞a͟ ̕V͢͏͡
 
 # Radiant Phalanx
 
-medieval-spell-speach-radiant-phalanx = PHALANX RADIANS
+medieval-spell-speach-radiant-phalanx = P͜h͜a̧͡ĺa̵n͜͢x̷ R̷a̵d̕i̵a͢n̴s̸͜
 
 medieval-store-spells-light-radiant-phalanx-beginner-name = Pair of radiant blades
 medieval-store-spells-light-radiant-phalanx-beginner-desc = Summons two radiant blades that hover behind you. Once the targets are chosen the blades rush at them one after another. Costs 25 mana.
