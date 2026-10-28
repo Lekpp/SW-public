@@ -40,7 +40,7 @@
       spawnedEntityPrototype: MedievalIcicleHailBeginner
       spawnType: SpawnOnMousePosition
       spellCastDoAfter:
-        delay: 0.8
+        delay: 1.8
         breakOnDropItem: false
         breakOnWeightlessMove: false
         breakOnMove: false
@@ -88,7 +88,7 @@
       spawnedEntityPrototype: MedievalIcicleHailMiddle
       spawnType: SpawnOnMousePosition
       spellCastDoAfter:
-        delay: 1.0
+        delay: 2.5
         breakOnDropItem: false
         breakOnWeightlessMove: false
         breakOnMove: false
@@ -132,7 +132,7 @@
       spawnedEntityPrototype: MedievalIcicleHailSenior
       spawnType: SpawnOnMousePosition
       spellCastDoAfter:
-        delay: 1.2
+        delay: 3
         breakOnDropItem: false
         breakOnWeightlessMove: false
         breakOnMove: false
