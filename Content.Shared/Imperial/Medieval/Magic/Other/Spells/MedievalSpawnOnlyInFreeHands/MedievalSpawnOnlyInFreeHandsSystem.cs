@@ -47,6 +47,14 @@ public sealed partial class MedievalSpawnOnlyInFreeHandsSystem : EntitySystem
         if (component.NotEnoughMessage != null && _net.IsServer)
             _popup.PopupEntity(Loc.GetString(component.NotEnoughMessage.Value), args.Performer, args.Performer);
 
+        // Release the mana reservation and the cooldown, otherwise the spell stays blocked
+        RaiseLocalEvent(uid, new MedievalFailCastSpellEvent
+        {
+            Action = uid,
+            Performer = args.Performer
+        });
+        _actionsSystem.ClearCooldown(uid);
+
         args.Cancelled = true;
     }
 }

@@ -1,6 +1,7 @@
 - type: entity
   id: FireFistsBeginner
   parent: BaseItem
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: Imperial/Medieval/Magic/Fire/FireFists/projectiles.rsi
@@ -36,6 +37,7 @@
 - type: entity
   id: FireFistsMiddle
   parent: BaseItem
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: Imperial/Medieval/Magic/Fire/FireFists/projectiles.rsi
