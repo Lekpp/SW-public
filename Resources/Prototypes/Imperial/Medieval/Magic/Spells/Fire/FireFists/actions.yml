@@ -19,14 +19,13 @@
   - type: MedievalSpawnExtraInHand
     prototype: FireFistsBeginner
   - type: ManaDrainSpell
-    manaDrain: 30
+    manaDrain: 40
     canUseWithoutMana: true
     manaLowMessage: medieval-spell-speach-not-enough-mana-fire-spell
     damageOnUseWithoutMana:
       groups:
-        Burn: 12
+        Burn: 14
   - type: Action
-    useDelay: 45
     itemIconStyle: BigAction
     sound: !type:SoundPathSpecifier
       path: /Audio/Imperial/Medieval/fireball_cast.ogg
@@ -52,7 +51,6 @@
   - type: ActionUpgrade
     effectedLevels:
       2: MedievalActionFireFistsMiddle
-      3: MedievalActionFireFistsSenior
 
 - type: entity
   id: MedievalActionFireFistsMiddle
@@ -63,53 +61,17 @@
   - type: MedievalSpawnExtraInHand
     prototype: FireFistsMiddle
   - type: ManaDrainSpell
-    manaDrain: 45
+    manaDrain: 60
     damageOnUseWithoutMana:
       groups:
-        Burn: 14
+        Burn: 16
   - type: Action
-    useDelay: 45
     icon:
       sprite: Imperial/Medieval/Magic/Fire/FireFists/icons.rsi
       state: middle
   - type: InstantAction
     event: !type:MedievalSpawnInHandSpellEvent
       spawnedEntityPrototype: FireFistsMiddle
-      spellCastDoAfter:
-        delay: 0.5
-        breakOnDropItem: false
-        breakOnWeightlessMove: false
-        breakOnMove: false
-        breakOnDamage: true
-        needHand: true
-        speedModifier: 1
-      speechPoints:
-        0:
-          speech: medieval-spell-speach-fire-fists
-          color: "#FF9C24"
-          hideChat: true
-
-- type: entity
-  id: MedievalActionFireFistsSenior
-  parent: MedievalActionFireFistsMiddle
-  name: medieval-store-spells-fire-fists-senior-name
-  description: medieval-store-spells-fire-fists-senior-desc
-  components:
-  - type: MedievalSpawnExtraInHand
-    prototype: FireFistsSenior
-  - type: ManaDrainSpell
-    manaDrain: 60
-    damageOnUseWithoutMana:
-      groups:
-        Burn: 16
-  - type: Action
-    useDelay: 45
-    icon:
-      sprite: Imperial/Medieval/Magic/Fire/FireFists/icons.rsi
-      state: senior
-  - type: InstantAction
-    event: !type:MedievalSpawnInHandSpellEvent
-      spawnedEntityPrototype: FireFistsSenior
       spellCastDoAfter:
         delay: 0.5
         breakOnDropItem: false

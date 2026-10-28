@@ -10,7 +10,7 @@
     sprite: Imperial/Medieval/Magic/Fire/FireFists/icons.rsi
     state: beginner
   cost:
-    MagicMedievalFire: 20
+    MagicMedievalFire: 30
   categories:
   - MedievalFireSpells
   conditions:
@@ -23,12 +23,12 @@
   description: medieval-store-spells-fire-fists-middle-desc
   priority: 10
   productUpgradeId:
-    - MedievalSpellFireFistsSenior
+    - MedievalSpellFireFistsMiddle
   icon:
     sprite: Imperial/Medieval/Magic/Fire/FireFists/icons.rsi
     state: middle
   cost:
-    MagicMedievalFire: 45
+    MagicMedievalFire: 65
   categories:
   - MedievalFireSpells
   conditions:
@@ -37,25 +37,3 @@
   - !type:ImperialBuyBeforeCondition
     whitelist:
       - MedievalSpellFireFistsBeginner
-
-- type: imperialListing
-  id: MedievalSpellFireFistsSenior
-  name: medieval-store-spells-fire-fists-senior-name
-  description: medieval-store-spells-fire-fists-senior-desc
-  priority: 10
-  productUpgradeId:
-    - MedievalSpellFireFistsSenior
-  icon:
-    sprite: Imperial/Medieval/Magic/Fire/FireFists/icons.rsi
-    state: senior
-  cost:
-    MagicMedievalFire: 65
-    ArchmagePoints: 1
-  categories:
-  - MedievalFireSpells
-  conditions:
-  - !type:ImperialListingLimitedStockCondition
-    stock: 1
-  - !type:ImperialBuyBeforeCondition
-    whitelist:
-      - MedievalSpellFireFistsMiddle

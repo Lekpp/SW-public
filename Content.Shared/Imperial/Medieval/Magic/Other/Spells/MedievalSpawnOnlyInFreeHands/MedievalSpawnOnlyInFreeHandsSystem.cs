@@ -23,6 +23,7 @@ public sealed partial class MedievalSpawnOnlyInFreeHandsSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<MedievalSpawnOnlyInFreeHandsComponent, MedievalBeforeCastSpellEvent>(OnBeforeSpellCast, before: new[] { typeof(ManaSystem) });
+        SubscribeLocalEvent<MedievalSpawnOnlyInFreeHandsComponent, MedievalBeforeSpawnEntityBySpellEvent>(OnBeforeSpawn);
     }
 
     private void OnBeforeSpellCast(EntityUid uid, MedievalSpawnOnlyInFreeHandsComponent component, ref MedievalBeforeCastSpellEvent args)
@@ -33,6 +34,19 @@ public sealed partial class MedievalSpawnOnlyInFreeHandsSystem : EntitySystem
             _popup.PopupEntity(Loc.GetString(component.NotEnoughMessage.Value), args.Performer, args.Performer);
 
         _actionsSystem.ClearCooldown(uid);
+        args.Cancelled = true;
+    }
+
+    /// <summary>
+    /// The hands can be filled while the cast is in progress, so check them again right before the spawn
+    /// </summary>
+    private void OnBeforeSpawn(EntityUid uid, MedievalSpawnOnlyInFreeHandsComponent component, ref MedievalBeforeSpawnEntityBySpellEvent args)
+    {
+        if (_handsSystem.CountFreeHands(args.Performer) >= component.Count) return;
+
+        if (component.NotEnoughMessage != null && _net.IsServer)
+            _popup.PopupEntity(Loc.GetString(component.NotEnoughMessage.Value), args.Performer, args.Performer);
+
         args.Cancelled = true;
     }
 }

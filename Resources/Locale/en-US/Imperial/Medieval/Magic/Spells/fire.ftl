@@ -152,21 +152,16 @@ medieval-spell-speech-spark = snaps fingers
 medieval-store-spells-fire-swater-beginner-name = Water bubble
 medieval-store-spells-fire-swater-beginner-desc = Creates a magical water bubble in your hand.
 
-medieval-spell-speach-fire-fists = IGNIS PUGNUS
+medieval-spell-speach-fire-fists = I̩̾͞G͈͌͠Ǹ͓͜I̝̿S̬̃͜ P̲̌U̦̽G̥͊͝N͙̅͘U͎͋S̹̄͢
 medieval-spell-fire-fists-need-two-hands = This spell needs both hands free.
 
 medieval-store-spells-fire-fists-beginner-name = Fists of anger
-medieval-store-spells-fire-fists-beginner-desc = Sets both fists ablaze for 20 seconds (both hands must be free): hits deal extra fire damage. Hold the mouse button to keep striking. Costs 30 mana.
+medieval-store-spells-fire-fists-beginner-desc = Sets both fists ablaze for 25 seconds (both hands must be free): hits deal extra fire damage and the hands switch on their own with every swing. Hold the mouse button to keep striking. Costs 40 mana.
 
-medieval-store-spells-fire-fists-middle-name = Fists of rage
-medieval-store-spells-fire-fists-middle-desc = The fire burns stronger and lasts 25 seconds: you strike faster and harder. Costs 45 mana.
-
-medieval-store-spells-fire-fists-senior-name = Fists of hellfire
-medieval-store-spells-fire-fists-senior-desc = Your fists blaze for 30 seconds: you strike even faster and harder, and every hit scorches the enemy. Costs 60 mana.
+medieval-store-spells-fire-fists-middle-name = Fists of hellfire
+medieval-store-spells-fire-fists-middle-desc = The fire burns stronger and lasts 30 seconds: the fists strike faster and harder. Costs 60 mana.
 
 ent-FireFistsBeginner = fist of anger
-    .desc = A mage's blazing fist. Every hit scorches the target.
-ent-FireFistsMiddle = fist of rage
+    .desc = A mage's blazing fist. Every hit deals fire damage.
+ent-FireFistsMiddle = fist of hellfire
     .desc = A mage's blazing fist. Strikes faster and burns harder.
-ent-FireFistsSenior = fist of hellfire
-    .desc = A mage's blazing fist. Strikes very often and burns fiercely.
