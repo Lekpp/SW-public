@@ -46,6 +46,7 @@
         range: 4
     rotationPerClick: 0
   - type: MedievalSpellTeleportEffect
+    hideCaster: false
     fadeDistortion:
       - type: PhaseSpaceDistortion
         isMove: false
