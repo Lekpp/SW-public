@@ -27,6 +27,9 @@
   - type: FlashOnTrigger
     range: 1
     duration: 4.2
+  - type: SpawnEntityOnTrigger
+    spawnedEntitiesPrototype:
+      - FlashBurstEffectBeginner
 
 # Middle
 
@@ -60,3 +63,4 @@
   - type: SpawnEntityOnTrigger
     spawnedEntitiesPrototype:
       - FlashWaveEffect
+      - FlashBurstEffectMiddle
