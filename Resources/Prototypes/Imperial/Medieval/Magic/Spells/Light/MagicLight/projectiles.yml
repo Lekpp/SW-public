@@ -6,15 +6,11 @@
   components:
     - type: CargoSellBlacklist
     - type: Sprite
-      sprite: Objects/Fun/pondering_orb.rsi
-      state: icon
-    - type: MedievalParticles
-      color: cyan
-      speed: 2.0
-      particlesCount: 32
-      gravity: 0
-      inverted: true
-      collapseOnMinDistance: true
+      sprite: Imperial/Medieval/Magic/Light/MagicLight/orb.rsi
+      noRot: true
+      layers:
+      - state: orb
+        shader: unshaded
     - type: PointLight
       color: cyan
       energy: 2

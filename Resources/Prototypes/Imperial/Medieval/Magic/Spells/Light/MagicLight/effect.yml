@@ -6,7 +6,7 @@
   components:
   - type: Sprite
     sprite: Imperial/Medieval/SpellCastEffects/light/magic_light.rsi
-    color: "#FFE57E"
+    color: "#BFEFF1"
     noRot: true
     layers:
       - state: beginner
@@ -14,6 +14,6 @@
   - type: PointLight
     radius: 2
     energy: 1
-    color: "#FFE57E"
+    color: "#BFEFF1"
   - type: TimedDespawn
     lifetime: 0.5
