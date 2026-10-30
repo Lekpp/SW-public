@@ -10,3 +10,11 @@
     intensitySlope: 2
     totalIntensity: 5
     canCreateVacuum: false
+
+- type: entity
+  id: MedievalLightningExplosionLight
+  parent: MedievalLightningExplosion
+  components:
+  - type: SpawnEntityOnTrigger
+    spawnedEntitiesPrototype:
+      - LightningImpactEffect
