@@ -63,6 +63,16 @@ public sealed class MedievalTailSweepSystem : SharedMedievalTailSweepSystem
         }
     }
 
+    protected override void OnSweepStarted(Entity<MedievalTailSweepComponent> ent)
+    {
+        if (ent.Comp.WindupEffect is not { } effect)
+            return;
+
+        // The trail is not a child of the dragon: the dragon turns, the trail has to stay as it was at the start.
+        var trail = SpawnAtPosition(effect, Transform(ent.Owner).Coordinates);
+        Xform.SetWorldRotation(trail, ent.Comp.StartRotation);
+    }
+
     /// <summary>
     /// Rotates the dragon step by step so its 4-directional sprite looks like it spins in place.
     /// </summary>

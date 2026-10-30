@@ -86,6 +86,14 @@ public abstract class SharedMedievalTailSweepSystem : EntitySystem
 
         Blocker.UpdateCanMove(ent.Owner);
         Audio.PlayPredicted(ent.Comp.WindupSound, ent.Owner, ent.Owner);
+        OnSweepStarted(ent);
         return true;
+    }
+
+    /// <summary>
+    /// Called once the wind-up has started and the start rotation is saved.
+    /// </summary>
+    protected virtual void OnSweepStarted(Entity<MedievalTailSweepComponent> ent)
+    {
     }
 }
