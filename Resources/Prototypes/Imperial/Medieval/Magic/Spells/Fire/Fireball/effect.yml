@@ -76,6 +76,7 @@
 
 - type: entity
   id: FireballChargeEffectBeginner
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: Imperial/Medieval/Magic/Fire/Fireball/charge.rsi
@@ -93,6 +94,7 @@
 
 - type: entity
   id: FireballChargeEffectMiddle
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: Imperial/Medieval/Magic/Fire/Fireball/charge.rsi
@@ -110,6 +112,7 @@
 
 - type: entity
   id: FireballChargeEffectSenior
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: Imperial/Medieval/Magic/Fire/Fireball/charge.rsi

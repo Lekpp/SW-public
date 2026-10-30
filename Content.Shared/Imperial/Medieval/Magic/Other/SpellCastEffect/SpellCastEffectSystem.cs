@@ -40,7 +40,7 @@ public sealed partial class EffectSystem : EntitySystem
                 var forward = Spawn(forwardProto, Transform(args.Performer).Coordinates);
                 _transform.SetParent(forward, args.Performer);
                 _transform.SetLocalPosition(forward, new Vector2(0f, -component.ForwardEffectOffset));
-                _forwardEffects[args.Performer] = forward;
+                component.ForwardEffect = forward;
             }
 
             CanSpawn = false;
@@ -51,19 +51,21 @@ public sealed partial class EffectSystem : EntitySystem
     private void OnAfterCast(EntityUid uid, SpellCastEffectComponent component, ref MedievalAfterCastSpellEvent args)
     {
         CanSpawn = true;
-        RemoveForwardEffect(args.Performer);
+        RemoveForwardEffect(component);
     }
 
     private void OnFailCast(EntityUid uid, SpellCastEffectComponent component, MedievalFailCastSpellEvent args)
     {
         CanSpawn = true;
-        RemoveForwardEffect(args.Performer);
+        RemoveForwardEffect(component);
     }
 
-    private void RemoveForwardEffect(EntityUid performer)
+    private void RemoveForwardEffect(SpellCastEffectComponent component)
     {
-        if (!_forwardEffects.Remove(performer, out var effect))
+        if (component.ForwardEffect is not { } effect)
             return;
+
+        component.ForwardEffect = null;
 
         if (_net.IsServer && !TerminatingOrDeleted(effect))
             QueueDel(effect);
@@ -71,6 +73,5 @@ public sealed partial class EffectSystem : EntitySystem
 
     #region Helpers
     private bool CanSpawn = true;
-    private readonly Dictionary<EntityUid, EntityUid> _forwardEffects = new();
     #endregion
 }

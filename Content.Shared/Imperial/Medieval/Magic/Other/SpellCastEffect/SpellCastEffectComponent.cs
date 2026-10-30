@@ -22,4 +22,10 @@ public sealed partial class SpellCastEffectComponent : Component
     /// </summary>
     [DataField]
     public float ForwardEffectOffset = 1f;
+
+    /// <summary>
+    /// The forward effect of the cast in progress, removed when the cast ends or fails
+    /// </summary>
+    [ViewVariables]
+    public EntityUid? ForwardEffect;
 }
