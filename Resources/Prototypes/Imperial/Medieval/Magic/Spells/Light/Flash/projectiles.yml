@@ -5,6 +5,7 @@
   name: Flash
   description: You my sunshine
   parent: BulletRocket
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: Imperial/Medieval/Magic/Light/Flash/projectiles.rsi
@@ -34,6 +35,7 @@
   name: Flash
   description: You my sunshine
   parent: BulletRocket
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: Imperial/Medieval/Magic/Light/Flash/projectiles.rsi

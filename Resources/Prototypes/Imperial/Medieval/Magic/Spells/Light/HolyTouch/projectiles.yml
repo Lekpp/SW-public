@@ -2,6 +2,7 @@
   id: HolyTouch
   parent: BaseItem
   name: Holy Touch
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: Imperial/Medieval/Melee/hand.rsi

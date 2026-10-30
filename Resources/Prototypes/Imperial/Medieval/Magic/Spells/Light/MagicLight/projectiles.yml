@@ -2,6 +2,7 @@
 
 - type: entity
   id: MedievalProjectileLightFollower
+  categories: [ HideSpawnMenu ]
   components:
     - type: CargoSellBlacklist
     - type: Sprite
@@ -74,6 +75,7 @@
 - type: entity
   id: MedievalProjectileLightOrbiter
   parent: MedievalProjectileLightFollower
+  categories: [ HideSpawnMenu ]
   components:
     - type: PointLight
       color: cyan
@@ -84,6 +86,7 @@
 
 - type: entity
   id: MedievalLightSphereDespawnEffect
+  categories: [ HideSpawnMenu ]
   components:
   - type: TimedDespawn
     lifetime: 5
@@ -95,6 +98,7 @@
 
 - type: entity
   id: MedievalEventEffectSparkleTrail
+  categories: [ HideSpawnMenu ]
   components:
     - type: Sprite
       sprite: Objects/Fun/pondering_orb.rsi

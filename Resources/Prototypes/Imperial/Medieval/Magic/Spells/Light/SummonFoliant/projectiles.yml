@@ -2,6 +2,7 @@
 
 - type: entity
   id: MedievalProjectileSummonFoliantBeginner
+  categories: [ HideSpawnMenu ]
   components:
     - type: CargoSellBlacklist
     - type: PointLight

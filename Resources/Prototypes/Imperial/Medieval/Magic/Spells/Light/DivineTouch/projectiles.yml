@@ -4,6 +4,7 @@
   id: DivineTouchBeginner
   parent: BaseItem
   name: Health Touch
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: Imperial/Medieval/Magic/Light/DivineTouch/hand.rsi
@@ -69,6 +70,7 @@
   id: DivineTouchMiddle
   parent: BaseItem
   name: Health Touch
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: Imperial/Medieval/Magic/Light/DivineTouch/hand.rsi
@@ -134,6 +136,7 @@
   id: DivineTouchSenior
   parent: BaseItem
   name: Health Touch
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: Imperial/Medieval/Magic/Light/DivineTouch/hand.rsi

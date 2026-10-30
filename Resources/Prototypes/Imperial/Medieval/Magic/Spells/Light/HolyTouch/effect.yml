@@ -2,6 +2,7 @@
 
 - type: entity
   id: HolyTouchSpellCastEffectBeginner
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: Imperial/Medieval/SpellCastEffects/light/holy.rsi

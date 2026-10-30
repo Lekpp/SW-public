@@ -2,6 +2,7 @@
 
 - type: entity
   id: BlinkSpellCastEffectBeginner
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: Imperial/Medieval/SpellCastEffects/light/blink.rsi

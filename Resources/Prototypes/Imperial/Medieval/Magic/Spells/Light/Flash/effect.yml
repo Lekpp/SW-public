@@ -1,5 +1,6 @@
 - type: entity
   id: FlashWaveEffect
+  categories: [ HideSpawnMenu ]
   components:
   - type: ShockWave
     speed: 0.95
@@ -27,6 +28,7 @@
 
 - type: entity
   id: FlashSpellCastEffectBeginner
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: Imperial/Medieval/SpellCastEffects/light/flash.rsi
