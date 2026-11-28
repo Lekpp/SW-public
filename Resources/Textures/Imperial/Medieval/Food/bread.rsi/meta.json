@@ -1,7 +1,7 @@
 {
   "version": 1,
   "license": "this content is under ICLA licence, read more on https://wiki.imperialspace.net/icla",
-  "copyright": "by Prazat",
+  "copyright": "by Prazat, burnt states recolored by Ipno",
   "size": {
     "x": 32,
     "y": 32
@@ -83,6 +83,26 @@
     },
     {
       "name": "berry_bread-slice-inhand-right",
+      "directions": 4
+    },
+    {
+      "name": "bread3"
+    },
+    {
+      "name": "bread3-slice"
+    },
+    {
+      "name": "bread-burnt"
+    },
+    {
+      "name": "bread3-burnt"
+    },
+    {
+      "name": "bread-burnt-inhand-left",
+      "directions": 4
+    },
+    {
+      "name": "bread-burnt-inhand-right",
       "directions": 4
     }
   ]

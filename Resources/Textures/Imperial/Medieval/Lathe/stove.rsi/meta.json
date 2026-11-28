@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "license": "this content is under ICLA licence, read more on https://wiki.imperialspace.net/icla",
+  "copyright": "by Prazat, fire, coals, door seam and oven contents by Ipno",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "base"
+    },
+    {
+      "name": "pan"
+    },
+    {
+      "name": "pot"
+    },
+    {
+      "name": "pan-cooking",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "pot-cooking",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "door-open"
+    },
+    {
+      "name": "fire",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "fire-low",
+      "delays": [
+        [
+          0.4,
+          0.4
+        ]
+      ]
+    },
+    {
+      "name": "door-seam",
+      "delays": [
+        [
+          0.4,
+          0.4
+        ]
+      ]
+    },
+    {
+      "name": "oven-tin-dough"
+    },
+    {
+      "name": "oven-tin-berry"
+    },
+    {
+      "name": "oven-tin-bread"
+    },
+    {
+      "name": "oven-tin-burnt"
+    },
+    {
+      "name": "oven-loaf-dough"
+    },
+    {
+      "name": "oven-loaf-bread"
+    },
+    {
+      "name": "oven-loaf-burnt"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "license": "this content is under ICLA licence, read more on https://wiki.imperialspace.net/icla",
-  "copyright": "by Prazat",
+  "copyright": "by Prazat, bread-tin-dough and bread-tin-berry by Ipno",
   "size": {
     "x": 32,
     "y": 32
@@ -9,6 +9,12 @@
   "states": [
     {
       "name": "bread-tin"
+    },
+    {
+      "name": "bread-tin-dough"
+    },
+    {
+      "name": "bread-tin-berry"
     }
   ]
 }
