@@ -89,26 +89,30 @@
     count: 2
   - id: FoodPotato
     count: 2
-  - ids: [ FoodMeatCutlet, FoodMeatChicken ]
+  - ids: [ FoodMeatCutlet, FoodMeatChicken, MedievalFoodChickenLeg, MedievalFoodChickenWing ]
   extras:
   - MedievalFoodBeet
   - FoodPotato
   - FoodCarrot
   - FoodMeatCutlet
   - FoodMeatChicken
+  - MedievalFoodChickenLeg
+  - MedievalFoodChickenWing
   cookTime: 90
   result: FoodSoupBeet
 
 - type: medievalCookRecipe
   id: MedievalCookMeatStew
   ingredients:
-  - ids: [ FoodMeatCutlet, FoodMeatChicken ]
+  - ids: [ FoodMeatCutlet, FoodMeatChicken, MedievalFoodChickenLeg, MedievalFoodChickenWing ]
     count: 3
   - id: FoodPotato
     count: 2
   extras:
   - FoodMeatCutlet
   - FoodMeatChicken
+  - MedievalFoodChickenLeg
+  - MedievalFoodChickenWing
   - FoodPotato
   - FoodCarrot
   - FoodMushroom
@@ -318,7 +322,7 @@
   id: MedievalCookAppleChickenSoup
   ingredients:
   - id: FoodApple
-  - ids: [ MedievalFoodChickenWhole, FoodMeatChicken ]
+  - ids: [ MedievalFoodChickenWhole, FoodMeatChicken, MedievalFoodChickenLeg, MedievalFoodChickenWing ]
   - id: FoodOrange
   extras:
   - FoodApple

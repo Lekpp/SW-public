@@ -136,9 +136,13 @@
   - type: Sprite
     sprite: Imperial/Medieval/Food/meat.rsi
     state: chicken3-raw
-  - type: SliceableFood
-    count: 2
-    slice: FoodMeatChicken
+  - type: Butcherable
+    butcherDelay: 2
+    spawned:
+    - id: MedievalFoodChickenLeg
+      amount: 2
+    - id: MedievalFoodChickenWing
+      amount: 2
   - type: SolutionContainerManager
     solutions:
       food:
@@ -148,6 +152,54 @@
           Quantity: 18
         - ReagentId: Fat
           Quantity: 9
+
+- type: entity
+  parent: FoodMeatChicken
+  id: MedievalFoodChickenLeg
+  name: raw chicken leg
+  description: A raw chicken leg. Better cooked before eating.
+  components:
+  - type: Sprite
+    sprite: Imperial/Medieval/Food/meat.rsi
+    layers:
+    - state: chicken-raw
+      map: [ "random" ]
+  - type: RandomSprite
+    available:
+    - random:
+        chicken-raw: ""
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 5
+        - ReagentId: Fat
+          Quantity: 2
+
+- type: entity
+  parent: FoodMeatChicken
+  id: MedievalFoodChickenWing
+  name: raw chicken wing
+  description: A raw chicken wing. Better cooked before eating.
+  components:
+  - type: Sprite
+    sprite: Imperial/Medieval/Food/meat.rsi
+    layers:
+    - state: chicken2-raw
+      map: [ "random" ]
+  - type: RandomSprite
+    available:
+    - random:
+        chicken2-raw: ""
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 4
+        - ReagentId: Fat
+          Quantity: 2
 
 - type: entity
   parent: FoodMeatBase
